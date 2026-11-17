@@ -5,6 +5,16 @@
   var API = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/contents/";
   var TOKEN_KEY = "yahya_site_upload_token";
   var MAX_SIZE = 25 * 1024 * 1024;
+  var MAX_SCREENSHOTS = 3;
+  var MAX_SCREENSHOT_SIZE = 1024 * 1024;
+  var CATEGORY_NAMES = {
+    tools: "أدوات",
+    islamic: "أذكار",
+    security: "حماية",
+    games: "شحن ألعاب",
+    diagnostics: "تشخيص",
+    system: "نظامي"
+  };
 
   var form = document.getElementById("uploadForm");
   var tokenInput = document.getElementById("token");
@@ -12,6 +22,8 @@
   var clearToken = document.getElementById("clearToken");
   var uploadButton = document.getElementById("uploadButton");
   var statusBox = document.getElementById("status");
+  var categoryInput = document.getElementById("category");
+  var screenshotInput = document.getElementById("screenshotFiles");
 
   if (!form || !tokenInput || !statusBox) return;
 
@@ -125,7 +137,7 @@
     return new Promise(function (resolve, reject) {
       var reader = new FileReader();
       reader.onload = function () { resolve(reader.result); };
-      reader.onerror = function () { reject(new Error("تعذّر قراءة ملف APK")); };
+      reader.onerror = function () { reject(new Error("تعذّر قراءة الملف")); };
       reader.readAsArrayBuffer(file);
     });
   }
@@ -202,10 +214,14 @@
     var packageName = document.getElementById("packageName").value.trim();
     var version = document.getElementById("version").value.trim();
     var description = document.getElementById("description").value.trim();
+    var category = categoryInput ? categoryInput.value : "tools";
     var apkInput = document.getElementById("apkFile");
     var file = apkInput.files && apkInput.files[0];
     var iconInput = document.getElementById("iconFile");
     var iconFile = iconInput && iconInput.files ? iconInput.files[0] : null;
+    var screenshotFiles = screenshotInput && screenshotInput.files
+      ? Array.prototype.slice.call(screenshotInput.files)
+      : [];
 
     if (!token) return setStatus("أدخل GitHub Token أولًا.", "error");
     if (!name) return setStatus("أدخل اسم التطبيق.", "error");
@@ -225,6 +241,19 @@
       }
       if (iconFile.size > 1024 * 1024) {
         return setStatus("حجم الأيقونة أكبر من 1 MB.", "error");
+      }
+    }
+    if (screenshotFiles.length > MAX_SCREENSHOTS) {
+      return setStatus("يمكن رفع " + MAX_SCREENSHOTS + " لقطات شاشة كحد أقصى.", "error");
+    }
+    for (var shotIndex = 0; shotIndex < screenshotFiles.length; shotIndex += 1) {
+      var shot = screenshotFiles[shotIndex];
+      var shotExtension = shot.name.split(".").pop().toLowerCase();
+      if (!/^(png|jpe?g|webp)$/.test(shotExtension)) {
+        return setStatus("لقطات الشاشة يجب أن تكون PNG أو JPG أو WEBP.", "error");
+      }
+      if (shot.size > MAX_SCREENSHOT_SIZE) {
+        return setStatus("حجم كل لقطة شاشة يجب أن يكون 1 MB أو أقل.", "error");
       }
     }
 
@@ -248,7 +277,16 @@
         token
       );
 
-      var iconPath = "assets/icons/system.svg";
+      setStatus("جارٍ قراءة قائمة التطبيقات الحالية...");
+      var manifest = await loadManifest(token);
+      var existingEntry = manifest.apps.filter(function (app) {
+        return app && (app.package === packageName || app.filename === filename);
+      })[0] || null;
+
+      var iconPath = existingEntry && /^assets\/[A-Za-z0-9._\/-]+$/.test(existingEntry.icon || "") &&
+        (existingEntry.icon || "").indexOf("..") === -1
+        ? existingEntry.icon
+        : "assets/icons/system.svg";
       if (iconFile) {
         setStatus("جارٍ رفع أيقونة التطبيق...");
         var iconExtension = iconFile.name.split(".").pop().toLowerCase();
@@ -266,18 +304,46 @@
         );
       }
 
+      var screenshots = existingEntry && Array.isArray(existingEntry.screenshots)
+        ? existingEntry.screenshots.filter(function (path) {
+          return /^assets\/[A-Za-z0-9._\/-]+$/.test(path) && path.indexOf("..") === -1;
+        })
+        : [];
+      if (screenshotFiles.length) {
+        screenshots = [];
+        for (var shotFileIndex = 0; shotFileIndex < screenshotFiles.length; shotFileIndex += 1) {
+          var shotFile = screenshotFiles[shotFileIndex];
+          var shotExtension = shotFile.name.split(".").pop().toLowerCase();
+          var shotName = slug(packageName) + "-" + (shotFileIndex + 1) + "." + shotExtension;
+          var shotPath = "assets/uploads/screens/" + shotName;
+          setStatus("جارٍ رفع لقطة الشاشة " + (shotFileIndex + 1) + " من " + screenshotFiles.length + "...");
+          var shotBuffer = await readFile(shotFile);
+          var shotBase64 = bytesToBase64(new Uint8Array(shotBuffer));
+          var existingShot = await getFile(shotPath, token);
+          await putFile(
+            shotPath,
+            shotBase64,
+            "Upload screenshot for " + name,
+            existingShot ? existingShot.sha : null,
+            token
+          );
+          screenshots.push(shotPath);
+        }
+      }
+
       setStatus("جارٍ تحديث قائمة التطبيقات...");
-      var manifest = await loadManifest(token);
       var entry = {
         name: name,
         package: packageName,
         version: version,
         description: description,
+        category: category,
         filename: filename,
         size: file.size,
         sha256: hash,
         updatedAt: new Date().toISOString(),
-        icon: iconPath
+        icon: iconPath,
+        screenshots: screenshots
       };
       manifest.apps = manifest.apps.filter(function (app) {
         return app && app.package !== packageName && app.filename !== filename;
@@ -300,7 +366,9 @@
 
       setStatus(
         "تم رفع " + name + " " + version + " بنجاح.\n" +
+        "القسم: " + (CATEGORY_NAMES[category] || category) + "\n" +
         "الحجم: " + formatSize(file.size) + "\n" +
+        "لقطات الشاشة: " + screenshots.length + "\n" +
         "SHA-256: " + hash + "\n" +
         "انتظر دقيقة تقريبًا ثم افتح الصفحة الرئيسية.",
         "ok"

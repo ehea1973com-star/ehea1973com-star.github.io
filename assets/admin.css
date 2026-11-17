@@ -47,6 +47,7 @@
 
 .field input[type="text"],
 .field input[type="password"],
+.field select,
 .field textarea {
   width: 100%;
   padding: 12px 14px;
@@ -62,6 +63,7 @@
 
 .field input[type="text"]:focus,
 .field input[type="password"]:focus,
+.field select:focus,
 .field textarea:focus {
   border-color: rgba(34, 211, 238, 0.55);
   box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
@@ -198,4 +200,45 @@
   .token-row .btn {
     width: 100%;
   }
+}
+
+html[data-theme="light"] .admin-card {
+  background: linear-gradient(160deg, #ffffff, #f6f9fd);
+}
+
+html[data-theme="light"] .admin-warning {
+  background: rgba(251, 191, 36, 0.16);
+  color: #7c5e10;
+}
+
+html[data-theme="light"] .field label {
+  color: #0b172a;
+}
+
+html[data-theme="light"] .field input[type="text"],
+html[data-theme="light"] .field input[type="password"],
+html[data-theme="light"] .field select,
+html[data-theme="light"] .field textarea {
+  background: #ffffff;
+  color: #0b172a;
+}
+
+html[data-theme="light"] .field input[type="file"] {
+  background: rgba(8, 145, 178, 0.06);
+  color: #52647c;
+}
+
+html[data-theme="light"] .admin-status {
+  background: #ffffff;
+  color: #0b172a;
+}
+
+html[data-theme="light"] .admin-status.ok {
+  background: rgba(52, 211, 153, 0.12);
+  color: #065f46;
+}
+
+html[data-theme="light"] .admin-status.error {
+  background: rgba(251, 113, 133, 0.12);
+  color: #9f1239;
 }

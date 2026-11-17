@@ -6,6 +6,7 @@
   <title>رفع تطبيق من الهاتف | Yahya Tech</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#050914">
+  <script src="assets/theme.js"></script>
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/admin.css">
@@ -20,7 +21,13 @@
         <small>رفع تطبيق جديد</small>
       </span>
     </a>
-    <a class="btn btn-ghost btn-small" href="index.html">العودة للموقع</a>
+    <div class="header-actions">
+      <button class="theme-toggle" type="button" id="themeToggle" aria-label="التبديل إلى الوضع النهاري" title="الوضع النهاري" aria-pressed="false">
+        <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+      <a class="btn btn-ghost btn-small" href="index.html">العودة للموقع</a>
+    </div>
   </header>
 
   <main class="section admin-section">
@@ -59,6 +66,18 @@
         </div>
 
         <div class="field">
+          <label for="category">القسم</label>
+          <select id="category" name="category">
+            <option value="tools">أدوات</option>
+            <option value="islamic">أذكار</option>
+            <option value="security">حماية</option>
+            <option value="games">شحن ألعاب</option>
+            <option value="diagnostics">تشخيص</option>
+            <option value="system">نظامي</option>
+          </select>
+        </div>
+
+        <div class="field">
           <label for="apkFile">ملف APK</label>
           <input id="apkFile" name="apkFile" type="file" accept=".apk,application/vnd.android.package-archive" required>
           <small>الحد الحالي 25 MB. للملفات الأكبر استخدم GitHub Releases.</small>
@@ -68,6 +87,12 @@
           <label for="iconFile">أيقونة التطبيق (اختياري)</label>
           <input id="iconFile" name="iconFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
           <small>صورة مربعة PNG أو SVG. إن لم تختر أيقونة، تُستخدم أيقونة عامة.</small>
+        </div>
+
+        <div class="field field-wide">
+          <label for="screenshotFiles">لقطات الشاشة (اختياري)</label>
+          <input id="screenshotFiles" name="screenshotFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple>
+          <small>حتى 3 صور، وكل صورة 1 MB كحد أقصى. تظهر داخل نافذة تفاصيل التطبيق.</small>
         </div>
 
         <div class="field field-wide">
@@ -94,7 +119,8 @@
         <h2>ماذا يحدث بعد الرفع؟</h2>
         <ol>
           <li>يُرفع APK إلى مجلد <span dir="ltr">apps/</span> والأيقونة إلى <span dir="ltr">assets/uploads/</span>.</li>
-          <li>تُضاف بيانات التطبيق إلى <span dir="ltr">apps/manifest.json</span>.</li>
+          <li>تُرفع لقطات الشاشة إلى <span dir="ltr">assets/uploads/screens/</span> وتظهر في نافذة التفاصيل.</li>
+          <li>تُضاف بيانات التطبيق والقسم إلى <span dir="ltr">apps/manifest.json</span>.</li>
           <li>تُحدّث بصمة SHA-256 في <span dir="ltr">apps/SHA256SUMS.txt</span>.</li>
           <li>يظهر التطبيق تلقائيًا في الصفحة الرئيسية بعد نشر GitHub Pages.</li>
         </ol>
