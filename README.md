@@ -7,11 +7,14 @@
 ## المحتويات
 
 - `index.html`: الصفحة الرئيسية، بطاقات التطبيقات وروابط التحميل.
+- `admin.html`: لوحة رفع التطبيقات من الهاتف.
 - `404.html`: صفحة الخطأ.
 - `assets/style.css`: تنسيق الموقع الكامل والواجهة المتجاوبة.
+- `assets/admin.css` و`assets/admin.js`: تنسيق ووظائف لوحة الرفع.
 - `assets/script.js`: السنة، النسخ، شريط التنقل، وتأثيرات الظهور.
 - `assets/logo.svg` و`assets/icons/`: شعار الموقع وأيقونات التطبيقات.
-- `apps/`: ملفات APK ووحدة Magisk وملف بصمات `SHA256SUMS.txt`.
+- `assets/uploads/`: أيقونات التطبيقات المرفوعة من لوحة الهاتف.
+- `apps/`: ملفات APK ووحدة Magisk وملف `manifest.json` وبصمات `SHA256SUMS.txt`.
 
 ## التطبيقات المنشورة
 
@@ -23,6 +26,17 @@
 - Yahya Account Help v2.0
 - Yahya Games Topup v2.0
 - Yahya System Module v2.0 (Magisk)
+
+## رفع تطبيق من الهاتف
+
+افتح `https://ehea1973com-star.github.io/admin.html` من متصفح الهاتف.
+
+- أنشئ GitHub Fine-grained Token بصلاحية `Contents: Read and write` على هذا المستودع فقط.
+- أدخل اسم التطبيق واسم الحزمة والإصدار وملف APK.
+- تُرفع الملفات إلى `apps/`، ويُحدّث `apps/manifest.json` و`apps/SHA256SUMS.txt` تلقائيًا.
+- تظهر التطبيقات المرفوعة في الصفحة الرئيسية بعد نشر GitHub Pages.
+- الحد الحالي 25 MB لكل ملف؛ الملفات الأكبر تُرفع عبر GitHub Releases.
+- لا تُحفظ صلاحيات GitHub داخل الموقع؛ التوكن اختياري الحفظ على جهازك فقط.
 
 ## ملاحظات
 

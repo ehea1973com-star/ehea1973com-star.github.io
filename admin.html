@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>رفع تطبيق من الهاتف | Yahya Tech</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#050914">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/admin.css">
+</head>
+<body>
+  <div class="page-glow" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Yahya Tech">
+      <img src="assets/logo.svg" alt="" width="42" height="42">
+      <span class="brand-text">
+        <strong>Yahya Tech</strong>
+        <small>رفع تطبيق جديد</small>
+      </span>
+    </a>
+    <a class="btn btn-ghost btn-small" href="index.html">العودة للموقع</a>
+  </header>
+
+  <main class="section admin-section">
+    <div class="admin-card">
+      <span class="eyebrow">لوحة المطور</span>
+      <h1>رفع تطبيق من الهاتف</h1>
+      <p class="muted">اختر ملف APK، أدخل بيانات التطبيق، ثم ارفعه مباشرة إلى مستودع الموقع. سيظهر التطبيق في الصفحة الرئيسية بعد اكتمال نشر GitHub Pages.</p>
+
+      <div class="admin-warning">
+        استخدم GitHub Token بصلاحية <strong>Contents: Read and write</strong> على مستودع الموقع فقط. لا تشارك التوكن مع أي شخص، ويمكنك إلغاؤه من GitHub في أي وقت.
+      </div>
+
+      <form id="uploadForm" class="admin-form" novalidate>
+        <div class="field field-wide">
+          <label for="token">GitHub Token</label>
+          <div class="token-row">
+            <input id="token" name="token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_...">
+            <button class="btn btn-ghost btn-small" type="button" id="clearToken">مسح</button>
+          </div>
+          <small>أنشئ توكنًا من <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub Fine-grained tokens</a> واختر المستودع والصلاحية المذكورة أعلاه.</small>
+        </div>
+
+        <div class="field">
+          <label for="appName">اسم التطبيق</label>
+          <input id="appName" name="appName" type="text" required placeholder="مثال: خيال">
+        </div>
+
+        <div class="field">
+          <label for="packageName">اسم الحزمة</label>
+          <input id="packageName" name="packageName" type="text" required placeholder="com.example.app" dir="ltr">
+        </div>
+
+        <div class="field">
+          <label for="version">الإصدار</label>
+          <input id="version" name="version" type="text" required placeholder="1.0.0" dir="ltr">
+        </div>
+
+        <div class="field">
+          <label for="apkFile">ملف APK</label>
+          <input id="apkFile" name="apkFile" type="file" accept=".apk,application/vnd.android.package-archive" required>
+          <small>الحد الحالي 25 MB. للملفات الأكبر استخدم GitHub Releases.</small>
+        </div>
+
+        <div class="field field-wide">
+          <label for="iconFile">أيقونة التطبيق (اختياري)</label>
+          <input id="iconFile" name="iconFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+          <small>صورة مربعة PNG أو SVG. إن لم تختر أيقونة، تُستخدم أيقونة عامة.</small>
+        </div>
+
+        <div class="field field-wide">
+          <label for="description">وصف قصير</label>
+          <textarea id="description" name="description" rows="3" maxlength="240" placeholder="ما الذي يفعله التطبيق؟"></textarea>
+        </div>
+
+        <div class="field field-wide checkbox-field">
+          <label>
+            <input id="saveToken" type="checkbox">
+            <span>حفظ التوكن على هذا الجهاز</span>
+          </label>
+        </div>
+
+        <div class="field field-wide admin-actions">
+          <button class="btn" type="submit" id="uploadButton">رفع التطبيق إلى الموقع</button>
+          <a class="btn btn-ghost" href="index.html">إلغاء</a>
+        </div>
+      </form>
+
+      <div class="admin-status" id="status" role="status" aria-live="polite"></div>
+
+      <div class="admin-help">
+        <h2>ماذا يحدث بعد الرفع؟</h2>
+        <ol>
+          <li>يُرفع APK إلى مجلد <span dir="ltr">apps/</span> والأيقونة إلى <span dir="ltr">assets/uploads/</span>.</li>
+          <li>تُضاف بيانات التطبيق إلى <span dir="ltr">apps/manifest.json</span>.</li>
+          <li>تُحدّث بصمة SHA-256 في <span dir="ltr">apps/SHA256SUMS.txt</span>.</li>
+          <li>يظهر التطبيق تلقائيًا في الصفحة الرئيسية بعد نشر GitHub Pages.</li>
+        </ol>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <img src="assets/logo.svg" alt="" width="30" height="30">
+      <span>Yahya Tech</span>
+    </div>
+    <p>لوحة رفع خاصة بالمطور. لا تُشارك رابط التوكن أو كلمة المرور.</p>
+  </footer>
+
+  <script src="assets/admin.js" defer></script>
+</body>
+</html>
