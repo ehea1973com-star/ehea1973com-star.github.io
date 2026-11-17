@@ -658,9 +658,8 @@
     meta.appendChild(appElement("span", "", "مضاف من الهاتف"));
     body.appendChild(meta);
     var actions = appElement("div", "card-actions");
-    var download = appElement("a", "btn btn-small", "تحميل APK");
-    download.href = "apps/" + app.filename;
-    download.setAttribute("download", "");
+    var download = appElement("a", "btn btn-small", "صفحة التحميل");
+    download.href = "download.html?app=" + encodeURIComponent(app.package);
     actions.appendChild(download);
     var checksum = appElement("a", "mini-link", "SHA-256");
     checksum.href = "apps/SHA256SUMS.txt";
