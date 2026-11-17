@@ -1,73 +1,107 @@
 (function () {
-  var USERS_KEY = "yahya_site_users_v1";
-  var SESSION_KEY = "yahya_site_session_v1";
+  var CONFIG = window.YAHYA_FIREBASE_CONFIG || {};
+  var SESSION_KEY = "yahya_firebase_session_v1";
   var authModal = null;
+  var refreshTimer = null;
 
-  function readUsers() {
-    try {
-      return JSON.parse(window.localStorage.getItem(USERS_KEY) || "{}") || {};
-    } catch (error) {
-      return {};
-    }
-  }
-
-  function writeUsers(users) {
-    window.localStorage.setItem(USERS_KEY, JSON.stringify(users));
-  }
+  var FIREBASE_MESSAGES = {
+    EMAIL_EXISTS: "هذا البريد مسجل مسبقًا. جرّب تسجيل الدخول.",
+    EMAIL_NOT_FOUND: "لا يوجد حساب بهذا البريد.",
+    INVALID_PASSWORD: "كلمة المرور غير صحيحة.",
+    INVALID_EMAIL: "البريد الإلكتروني غير صحيح.",
+    MISSING_EMAIL: "أدخل البريد الإلكتروني.",
+    MISSING_PASSWORD: "أدخل كلمة المرور.",
+    USER_DISABLED: "هذا الحساب معطل.",
+    OPERATION_NOT_ALLOWED: "تسجيل البريد وكلمة المرور غير مفعّل في Firebase.",
+    API_KEY_INVALID: "apiKey غير صحيح.",
+    INVALID_API_KEY: "apiKey غير صحيح."
+  };
 
   function normalizeEmail(value) {
     return String(value || "").trim().toLowerCase();
   }
 
-  function toHex(bytes) {
-    var output = "";
-    for (var index = 0; index < bytes.length; index += 1) {
-      output += ("0" + bytes[index].toString(16)).slice(-2);
-    }
-    return output;
+  function apiKey() {
+    var key = String(CONFIG.apiKey || "").trim();
+    if (!key) throw new Error("أضف apiKey Firebase في assets/firebase-config.js لتشغيل المصادقة.");
+    return key;
   }
 
-  function randomSalt() {
-    if (window.crypto && window.crypto.getRandomValues) {
-      var values = new Uint8Array(16);
-      window.crypto.getRandomValues(values);
-      return toHex(values);
-    }
-    return "salt-" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+  function firebaseMessage(code) {
+    var value = String(code || "UNKNOWN");
+    if (value.indexOf("WEAK_PASSWORD") === 0) return "كلمة المرور يجب أن تكون 6 أحرف على الأقل.";
+    if (value.indexOf("INVALID_LOGIN_CREDENTIALS") === 0) return "البريد أو كلمة المرور غير صحيحة.";
+    if (value.indexOf("TOO_MANY_ATTEMPTS_TRY_LATER") === 0) return "محاولات كثيرة. حاول لاحقًا.";
+    if (value.indexOf("API key not valid") >= 0) return "apiKey غير صحيح.";
+    return FIREBASE_MESSAGES[value] || "تعذر إكمال العملية. تحقق من إعداد Firebase.";
   }
 
-  function fallbackHash(value) {
-    var hash = 2166136261;
-    for (var index = 0; index < value.length; index += 1) {
-      hash ^= value.charCodeAt(index);
-      hash = (hash * 16777619) >>> 0;
-    }
-    return "fallback-" + (hash >>> 0).toString(16);
+  function parseJson(response) {
+    return response.json().catch(function () {
+      return {};
+    });
   }
 
-  function hashPassword(password, salt) {
-    if (window.crypto && window.crypto.subtle && window.TextEncoder) {
-      var encoder = new TextEncoder();
-      return window.crypto.subtle.importKey(
-        "raw",
-        encoder.encode(password),
-        { name: "PBKDF2" },
-        false,
-        ["deriveBits"]
-      ).then(function (key) {
-        return window.crypto.subtle.deriveBits(
-          { name: "PBKDF2", salt: encoder.encode(salt), iterations: 120000, hash: "SHA-256" },
-          key,
-          256
-        );
-      }).then(function (bits) {
-        return toHex(new Uint8Array(bits));
+  function errorFrom(response, data) {
+    var code = data && data.error && data.error.message
+      ? data.error.message
+      : (data && data.error ? String(data.error) : "UNKNOWN");
+    var error = new Error(firebaseMessage(code));
+    error.code = code;
+    return error;
+  }
+
+  function authRequest(path, payload) {
+    var key;
+    try {
+      key = apiKey();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+    var request;
+    try {
+      request = fetch("https://identitytoolkit.googleapis.com/v1/" + path + "?key=" + encodeURIComponent(key), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
       });
+    } catch (error) {
+      return Promise.reject(error);
     }
-    return Promise.resolve(fallbackHash(salt + ":" + password));
+    return request.then(function (response) {
+      return parseJson(response).then(function (data) {
+        if (!response.ok) throw errorFrom(response, data);
+        return data;
+      });
+    });
   }
 
-  function getSession() {
+  function tokenRequest(refreshToken) {
+    var key;
+    try {
+      key = apiKey();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+    var request;
+    try {
+      request = fetch("https://securetoken.googleapis.com/v1/token?key=" + encodeURIComponent(key), {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "grant_type=refresh_token&refresh_token=" + encodeURIComponent(refreshToken)
+      });
+    } catch (error) {
+      return Promise.reject(error);
+    }
+    return request.then(function (response) {
+      return parseJson(response).then(function (data) {
+        if (!response.ok) throw errorFrom(response, data);
+        return data;
+      });
+    });
+  }
+
+  function readSession() {
     try {
       return JSON.parse(window.localStorage.getItem(SESSION_KEY) || "null");
     } catch (error) {
@@ -75,18 +109,24 @@
     }
   }
 
-  function setSession(user) {
-    window.localStorage.setItem(SESSION_KEY, JSON.stringify(user));
+  function writeSession(session) {
+    window.localStorage.setItem(SESSION_KEY, JSON.stringify(session));
   }
 
   function clearSession() {
-    window.localStorage.removeItem(SESSION_KEY);
+    if (refreshTimer) {
+      window.clearTimeout(refreshTimer);
+      refreshTimer = null;
+    }
+    try {
+      window.localStorage.removeItem(SESSION_KEY);
+    } catch (error) {}
   }
 
   function getUser() {
-    var session = getSession();
-    if (!session || !session.email) return null;
-    return session;
+    var session = readSession();
+    if (!session || !session.user || !session.idToken) return null;
+    return session.user;
   }
 
   function isLoggedIn() {
@@ -98,6 +138,71 @@
     if (typeof window.CustomEvent === "function") {
       window.dispatchEvent(new window.CustomEvent("yahya-auth-change", { detail: getUser() }));
     }
+  }
+
+  function buildSession(data, name, email) {
+    var expiresIn = Number(data.expiresIn) || 3600;
+    var session = {
+      idToken: data.idToken,
+      refreshToken: data.refreshToken,
+      expiresAt: Date.now() + expiresIn * 1000,
+      user: {
+        name: name || data.displayName || String(email || data.email || "").split("@")[0],
+        email: email || data.email || "",
+        localId: data.localId || data.userId || ""
+      }
+    };
+    writeSession(session);
+    scheduleRefresh(session);
+    return session;
+  }
+
+  function applyRefresh(data, previous) {
+    var expiresIn = Number(data.expires_in) || 3600;
+    var session = {
+      idToken: data.id_token,
+      refreshToken: data.refresh_token || previous.refreshToken,
+      expiresAt: Date.now() + expiresIn * 1000,
+      user: previous.user
+    };
+    writeSession(session);
+    scheduleRefresh(session);
+    return session;
+  }
+
+  function refreshSession(refreshToken) {
+    return tokenRequest(refreshToken).then(function (data) {
+      var previous = readSession();
+      if (!previous || !previous.user) throw new Error("انتهت الجلسة. سجّل الدخول من جديد.");
+      var session = applyRefresh(data, previous);
+      emit();
+      return session.user;
+    });
+  }
+
+  function scheduleRefresh(session) {
+    if (!session || !session.refreshToken) return;
+    if (refreshTimer) window.clearTimeout(refreshTimer);
+    var delay = Math.max(60000, (Number(session.expiresAt) || 0) - Date.now() - 300000);
+    refreshTimer = window.setTimeout(function () {
+      refreshSession(session.refreshToken).catch(function () {
+        clearSession();
+        emit();
+      });
+    }, delay);
+  }
+
+  function restoreSession() {
+    var session = readSession();
+    if (!session || !session.refreshToken) return Promise.resolve(null);
+    if (session.expiresAt && session.expiresAt > Date.now() + 60000) {
+      scheduleRefresh(session);
+      return Promise.resolve(session.user);
+    }
+    return refreshSession(session.refreshToken).catch(function () {
+      clearSession();
+      return null;
+    });
   }
 
   function setMessage(message, type) {
@@ -152,6 +257,9 @@
     authModal.hidden = false;
     document.body.classList.add("modal-open");
     setMode(target);
+    if (!String(CONFIG.apiKey || "").trim() && !getUser()) {
+      setMessage("أضف apiKey Firebase في assets/firebase-config.js لتشغيل المصادقة.", "error");
+    }
     var firstInput = authModal.querySelector(target === "register" ? "#authRegisterName" : "#authLoginEmail");
     if (firstInput && !getUser()) window.setTimeout(function () { firstInput.focus(); }, 80);
   }
@@ -164,22 +272,26 @@
       if (name.length < 2) return reject(new Error("أدخل اسمًا من حرفين على الأقل."));
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return reject(new Error("أدخل بريدًا إلكترونيًا صحيحًا."));
       if (password.length < 6) return reject(new Error("كلمة المرور يجب أن تكون 6 أحرف على الأقل."));
-      var users = readUsers();
-      if (users[email]) return reject(new Error("هذا البريد مسجل مسبقًا. جرّب تسجيل الدخول."));
-      var salt = randomSalt();
-      hashPassword(password, salt).then(function (hash) {
-        users[email] = {
-          name: name,
-          email: email,
-          salt: salt,
-          hash: hash,
-          createdAt: Date.now()
-        };
-        writeUsers(users);
-        var session = { name: name, email: email, loginAt: Date.now() };
-        setSession(session);
+      authRequest("accounts:signUp", {
+        email: email,
+        password: password,
+        returnSecureToken: true
+      }).then(function (data) {
+        return authRequest("accounts:update", {
+          idToken: data.idToken,
+          displayName: name,
+          returnSecureToken: true
+        }).then(function (profile) {
+          return { signUp: data, profile: profile };
+        }).catch(function () {
+          return { signUp: data, profile: null };
+        });
+      }).then(function (result) {
+        var data = result.profile || result.signUp;
+        var displayName = result.profile && result.profile.displayName ? result.profile.displayName : name;
+        var session = buildSession(data, displayName, email);
         emit();
-        resolve(session);
+        resolve(session.user);
       }).catch(reject);
     });
   }
@@ -188,15 +300,16 @@
     return new Promise(function (resolve, reject) {
       email = normalizeEmail(email);
       password = String(password || "");
-      var users = readUsers();
-      var user = users[email];
-      if (!user) return reject(new Error("لا يوجد حساب بهذا البريد."));
-      hashPassword(password, user.salt).then(function (hash) {
-        if (hash !== user.hash) return reject(new Error("كلمة المرور غير صحيحة."));
-        var session = { name: user.name, email: user.email, loginAt: Date.now() };
-        setSession(session);
+      if (!email || !password) return reject(new Error("أدخل البريد وكلمة المرور."));
+      authRequest("accounts:signInWithPassword", {
+        email: email,
+        password: password,
+        returnSecureToken: true
+      }).then(function (data) {
+        var name = data.displayName || email.split("@")[0];
+        var session = buildSession(data, name, data.email || email);
         emit();
-        resolve(session);
+        resolve(session.user);
       }).catch(reject);
     });
   }
@@ -250,7 +363,7 @@
           '<button class="btn btn-ghost" type="button" id="authLogout">تسجيل الخروج</button>' +
         '</div>' +
         '<p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>' +
-        '<p class="muted auth-note">التسجيل محلي على هذا الجهاز ولا يُرسل إلى خادم.</p>' +
+        '<p class="muted auth-note">تتم المصادقة عبر Firebase.</p>' +
       '</div>';
     document.body.appendChild(authModal);
 
@@ -335,10 +448,25 @@
     });
   }
 
+  function clearLegacyStorage() {
+    try {
+      window.localStorage.removeItem("yahya_site_users_v1");
+      window.localStorage.removeItem("yahya_site_session_v1");
+    } catch (error) {}
+  }
+
   function init() {
     buildModal();
     bindAccountButtons();
-    updateUI();
+    clearLegacyStorage();
+    window.addEventListener("storage", function (event) {
+      if (event.key === SESSION_KEY) updateUI();
+    });
+    restoreSession().then(function () {
+      updateUI();
+    }).catch(function () {
+      updateUI();
+    });
   }
 
   window.YahyaAuth = {

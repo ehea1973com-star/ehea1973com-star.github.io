@@ -139,7 +139,7 @@
       return;
     }
     gate.className = "download-gate locked";
-    gate.appendChild(el("p", "", "التسجيل مطلوب قبل تحميل التطبيقات. أنشئ حسابًا أو سجّل الدخول للمتابعة."));
+    gate.appendChild(el("p", "", "التسجيل مطلوب قبل تحميل التطبيقات. أنشئ حسابًا أو سجّل الدخول عبر Firebase للمتابعة."));
     var login = el("button", "btn", "تسجيل الدخول");
     login.type = "button";
     login.addEventListener("click", function () {
