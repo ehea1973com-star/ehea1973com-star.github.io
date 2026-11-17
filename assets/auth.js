@@ -134,6 +134,17 @@
     return !!getUser();
   }
 
+  function isOwner() {
+    var user = getUser();
+    if (!user || !user.email) return false;
+    var owners = CONFIG.ownerEmails || [];
+    var email = normalizeEmail(user.email);
+    for (var index = 0; index < owners.length; index += 1) {
+      if (normalizeEmail(owners[index]) === email) return true;
+    }
+    return false;
+  }
+
   function emit() {
     updateUI();
     if (typeof window.CustomEvent === "function") {
@@ -228,8 +239,12 @@
       if (title) title.textContent = "حسابك في الموقع";
       var name = authModal.querySelector("#authUserName");
       var email = authModal.querySelector("#authUserEmail");
+      var ownerBadge = authModal.querySelector("#authOwnerBadge");
+      var adminLink = authModal.querySelector("#authAdminLink");
       if (name) name.textContent = user.name || "";
       if (email) email.textContent = user.email || "";
+      if (ownerBadge) ownerBadge.hidden = !isOwner();
+      if (adminLink) adminLink.hidden = !isOwner();
       return;
     }
     if (title) title.textContent = mode === "register" ? "إنشاء حساب جديد" : "تسجيل الدخول";
@@ -359,9 +374,13 @@
           '</form>' +
         '</div>' +
         '<div class="auth-account" hidden>' +
+          '<span class="owner-badge" id="authOwnerBadge" hidden>مالك الموقع</span>' +
           '<p>مسجل الدخول باسم <strong id="authUserName"></strong></p>' +
           '<p class="muted" id="authUserEmail" dir="ltr"></p>' +
-          '<button class="btn btn-ghost" type="button" id="authLogout">تسجيل الخروج</button>' +
+          '<div class="auth-account-actions">' +
+            '<a class="btn btn-ghost" id="authAdminLink" href="admin.html" hidden>لوحة الإدارة</a>' +
+            '<button class="btn btn-ghost" type="button" id="authLogout">تسجيل الخروج</button>' +
+          '</div>' +
         '</div>' +
         '<p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>' +
         '<p class="muted auth-note">تتم المصادقة عبر Firebase.</p>' +
@@ -427,8 +446,8 @@
   function updateUI() {
     var user = getUser();
     Array.prototype.forEach.call(document.querySelectorAll("[data-account-button]"), function (button) {
-      button.textContent = user ? "حسابي" : "تسجيل الدخول";
-      button.setAttribute("aria-label", user ? "حساب " + user.name : "تسجيل الدخول إلى الموقع");
+      button.textContent = user ? (isOwner() ? "حسابي · مالك" : "حسابي") : "تسجيل الدخول";
+      button.setAttribute("aria-label", user ? (isOwner() ? "حساب المالك " + user.name : "حساب " + user.name) : "تسجيل الدخول إلى الموقع");
     });
     Array.prototype.forEach.call(document.querySelectorAll("[data-auth-gate]"), function (element) {
       element.hidden = !!user;
@@ -476,6 +495,7 @@
     logout: logout,
     getUser: getUser,
     isLoggedIn: isLoggedIn,
+    isOwner: isOwner,
     open: open,
     close: close,
     updateUI: updateUI

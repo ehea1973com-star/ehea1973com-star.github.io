@@ -126,8 +126,9 @@
     var user = window.YahyaAuth ? window.YahyaAuth.getUser() : null;
     gate.innerHTML = "";
     if (user) {
+      var owner = window.YahyaAuth && window.YahyaAuth.isOwner && window.YahyaAuth.isOwner();
       gate.className = "download-gate ready";
-      gate.appendChild(el("p", "", "أنت مسجل الدخول باسم " + (user.name || user.email) + ". التحميل جاهز."));
+      gate.appendChild(el("p", "", "أنت مسجل الدخول باسم " + (user.name || user.email) + (owner ? " — مالك الموقع" : "") + ". التحميل جاهز."));
       button.hidden = false;
       setDownloadLink(button, currentApp);
       var logout = el("button", "btn btn-ghost btn-small", "تسجيل الخروج");
