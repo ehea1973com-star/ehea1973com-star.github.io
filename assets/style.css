@@ -2286,6 +2286,13 @@ html[data-theme="light"] .reader-content {
   margin-top: 8px;
 }
 
+.auth-hint {
+  margin: -3px 0 2px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
 .auth-link {
   margin-top: 10px;
   padding: 0;

@@ -5,10 +5,10 @@
   var refreshTimer = null;
 
   var FIREBASE_MESSAGES = {
-    EMAIL_EXISTS: "هذا البريد مسجل مسبقًا. جرّب تسجيل الدخول.",
-    EMAIL_NOT_FOUND: "لا يوجد حساب بهذا البريد.",
+    EMAIL_EXISTS: "هذا البريد مسجل مسبقًا. انتقل إلى تبويب «دخول» وسجّل بنفس البريد وكلمة المرور.",
+    EMAIL_NOT_FOUND: "لا يوجد حساب بهذا البريد. أنشئ حسابًا جديدًا أولًا.",
     INVALID_PASSWORD: "كلمة المرور غير صحيحة.",
-    INVALID_EMAIL: "البريد الإلكتروني غير صحيح.",
+    INVALID_EMAIL: "البريد غير صالح لدى Firebase. اكتبه بالإنجليزية كاملًا مثل name@gmail.com.",
     MISSING_EMAIL: "أدخل البريد الإلكتروني.",
     MISSING_PASSWORD: "أدخل كلمة المرور.",
     USER_DISABLED: "هذا الحساب معطل.",
@@ -19,7 +19,11 @@
   };
 
   function normalizeEmail(value) {
-    return String(value || "").trim().toLowerCase();
+    return String(value || "")
+      .replace(/[\u200b-\u200f\u202a-\u202e\u2060-\u206f\ufeff]/g, "")
+      .replace(/\s+/g, "")
+      .replace(/\.+$/, "")
+      .toLowerCase();
   }
 
   function apiKey() {
@@ -286,7 +290,7 @@
       email = normalizeEmail(email);
       password = String(password || "");
       if (name.length < 2) return reject(new Error("أدخل اسمًا من حرفين على الأقل."));
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return reject(new Error("أدخل بريدًا إلكترونيًا صحيحًا."));
+      if (!email) return reject(new Error("أدخل البريد الإلكتروني."));
       if (password.length < 6) return reject(new Error("كلمة المرور يجب أن تكون 6 أحرف على الأقل."));
       authRequest("accounts:signUp", {
         email: email,
@@ -315,7 +319,7 @@
   function resetPassword(email) {
     return new Promise(function (resolve, reject) {
       email = normalizeEmail(email);
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return reject(new Error("أدخل بريدًا إلكترونيًا صحيحًا أولًا."));
+      if (!email) return reject(new Error("أدخل البريد الإلكتروني أولًا."));
       authRequest("accounts:sendOobCode", {
         requestType: "PASSWORD_RESET",
         email: email
@@ -371,7 +375,8 @@
         '<div class="auth-forms">' +
           '<form id="loginForm" class="auth-form" novalidate>' +
             '<label for="authLoginEmail">البريد الإلكتروني</label>' +
-            '<input id="authLoginEmail" type="email" autocomplete="email" required>' +
+            '<input id="authLoginEmail" type="text" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" dir="ltr" placeholder="name@gmail.com" required>' +
+            '<p class="auth-hint">استخدم بريدك الشخصي نفسه عند الدخول.</p>' +
             '<label for="authLoginPassword">كلمة المرور</label>' +
             '<input id="authLoginPassword" type="password" autocomplete="current-password" required>' +
             '<button class="btn" type="submit">تسجيل الدخول</button>' +
@@ -381,7 +386,8 @@
             '<label for="authRegisterName">الاسم</label>' +
             '<input id="authRegisterName" type="text" autocomplete="name" required>' +
             '<label for="authRegisterEmail">البريد الإلكتروني</label>' +
-            '<input id="authRegisterEmail" type="email" autocomplete="email" required>' +
+            '<input id="authRegisterEmail" type="text" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" dir="ltr" placeholder="name@gmail.com" required>' +
+            '<p class="auth-hint">أي بريد شخصي يعمل: Gmail أو Yahoo أو Hotmail أو غيرها.</p>' +
             '<label for="authRegisterPassword">كلمة المرور</label>' +
             '<input id="authRegisterPassword" type="password" autocomplete="new-password" required>' +
             '<button class="btn" type="submit">إنشاء الحساب</button>' +
@@ -458,7 +464,14 @@
           setMessage("تم إنشاء الحساب، مرحبًا " + user.name + ".", "success");
           window.setTimeout(close, 600);
         }).catch(function (error) {
-          setMessage(error.message, "error");
+          if (error.code === "EMAIL_EXISTS") {
+            var loginEmail = authModal.querySelector("#authLoginEmail");
+            if (loginEmail) loginEmail.value = normalizeEmail(email);
+            setMode("login");
+            setMessage("هذا البريد مسجل مسبقًا. أدخل كلمة المرور ثم اضغط «تسجيل الدخول»، أو استخدم «نسيت كلمة المرور؟».", "error");
+          } else {
+            setMessage(error.message, "error");
+          }
         }).then(function () {
           if (submit) submit.disabled = false;
         });
