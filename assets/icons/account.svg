@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Yahya Account Help">
+  <defs><linearGradient id="a" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse"><stop stop-color="#93c5fd"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs>
+  <rect width="64" height="64" rx="16" fill="url(#a)"/>
+  <circle cx="27" cy="25" r="9" fill="none" stroke="#eff6ff" stroke-width="4"/>
+  <circle cx="24.5" cy="23" r="2" fill="#eff6ff"/>
+  <path d="M13 51c2-9 7-13 14-13s12 4 14 13" fill="none" stroke="#eff6ff" stroke-width="4" stroke-linecap="round"/>
+  <path d="m42 36 12 12m-4-4 3-3m-8-1 4 4" stroke="#eff6ff" stroke-width="4" stroke-linecap="round" fill="none"/>
+</svg>

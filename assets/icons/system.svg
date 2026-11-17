@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Yahya System module">
+  <defs><linearGradient id="a" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse"><stop stop-color="#6ee7b7"/><stop offset="1" stop-color="#047857"/></linearGradient></defs>
+  <rect width="64" height="64" rx="16" fill="url(#a)"/>
+  <path d="m32 8 21 11v20L32 56 11 39V19Z" fill="#ecfdf5"/>
+  <path d="m11 19 21 11 21-11M32 30v26" stroke="#047857" stroke-width="3" fill="none" stroke-linejoin="round"/>
+  <path d="m21 14 21 11" stroke="#047857" stroke-width="2.5" opacity="0.65"/>
+</svg>

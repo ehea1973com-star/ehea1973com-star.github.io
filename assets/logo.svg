@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Yahya Tech logo">
+  <defs>
+    <linearGradient id="bg" x1="6" y1="4" x2="58" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22d3ee"/>
+      <stop offset="0.52" stop-color="#4f8cff"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="18" y1="12" x2="46" y2="54" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#d9f9ff" stop-opacity="0.78"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="17" fill="url(#bg)"/>
+  <path d="M32 8 50 15v14c0 12-7.4 21.7-18 27C21.4 50.7 14 41 14 29V15Z" fill="url(#shield)"/>
+  <path d="M24 23h5.2L32 30l2.8-7H40l-5.7 13h-4.6Z" fill="#06263b"/>
+  <path d="M29 35h6v10h-6Z" fill="#06263b"/>
+  <circle cx="32" cy="8" r="3" fill="#34d399"/>
+</svg>
