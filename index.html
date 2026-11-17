@@ -9,7 +9,7 @@
   <meta name="author" content="Yahya Al-Hamza">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#050914">
-  <script src="assets/theme.js"></script>
+  <script src="assets/theme.js?v=20261117-3"></script>
   <link rel="canonical" href="https://ehea1973com-star.github.io/">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
   <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
   <meta name="twitter:title" content="Yahya Tech | يحيى الحمزة">
   <meta name="twitter:description" content="تطبيقات أندرويد وأدوات تشخيص هواتف أوفلاين.">
   <meta name="twitter:image" content="https://ehea1973com-star.github.io/assets/logo.svg">
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/style.css?v=20261117-3">
   <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
   <script type="application/ld+json">
   {
@@ -309,21 +309,26 @@
     <section class="section" id="live">
       <div class="section-head reveal">
         <div>
-          <span class="eyebrow">البث المباشر</span>
-          <h2>شاهد قناتي على يوتيوب</h2>
+          <span class="eyebrow">يوتيوب</span>
+          <h2>آخر الفيديوهات والبث المباشر</h2>
         </div>
         <a class="text-link" href="https://youtube.com/channel/UCmChpVHGV74adiqncSyocg" target="_blank" rel="noopener">فتح القناة على يوتيوب</a>
       </div>
+      <div class="live-tabs reveal" role="tablist" aria-label="خيارات العرض">
+        <button class="live-tab active" type="button" data-live-tab="videos" role="tab" aria-selected="true">آخر الفيديوهات</button>
+        <button class="live-tab" type="button" data-live-tab="live" role="tab" aria-selected="false">البث المباشر</button>
+      </div>
       <div class="live-frame reveal">
         <iframe
-          src="https://www.youtube.com/embed/live_stream?channel=UCmChpVHGV74adiqncSyocg"
-          title="البث المباشر لقناة يحيى التقنية"
+          id="liveIframe"
+          src="https://www.youtube.com/embed/videoseries?list=UUmChpVHGV74adiqncSyocg"
+          title="فيديوهات قناة يحيى التقنية"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
           loading="lazy"
           referrerpolicy="strict-origin-when-cross-origin"></iframe>
       </div>
-      <p class="live-note">إذا لم يكن هناك بث مباشر الآن، يعرض يوتيوب حالة القناة أو آخر بث. تابع القناة لتصلك الجلسات والتحديثات الجديدة.</p>
+      <p class="live-note" id="liveNote">يعرض هذا القسم آخر فيديوهات القناة. عند بدء بث مباشر اختر «البث المباشر» أو افتح القناة على يوتيوب.</p>
     </section>
 
     <section class="section" id="contact">
@@ -398,6 +403,11 @@
       </div>
       <p class="modal-description" id="appModalDescription"></p>
       <div class="modal-screenshots" id="modalScreenshots"></div>
+      <div class="screenshot-manager" id="screenshotManager" hidden>
+        <label class="btn btn-ghost btn-small" for="modalScreenshotInput">إضافة لقطات شاشة</label>
+        <input id="modalScreenshotInput" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden>
+        <span class="screenshot-manager-status" id="screenshotManagerStatus">حتى 3 صور، كل صورة 1 MB.</span>
+      </div>
       <div class="share-row" aria-label="مشاركة التطبيق">
         <span class="share-label">مشاركة:</span>
         <a class="share-btn" id="shareWhatsapp" href="#" target="_blank" rel="noopener">واتساب</a>
@@ -425,7 +435,7 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="assets/script.js" defer></script>
-  <script src="assets/audio.js" defer></script>
+  <script src="assets/script.js?v=20261117-3" defer></script>
+  <script src="assets/audio.js?v=20261117-3" defer></script>
 </body>
 </html>

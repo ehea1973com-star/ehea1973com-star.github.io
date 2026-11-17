@@ -108,6 +108,38 @@
     });
   }
 
+  var liveIframe = document.getElementById("liveIframe");
+  var liveNote = document.getElementById("liveNote");
+  var liveTabs = document.querySelectorAll("[data-live-tab]");
+  var LIVE_SOURCES = {
+    videos: "https://www.youtube.com/embed/videoseries?list=UUmChpVHGV74adiqncSyocg",
+    live: "https://www.youtube.com/embed/live_stream?channel=UCmChpVHGV74adiqncSyocg"
+  };
+  var LIVE_NOTES = {
+    videos: "يعرض هذا القسم آخر فيديوهات القناة. عند بدء بث مباشر اختر «البث المباشر» أو افتح القناة على يوتيوب.",
+    live: "إذا ظهر «غير متوفر» فهذا يعني أن القناة لا تبث الآن. افتح القناة على يوتيوب لمعرفة موعد البث القادم."
+  };
+
+  function setLiveTab(name) {
+    if (!LIVE_SOURCES[name]) name = "videos";
+    if (liveIframe && liveIframe.getAttribute("src") !== LIVE_SOURCES[name]) {
+      liveIframe.setAttribute("src", LIVE_SOURCES[name]);
+      liveIframe.setAttribute("title", name === "live" ? "البث المباشر لقناة يحيى التقنية" : "فيديوهات قناة يحيى التقنية");
+    }
+    if (liveNote) liveNote.textContent = LIVE_NOTES[name];
+    Array.prototype.forEach.call(liveTabs, function (button) {
+      var active = button.getAttribute("data-live-tab") === name;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-selected", active ? "true" : "false");
+    });
+  }
+
+  Array.prototype.forEach.call(liveTabs, function (button) {
+    button.addEventListener("click", function () {
+      setLiveTab(button.getAttribute("data-live-tab"));
+    });
+  });
+
   var appsGrid = document.getElementById("apps-grid");
   var searchInput = document.getElementById("appSearch");
   var filterButtons = document.querySelectorAll("[data-filter]");
@@ -117,6 +149,12 @@
   var appCountBase = 7;
   var currentShareUrl = window.location.href;
   var deepLinkOpened = false;
+  var currentModalCard = null;
+  var UPLOAD_TOKEN_KEY = "yahya_site_upload_token";
+  var GITHUB_API = "https://api.github.com/repos/ehea1973com-star/ehea1973com-star.github.io/contents/";
+  var GITHUB_BRANCH = "main";
+  var MAX_SCREENSHOTS = 3;
+  var MAX_SCREENSHOT_BYTES = 1024 * 1024;
 
   var STATIC_META = {
     "Smart Phone Detective": { category: "diagnostics" },
@@ -154,6 +192,128 @@
 
   function isAssetPath(path) {
     return /^assets\/[A-Za-z0-9._\/-]+$/.test(path) && path.indexOf("..") === -1;
+  }
+
+  function slugify(value) {
+    return String(value).trim().replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").toLowerCase();
+  }
+
+  function getUploadToken() {
+    try {
+      return window.localStorage.getItem(UPLOAD_TOKEN_KEY) || "";
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function repoPath(path) {
+    return path.split("/").map(encodeURIComponent).join("/");
+  }
+
+  function repoHeaders(token, json) {
+    var headers = {
+      "Accept": "application/vnd.github+json",
+      "Authorization": "Bearer " + token,
+      "X-GitHub-Api-Version": "2022-11-28"
+    };
+    if (json) headers["Content-Type"] = "application/json";
+    return headers;
+  }
+
+  function githubError(response) {
+    return response.text().then(function (text) {
+      var message = "HTTP " + response.status;
+      try {
+        var data = JSON.parse(text);
+        if (data && data.message) message += ": " + data.message;
+      } catch (error) {}
+      throw new Error(message);
+    });
+  }
+
+  function githubGet(path, token) {
+    return fetch(GITHUB_API + repoPath(path) + "?ref=" + encodeURIComponent(GITHUB_BRANCH), {
+      method: "GET",
+      headers: repoHeaders(token, false),
+      cache: "no-store"
+    }).then(function (response) {
+      if (response.status === 404) return null;
+      if (!response.ok) return githubError(response);
+      return response.json();
+    });
+  }
+
+  function githubPut(path, base64, message, sha, token) {
+    var body = {
+      message: message,
+      content: base64,
+      branch: GITHUB_BRANCH
+    };
+    if (sha) body.sha = sha;
+    return fetch(GITHUB_API + repoPath(path), {
+      method: "PUT",
+      headers: repoHeaders(token, true),
+      body: JSON.stringify(body)
+    }).then(function (response) {
+      if (!response.ok) return githubError(response);
+      return response.json();
+    });
+  }
+
+  function readFileBase64(file) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var result = String(reader.result || "");
+        var comma = result.indexOf(",");
+        resolve(comma >= 0 ? result.slice(comma + 1) : result);
+      };
+      reader.onerror = function () { reject(new Error("تعذّر قراءة الصورة")); };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function decodeBase64Text(base64) {
+    var binary = atob(String(base64 || "").replace(/\s/g, ""));
+    var bytes = new Uint8Array(binary.length);
+    for (var index = 0; index < binary.length; index += 1) {
+      bytes[index] = binary.charCodeAt(index);
+    }
+    if (window.TextDecoder) return new TextDecoder("utf-8").decode(bytes);
+    return decodeURIComponent(escape(binary));
+  }
+
+  function encodeTextBase64(text) {
+    if (window.TextEncoder) {
+      var bytes = new TextEncoder().encode(text);
+      var binary = "";
+      for (var index = 0; index < bytes.length; index += 1) {
+        binary += String.fromCharCode(bytes[index]);
+      }
+      return btoa(binary);
+    }
+    return btoa(unescape(encodeURIComponent(text)));
+  }
+
+  function loadRemoteManifest(token) {
+    return githubGet("apps/manifest.json", token).then(function (file) {
+      var apps = [];
+      if (file && file.content) {
+        try {
+          var parsed = JSON.parse(decodeBase64Text(file.content));
+          if (Array.isArray(parsed)) apps = parsed;
+          else if (parsed && Array.isArray(parsed.apps)) apps = parsed.apps;
+        } catch (error) {
+          apps = [];
+        }
+      }
+      return { apps: apps, sha: file ? file.sha : null };
+    });
+  }
+
+  function saveRemoteManifest(apps, sha, token) {
+    var text = JSON.stringify({ apps: apps }, null, 2) + "\n";
+    return githubPut("apps/manifest.json", encodeTextBase64(text), "Update app screenshots", sha, token);
   }
 
   function categoryLabel(category) {
@@ -308,6 +468,9 @@
   var modalDownload = document.getElementById("modalDownload");
   var modalChecksum = document.getElementById("modalChecksum");
   var modalClose = modal ? modal.querySelector(".modal-close") : null;
+  var screenshotManager = document.getElementById("screenshotManager");
+  var screenshotInput = document.getElementById("modalScreenshotInput");
+  var screenshotStatus = document.getElementById("screenshotManagerStatus");
   var lastFocused = null;
 
   function renderScreenshots(screenshots, appName) {
@@ -327,6 +490,126 @@
       strip.appendChild(image);
     });
     modalScreenshots.appendChild(strip);
+  }
+
+  function setScreenshotStatus(message) {
+    if (screenshotStatus) screenshotStatus.textContent = message;
+  }
+
+  function updateScreenshotManager(card) {
+    if (!screenshotManager) return;
+    var data = card ? getCardData(card) : null;
+    var packageName = card ? card.getAttribute("data-package") : "";
+    var remaining = data ? MAX_SCREENSHOTS - data.screenshots.length : 0;
+    var canAdd = !!(packageName && data && remaining > 0);
+    screenshotManager.hidden = !canAdd;
+    if (!canAdd) return;
+    setScreenshotStatus(
+      getUploadToken()
+        ? "يمكنك إضافة " + remaining + " صور، كل صورة 1 MB."
+        : "سيُطلب منك GitHub Token مرة واحدة عند أول رفع."
+    );
+  }
+
+  function requestUploadToken() {
+    var token = getUploadToken();
+    if (token) return token;
+    token = window.prompt("أدخل GitHub Token بصلاحية Contents: Read and write لإضافة الصور. سيُحفظ على هذا الجهاز فقط.");
+    token = token ? token.trim() : "";
+    if (token) {
+      try {
+        window.localStorage.setItem(UPLOAD_TOKEN_KEY, token);
+      } catch (error) {}
+    }
+    return token;
+  }
+
+  function uploadScreenshots(card, fileList) {
+    if (!card || !fileList || !fileList.length) return;
+    var data = getCardData(card);
+    var existing = data.screenshots.slice();
+    var remaining = MAX_SCREENSHOTS - existing.length;
+    if (remaining <= 0) {
+      showToast("وصل هذا التطبيق إلى الحد الأقصى: 3 لقطات.");
+      updateScreenshotManager(card);
+      return;
+    }
+
+    var files = Array.prototype.slice.call(fileList);
+    var selected = files.slice(0, remaining);
+    if (files.length > remaining) {
+      showToast("سيتم رفع " + remaining + " صور فقط للوصول إلى الحد الأقصى.");
+    }
+    for (var index = 0; index < selected.length; index += 1) {
+      var file = selected[index];
+      var extension = file.name.split(".").pop().toLowerCase();
+      if (!/^(png|jpe?g|webp)$/.test(extension)) {
+        showToast("الصور يجب أن تكون PNG أو JPG أو WEBP.");
+        return;
+      }
+      if (file.size > MAX_SCREENSHOT_BYTES) {
+        showToast("حجم كل صورة يجب أن يكون 1 MB أو أقل.");
+        return;
+      }
+    }
+
+    var token = requestUploadToken();
+    if (!token) {
+      setScreenshotStatus("لم يتم إدخال التوكن، لم تُرفع الصور.");
+      return;
+    }
+
+    var packageSlug = slugify(data.package || data.name);
+    var stamp = Date.now();
+    var uploaded = [];
+    var chain = Promise.resolve();
+
+    if (screenshotInput) screenshotInput.disabled = true;
+    setScreenshotStatus("جارٍ رفع الصور إلى GitHub...");
+
+    selected.forEach(function (file, index) {
+      chain = chain.then(function () {
+        return readFileBase64(file).then(function (base64) {
+          var extension = file.name.split(".").pop().toLowerCase();
+          var path = "assets/uploads/screens/" + packageSlug + "-" + stamp + "-" + (index + 1) + "." + extension;
+          return githubPut(path, base64, "Upload screenshot for " + data.name, null, token).then(function () {
+            uploaded.push(path);
+            setScreenshotStatus("تم رفع " + uploaded.length + " من " + selected.length + " صور...");
+          });
+        });
+      });
+    });
+
+    chain
+      .then(function () { return loadRemoteManifest(token); })
+      .then(function (manifest) {
+        var entry = manifest.apps.filter(function (app) {
+          return app && (app.package === data.package || app.name === data.name);
+        })[0];
+        if (!entry) {
+          throw new Error("هذا التطبيق غير موجود في apps/manifest.json، أضفه من لوحة الإدارة أولًا.");
+        }
+        entry.screenshots = existing.concat(uploaded).slice(0, MAX_SCREENSHOTS);
+        entry.updatedAt = new Date().toISOString();
+        return saveRemoteManifest(manifest.apps, manifest.sha, token);
+      })
+      .then(function () {
+        var next = existing.concat(uploaded).slice(0, MAX_SCREENSHOTS);
+        card.setAttribute("data-screenshots", next.join("|"));
+        renderScreenshots(next, data.name);
+        updateScreenshotManager(card);
+        showToast("تمت إضافة لقطات الشاشة بنجاح");
+      })
+      .catch(function (error) {
+        setScreenshotStatus("فشل رفع الصور");
+        showToast("فشل رفع الصور: " + (error && error.message ? error.message : String(error)));
+      })
+      .then(function () {
+        if (screenshotInput) {
+          screenshotInput.disabled = false;
+          screenshotInput.value = "";
+        }
+      });
   }
 
   function updateShareLinks(data) {
@@ -369,6 +652,8 @@
     }
     if (modalChecksum) modalChecksum.href = "apps/SHA256SUMS.txt";
     renderScreenshots(data.screenshots, data.name);
+    currentModalCard = card;
+    updateScreenshotManager(card);
     updateShareLinks(data);
     modal.hidden = false;
     document.body.classList.add("modal-open");
@@ -405,6 +690,12 @@
     });
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape") closeModal();
+    });
+  }
+
+  if (screenshotInput) {
+    screenshotInput.addEventListener("change", function () {
+      if (currentModalCard) uploadScreenshots(currentModalCard, screenshotInput.files);
     });
   }
 

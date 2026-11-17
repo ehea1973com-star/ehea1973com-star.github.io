@@ -58,6 +58,7 @@
 
   var ctx = null;
   var master = null;
+  var compressor = null;
   var sfxGain = null;
   var delay = null;
   var feedback = null;
@@ -88,13 +89,22 @@
   function ensureContext() {
     if (!ctx) {
       ctx = new AudioContextClass();
+
+      compressor = ctx.createDynamicsCompressor();
+      compressor.threshold.value = -18;
+      compressor.knee.value = 24;
+      compressor.ratio.value = 6;
+      compressor.attack.value = 0.003;
+      compressor.release.value = 0.25;
+      compressor.connect(ctx.destination);
+
       master = ctx.createGain();
       master.gain.value = 0;
-      master.connect(ctx.destination);
+      master.connect(compressor);
 
       sfxGain = ctx.createGain();
-      sfxGain.gain.value = 0.05;
-      sfxGain.connect(ctx.destination);
+      sfxGain.gain.value = 0.18;
+      sfxGain.connect(compressor);
 
       delay = ctx.createDelay(1);
       delay.delayTime.value = 0.42;
@@ -106,7 +116,7 @@
       delay.connect(feedback);
       feedback.connect(delay);
       delay.connect(wet);
-      wet.connect(ctx.destination);
+      wet.connect(compressor);
     }
     if (ctx.state === "suspended") {
       ctx.resume().catch(function () {});
@@ -139,21 +149,21 @@
         chord[index],
         now + index * 0.05,
         4.4,
-        index === 0 ? 0.034 : 0.021,
+        index === 0 ? 0.085 : 0.055,
         index % 2 ? track.wave : "sine",
         master
       );
     }
 
     var arpeggio = [0, 2, 1, 3, 2, 1, 0, 2];
-    playTone(chord[arpeggio[step % arpeggio.length]] * 2, now + 0.35, 2.0, 0.009, "sine", master);
+    playTone(chord[arpeggio[step % arpeggio.length]] * 2, now + 0.35, 2.0, 0.032, "sine", master);
 
     if (step % 2 === 0) {
-      playTone(chord[3] * 2, now + 0.55, 2.4, 0.006, "sine", master);
+      playTone(chord[3] * 2, now + 0.55, 2.4, 0.018, "sine", master);
     }
 
     if (step % 4 === 0) {
-      playTone(chord[0] / 2, now, 5.2, 0.025, "sine", master);
+      playTone(chord[0] / 2, now, 5.2, 0.07, "sine", master);
     }
 
     step += 1;
@@ -166,7 +176,7 @@
     step = 0;
     master.gain.cancelScheduledValues(ctx.currentTime);
     master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), ctx.currentTime);
-    master.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 1.4);
+    master.gain.linearRampToValueAtTime(0.55, ctx.currentTime + 1.4);
     playStep();
     if (musicTimer) window.clearInterval(musicTimer);
     musicTimer = window.setInterval(playStep, 4600);
@@ -213,7 +223,7 @@
     trackIndex = (trackIndex + 1) % TRACKS.length;
     step = 0;
     if (musicOn && ctx && ctx.state === "running") {
-      playTone(TRACKS[trackIndex].chords[0][0] * 2, ctx.currentTime + 0.1, 0.9, 0.012, "sine", master);
+      playTone(TRACKS[trackIndex].chords[0][0] * 2, ctx.currentTime + 0.1, 0.9, 0.035, "sine", master);
     }
     updateMusicButton();
   }
@@ -239,8 +249,8 @@
     ensureContext();
     if (ctx.state !== "running") return;
     var now = ctx.currentTime + 0.01;
-    playTone(660, now, 0.14, 0.04, "sine", sfxGain);
-    playTone(990, now + 0.07, 0.18, 0.02, "sine", sfxGain);
+    playTone(660, now, 0.14, 0.08, "sine", sfxGain);
+    playTone(990, now + 0.07, 0.18, 0.045, "sine", sfxGain);
   }
 
   function unlockMusic(event) {
