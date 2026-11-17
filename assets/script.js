@@ -54,6 +54,234 @@
     });
   });
 
+  var TAVILY_SEARCH_URL = "https://api.tavily.com/search";
+  var TAVILY_EXTRACT_URL = "https://api.tavily.com/extract";
+  var WEB_SEARCH_CACHE_KEY = "yahya_web_search_cache_v1";
+  var webSearchForm = document.getElementById("webSearchForm");
+  var webSearchInput = document.getElementById("webSearchInput");
+  var webSearchButton = document.getElementById("webSearchButton");
+  var webSearchStatus = document.getElementById("webSearchStatus");
+  var webSearchResults = document.getElementById("webSearchResults");
+  var webAnswer = document.getElementById("webAnswer");
+  var readerModal = document.getElementById("readerModal");
+  var readerTitle = document.getElementById("readerTitle");
+  var readerSource = document.getElementById("readerSource");
+  var readerContent = document.getElementById("readerContent");
+
+  function tavilyRequest(url, payload) {
+    return fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Tavily-Access-Mode": "keyless"
+      },
+      body: JSON.stringify(payload)
+    }).then(function (response) {
+      return response.json().catch(function () { return {}; }).then(function (data) {
+        if (!response.ok) {
+          var message = "فشل الطلب";
+          if (data && data.error && data.error.message) message = data.error.message;
+          else if (data && data.detail && data.detail.error) message = data.detail.error;
+          else if (response.statusText) message = response.statusText;
+          if (response.status === 429) {
+            message = "تم بلوغ حد البحث المجاني مؤقتًا. انتظر دقيقة ثم حاول مجددًا.";
+          }
+          throw new Error(message);
+        }
+        return data;
+      });
+    });
+  }
+
+  function readWebSearchCache() {
+    try {
+      return JSON.parse(window.localStorage.getItem(WEB_SEARCH_CACHE_KEY) || "{}") || {};
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function getCachedWebSearch(query) {
+    var cache = readWebSearchCache();
+    var item = cache[query.toLowerCase()];
+    if (!item || !item.data) return null;
+    if (Date.now() - item.time > 10 * 60 * 1000) return null;
+    return item.data;
+  }
+
+  function cacheWebSearch(query, data) {
+    var cache = readWebSearchCache();
+    cache[query.toLowerCase()] = { time: Date.now(), data: data };
+    var keys = Object.keys(cache);
+    if (keys.length > 12) {
+      keys.sort(function (a, b) { return cache[a].time - cache[b].time; });
+      for (var index = 0; index < keys.length - 12; index += 1) {
+        delete cache[keys[index]];
+      }
+    }
+    try {
+      window.localStorage.setItem(WEB_SEARCH_CACHE_KEY, JSON.stringify(cache));
+    } catch (error) {}
+  }
+
+  function setWebSearchStatus(message) {
+    if (webSearchStatus) webSearchStatus.textContent = message;
+  }
+
+  function createWebResult(item, index) {
+    var itemUrl = item.url || "";
+    var itemTitle = item.title || itemUrl;
+    var card = document.createElement("article");
+    card.className = "web-result";
+
+    var heading = document.createElement("h3");
+    var titleLink = document.createElement("a");
+    titleLink.href = itemUrl;
+    titleLink.target = "_blank";
+    titleLink.rel = "noopener noreferrer";
+    titleLink.textContent = itemTitle;
+    heading.appendChild(titleLink);
+    card.appendChild(heading);
+
+    var url = document.createElement("p");
+    url.className = "web-result-url";
+    url.textContent = itemUrl;
+    card.appendChild(url);
+
+    if (item.content) {
+      var snippet = document.createElement("p");
+      snippet.className = "web-result-snippet";
+      snippet.textContent = item.content;
+      card.appendChild(snippet);
+    }
+
+    var actions = document.createElement("div");
+    actions.className = "web-result-actions";
+
+    var readButton = document.createElement("button");
+    readButton.type = "button";
+    readButton.className = "btn btn-ghost btn-small";
+    readButton.textContent = "قراءة داخل الموقع";
+    readButton.setAttribute("data-read-url", itemUrl);
+    readButton.setAttribute("data-read-title", itemTitle);
+    actions.appendChild(readButton);
+
+    var sourceLink = document.createElement("a");
+    sourceLink.className = "mini-link";
+    sourceLink.href = itemUrl;
+    sourceLink.target = "_blank";
+    sourceLink.rel = "noopener noreferrer";
+    sourceLink.textContent = "فتح المصدر";
+    actions.appendChild(sourceLink);
+
+    card.appendChild(actions);
+    return card;
+  }
+
+  function renderWebSearch(query, data) {
+    var results = data && data.results ? data.results : [];
+    if (webAnswer) {
+      webAnswer.hidden = !data.answer;
+      webAnswer.textContent = data.answer || "";
+    }
+    if (webSearchResults) {
+      webSearchResults.innerHTML = "";
+      results.forEach(function (item, index) {
+        if (item && item.url) webSearchResults.appendChild(createWebResult(item, index));
+      });
+    }
+    if (!results.length) {
+      setWebSearchStatus("لا توجد نتائج ظاهرة لـ «" + query + "». جرّب كلمات أخرى.");
+      return;
+    }
+    setWebSearchStatus("تم العثور على " + results.length + " نتيجة لـ «" + query + "».");
+  }
+
+  function closeReader() {
+    if (!readerModal) return;
+    readerModal.hidden = true;
+    document.body.classList.remove("modal-open");
+  }
+
+  function openReader(url, title) {
+    if (!readerModal || !url) return;
+    readerModal.hidden = false;
+    document.body.classList.add("modal-open");
+    if (readerTitle) readerTitle.textContent = title || "قراءة الصفحة";
+    if (readerSource) readerSource.href = url;
+    if (readerContent) readerContent.textContent = "جارٍ تحميل محتوى الصفحة...";
+    tavilyRequest(TAVILY_EXTRACT_URL, { urls: [url] }).then(function (data) {
+      var results = data && data.results ? data.results : [];
+      var content = results[0] && (results[0].raw_content || results[0].content);
+      if (!content) throw new Error("لم يتم العثور على نص قابل للقراءة في هذه الصفحة.");
+      if (readerContent) readerContent.textContent = content;
+    }).catch(function (error) {
+      if (readerContent) {
+        readerContent.textContent = "تعذّر تحميل محتوى الصفحة داخل الموقع: " + error.message +
+          "\n\nيمكنك فتح المصدر الأصلي من الرابط أعلاه.";
+      }
+    });
+  }
+
+  if (webSearchForm) {
+    webSearchForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var query = webSearchInput ? webSearchInput.value.trim() : "";
+      if (!query) {
+        if (webSearchInput) webSearchInput.focus();
+        showToast("اكتب كلمة للبحث أولًا");
+        return;
+      }
+      var cached = getCachedWebSearch(query);
+      if (cached) {
+        renderWebSearch(query, cached);
+        return;
+      }
+      if (webSearchButton) {
+        webSearchButton.disabled = true;
+        webSearchButton.textContent = "جارٍ البحث...";
+      }
+      setWebSearchStatus("جارٍ البحث في الإنترنت عبر Tavily...");
+      if (webAnswer) webAnswer.hidden = true;
+      if (webSearchResults) webSearchResults.innerHTML = "";
+      tavilyRequest(TAVILY_SEARCH_URL, {
+        query: query,
+        max_results: 10,
+        search_depth: "basic",
+        include_answer: true
+      }).then(function (data) {
+        cacheWebSearch(query, data);
+        renderWebSearch(query, data);
+      }).catch(function (error) {
+        setWebSearchStatus("تعذّر البحث: " + error.message);
+      }).then(function () {
+        if (webSearchButton) {
+          webSearchButton.disabled = false;
+          webSearchButton.textContent = "بحث";
+        }
+      });
+    });
+  }
+
+  if (webSearchResults) {
+    webSearchResults.addEventListener("click", function (event) {
+      var target = event.target;
+      while (target && target !== webSearchResults && !target.getAttribute("data-read-url")) {
+        target = target.parentNode;
+      }
+      if (!target || target === webSearchResults) return;
+      event.preventDefault();
+      openReader(target.getAttribute("data-read-url"), target.getAttribute("data-read-title"));
+    });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll("[data-reader-close]"), function (button) {
+    button.addEventListener("click", closeReader);
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && readerModal && !readerModal.hidden) closeReader();
+  });
+
   var shareSite = document.getElementById("shareSite");
   if (shareSite) {
     shareSite.addEventListener("click", function () {
@@ -108,12 +336,30 @@
     });
   }
 
+  var animatedName = document.querySelector(".animated-name");
+  if (animatedName && window.requestAnimationFrame) {
+    var nameStartedAt = 0;
+    var animateName = function (now) {
+      if (!nameStartedAt) nameStartedAt = now;
+      var seconds = (now - nameStartedAt) / 1000;
+      var offsetY = Math.sin(seconds * 1.8) * 9;
+      var rotation = Math.sin(seconds * 1.25) * 3.5;
+      var scale = 1 + (Math.sin(seconds * 2.2) + 1) * 0.022;
+      var glow = 8 + (Math.sin(seconds * 2.6) + 1) * 9;
+      animatedName.style.transform = "translateY(" + offsetY.toFixed(2) + "px) rotate(" +
+        rotation.toFixed(2) + "deg) scale(" + scale.toFixed(3) + ")";
+      animatedName.style.filter = "drop-shadow(0 0 " + glow.toFixed(1) + "px rgba(167, 139, 250, 0.75))";
+      window.requestAnimationFrame(animateName);
+    };
+    window.requestAnimationFrame(animateName);
+  }
+
   var liveIframe = document.getElementById("liveIframe");
   var liveNote = document.getElementById("liveNote");
   var liveTabs = document.querySelectorAll("[data-live-tab]");
   var LIVE_SOURCES = {
-    videos: "https://www.youtube.com/embed/videoseries?list=UUmChpVHGV74adiqncSyocg",
-    live: "https://www.youtube.com/embed/live_stream?channel=UCmChpVHGV74adiqncSyocg"
+    videos: "https://www.youtube.com/embed/videoseries?list=UUmChpVHGV74adiyqncSyocg",
+    live: "https://www.youtube.com/embed/live_stream?channel=UCmChpVHGV74adiyqncSyocg"
   };
   var LIVE_NOTES = {
     videos: "يعرض هذا القسم آخر فيديوهات القناة. عند بدء بث مباشر اختر «البث المباشر» أو افتح القناة على يوتيوب.",
@@ -124,7 +370,7 @@
     if (!LIVE_SOURCES[name]) name = "videos";
     if (liveIframe && liveIframe.getAttribute("src") !== LIVE_SOURCES[name]) {
       liveIframe.setAttribute("src", LIVE_SOURCES[name]);
-      liveIframe.setAttribute("title", name === "live" ? "البث المباشر لقناة يحيى التقنية" : "فيديوهات قناة يحيى التقنية");
+      liveIframe.setAttribute("title", name === "live" ? "البث المباشر لقناتي على يوتيوب" : "فيديوهات قناتي على يوتيوب");
     }
     if (liveNote) liveNote.textContent = LIVE_NOTES[name];
     Array.prototype.forEach.call(liveTabs, function (button) {
