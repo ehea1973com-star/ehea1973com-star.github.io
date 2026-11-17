@@ -145,6 +145,9 @@
       );
     }
 
+    var arpeggio = [0, 2, 1, 3, 2, 1, 0, 2];
+    playTone(chord[arpeggio[step % arpeggio.length]] * 2, now + 0.35, 2.0, 0.009, "sine", master);
+
     if (step % 2 === 0) {
       playTone(chord[3] * 2, now + 0.55, 2.4, 0.006, "sine", master);
     }
@@ -264,6 +267,7 @@
   });
 
   document.addEventListener("click", function (event) {
+    unlockMusic(event);
     var target = event.target && event.target.closest ? event.target.closest("a,button,[role='button']") : null;
     if (!target) return;
     if (target === musicButton || target === sfxButton) return;
