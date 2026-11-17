@@ -1,3 +1,15 @@
 {
-  "apps": []
+  "apps": [
+    {
+      "name": "خيال",
+      "package": "com.yahya.khayal",
+      "version": "0.7.2",
+      "description": "يعمل لتعديل الصور   عبر الذكاء الاصطناعي  وكمان  يدوي",
+      "filename": "com.yahya.khayal-v0.7.2.apk",
+      "size": 22811452,
+      "sha256": "76b9027967ef193db6c702a2f6f8e22533a71049db92dc7adf206a3f40617608",
+      "updatedAt": "2026-11-17T12:55:00.891Z",
+      "icon": "assets/icons/system.svg"
+    }
+  ]
 }
