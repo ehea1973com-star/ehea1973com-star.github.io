@@ -2,16 +2,21 @@ window.YAHYA_APP_CATALOG = [
   {
     id: "smart-phone-detective",
     name: "Smart Phone Detective",
-    version: "v1.3.0",
-    size: "109 KB",
+    version: "v1.3.1",
+    size: "117 KB",
     platform: "Android 5.0+",
     languages: "عربي / English",
     category: "diagnostics",
     icon: "assets/icons/detective.svg",
     iconClass: "icon-cyan",
     description: "أداة تشخيص هواتف أوفلاين: USB/OTG، الحساسات، الصوت، Fastboot، وموسوعة 31 عطلًا بمخططات داخلية تفاعلية.",
-    download: "apps/SmartPhoneDetective-v1.3.0.apk",
-    external: "https://github.com/ehea1973com-star/Yahya-Editor-Android-2/releases/tag/v1.3.0",
+    download: "apps/SmartPhoneDetective-v1.3.1.apk",
+    external: "https://github.com/ehea1973com-star/Yahya-Editor-Android-2/releases",
+    activation: {
+      price: 25,
+      whatsapp: "https://wa.me/963935150431",
+      note: "بعد التثبيت افتح التطبيق، انسخ كود الجهاز، ثم أرسله عبر واتساب لطلب كود التفعيل."
+    },
     type: "APK"
   },
   {

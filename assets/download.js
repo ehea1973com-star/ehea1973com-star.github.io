@@ -179,7 +179,23 @@
     if (app.size) meta.appendChild(el("span", "", app.size));
     if (app.languages) meta.appendChild(el("span", "", app.languages));
     if (app.type) meta.appendChild(el("span", "", app.type));
+    if (app.activation) meta.appendChild(el("span", "", "يتطلب تفعيل " + (Number(app.activation.price) || 25) + "$"));
     container.appendChild(meta);
+
+    if (app.activation) {
+      var activation = el("div", "download-activation");
+      var price = Number(app.activation.price) || 25;
+      activation.appendChild(el("strong", "", "تفعيل التطبيق — " + price + "$"));
+      activation.appendChild(el("p", "", app.activation.note || "بعد التثبيت افتح التطبيق وانسخ كود الجهاز، ثم أرسله عبر واتساب لطلب كود التفعيل."));
+      var request = el("a", "btn", "طلب كود التفعيل عبر واتساب");
+      request.href = app.activation.whatsapp + "?text=" + encodeURIComponent(
+        "أريد تفعيل " + app.name + " — " + price + "$\nسأرسل كود الجهاز بعد التثبيت."
+      );
+      request.target = "_blank";
+      request.rel = "noopener noreferrer";
+      activation.appendChild(request);
+      container.appendChild(activation);
+    }
 
     if (app.screenshots && app.screenshots.length) {
       var screenshots = el("div", "download-screenshots");
