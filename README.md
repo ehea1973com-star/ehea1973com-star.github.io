@@ -57,6 +57,7 @@
 5. من `Authentication` > `Settings` > `Authorized domains` أضف `ehea1973com-star.github.io`.
 6. `apiKey` في Firebase معرف عام لتطبيق الويب وليس سرًا، ولا يمنح صلاحيات إدارية. لا تضع `service account` أو مفاتيح خاصة في الموقع.
 7. هذه المصادقة تعمل من GitHub Pages دون خادم؛ Firebase هو من يتحقق من الحساب ويصدر الجلسة.
+8. إذا ظهر `CONFIGURATION_NOT_FOUND` فمعناه أن مزوّد `Email/Password` غير مفعّل بعد في `Authentication` > `Sign-in method`.
 
 ## ملاحظات
 

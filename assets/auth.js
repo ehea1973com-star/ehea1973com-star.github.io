@@ -13,6 +13,7 @@
     MISSING_PASSWORD: "أدخل كلمة المرور.",
     USER_DISABLED: "هذا الحساب معطل.",
     OPERATION_NOT_ALLOWED: "تسجيل البريد وكلمة المرور غير مفعّل في Firebase.",
+    CONFIGURATION_NOT_FOUND: "فعّل Email/Password من Firebase Authentication > Sign-in method.",
     API_KEY_INVALID: "apiKey غير صحيح.",
     INVALID_API_KEY: "apiKey غير صحيح."
   };
