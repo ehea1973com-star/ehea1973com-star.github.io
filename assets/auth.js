@@ -312,6 +312,19 @@
     });
   }
 
+  function resetPassword(email) {
+    return new Promise(function (resolve, reject) {
+      email = normalizeEmail(email);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return reject(new Error("أدخل بريدًا إلكترونيًا صحيحًا أولًا."));
+      authRequest("accounts:sendOobCode", {
+        requestType: "PASSWORD_RESET",
+        email: email
+      }).then(function () {
+        resolve(email);
+      }).catch(reject);
+    });
+  }
+
   function login(email, password) {
     return new Promise(function (resolve, reject) {
       email = normalizeEmail(email);
@@ -362,6 +375,7 @@
             '<label for="authLoginPassword">كلمة المرور</label>' +
             '<input id="authLoginPassword" type="password" autocomplete="current-password" required>' +
             '<button class="btn" type="submit">تسجيل الدخول</button>' +
+            '<button class="auth-link" type="button" id="authForgotPassword">نسيت كلمة المرور؟</button>' +
           '</form>' +
           '<form id="registerForm" class="auth-form" novalidate hidden>' +
             '<label for="authRegisterName">الاسم</label>' +
@@ -413,6 +427,21 @@
           setMessage(error.message, "error");
         }).then(function () {
           if (submit) submit.disabled = false;
+        });
+      });
+    }
+    var forgotPassword = authModal.querySelector("#authForgotPassword");
+    if (forgotPassword) {
+      forgotPassword.addEventListener("click", function () {
+        var email = authModal.querySelector("#authLoginEmail").value;
+        forgotPassword.disabled = true;
+        setMessage("جارٍ إرسال رابط استعادة كلمة المرور...", "");
+        resetPassword(email).then(function (sentTo) {
+          setMessage("أرسلنا رابط الاستعادة إلى " + sentTo + ". تحقق من البريد الوارد والسبام.", "success");
+        }).catch(function (error) {
+          setMessage(error.message, "error");
+        }).then(function () {
+          forgotPassword.disabled = false;
         });
       });
     }
@@ -492,6 +521,7 @@
   window.YahyaAuth = {
     register: register,
     login: login,
+    resetPassword: resetPassword,
     logout: logout,
     getUser: getUser,
     isLoggedIn: isLoggedIn,
