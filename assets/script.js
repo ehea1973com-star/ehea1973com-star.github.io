@@ -446,9 +446,21 @@
 
   function getUploadToken() {
     try {
-      return window.localStorage.getItem(UPLOAD_TOKEN_KEY) || "";
+      var token = window.localStorage.getItem(UPLOAD_TOKEN_KEY) || "";
+      return token.replace(/\s+/g, "");
     } catch (error) {
       return "";
+    }
+  }
+
+  function saveUploadToken(token) {
+    try {
+      token = (token || "").replace(/\s+/g, "");
+      if (token) window.localStorage.setItem(UPLOAD_TOKEN_KEY, token);
+      else window.localStorage.removeItem(UPLOAD_TOKEN_KEY);
+      return token;
+    } catch (error) {
+      return token || "";
     }
   }
 
@@ -765,30 +777,28 @@
       setScreenshotStatus(data && remaining <= 0 ? "الحد الأقصى 3 لقطات لهذا التطبيق." : "");
       return;
     }
+    var hasToken = !!getUploadToken();
     setScreenshotStatus(
-      getUploadToken()
-        ? "اختر الصور من جهازك لإضافتها (حتى " + remaining + " صور، كل صورة 1 MB)."
-        : "اضغط «إضافة لقطات شاشة» واختر الصور؛ سيُطلب منك GitHub Token (Contents: Read and write) مرة واحدة."
+      hasToken
+        ? "اختر الصور لإضافتها (حتى " + remaining + "، كل صورة 1 MB). التوكن محفوظ."
+        : "اضغط «إضافة لقطات شاشة» واختر الصور — سيُطلب GitHub Token (Fine-grained: Contents Read and write للمستودع ehea1973com-star.github.io)."
     );
   }
 
-  function requestUploadToken() {
+  function requestUploadToken(force) {
     var token = getUploadToken();
-    if (token) return token;
+    if (token && !force) return token;
     token = window.prompt(
-      "لرفع لقطات الشاشة إلى الموقع يلزم GitHub Token.\n\n" +
-      "أنشئه من: GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens\n" +
-      "اختر المستودع: ehea1973com-star.github.io\n" +
-      "الصلاحية المطلوبة: Contents → Read and write\n\n" +
-      "الصق التوكن هنا (سيُحفظ على هذا الجهاز فقط):"
+      "أدخل GitHub Token لرفع لقطات الشاشة (يُحفظ على هذا الجهاز فقط).\n\n" +
+      "الخطوات الصحيحة:\n" +
+      "1) GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token\n" +
+      "2) Repository access: Only select repositories → اختر ehea1973com-star.github.io\n" +
+      "3) Permissions → Repository permissions → Contents: Read and write\n" +
+      "4) أنشئ التوكن وانسخه بالكامل ثم الصقه هنا\n\n" +
+      "(اتركه فارغًا للإلغاء)"
     );
-    token = token ? token.trim() : "";
-    if (token) {
-      try {
-        window.localStorage.setItem(UPLOAD_TOKEN_KEY, token);
-      } catch (error) {}
-    }
-    return token;
+    if (token === null) return "";
+    return saveUploadToken(token);
   }
 
   function uploadScreenshots(card, fileList) {
@@ -869,12 +879,15 @@
       })
       .catch(function (error) {
         var msg = error && error.message ? error.message : String(error);
-        if (/401|403|Bad credentials/i.test(msg)) {
-          try { window.localStorage.removeItem(UPLOAD_TOKEN_KEY); } catch (e) {}
-          setScreenshotStatus("التوكن غير صالح أو بلا صلاحية. جرّب مرة أخرى وأدخل توكنًا جديدًا بصلاحية Contents: Read and write.");
-          showToast("التوكن غير صالح أو بلا صلاحية (Contents: Read and write).");
+        if (/401|403|Bad credentials|Resource not accessible|not accessible by/i.test(msg)) {
+          saveUploadToken("");
+          setScreenshotStatus("فشل التحقق من التوكن: " + msg + " — أدخل توكن Fine-grained صحيح بصلاحية Contents: Read and write للمستودع ehea1973com-star.github.io.");
+          showToast("التوكن مرفوض: تأكد أنه Fine-grained للمستودع الصحيح مع Contents: Read and write");
+        } else if (/404/i.test(msg)) {
+          setScreenshotStatus("لم يُعثر على الملف/المستودع (404). تأكد أن التوكن يملك الوصول للمستودع ehea1973com-star.github.io.");
+          showToast("خطأ 404: تحقق من صلاحية الوصول للمستودع");
         } else {
-          setScreenshotStatus("فشل رفع الصور");
+          setScreenshotStatus("فشل رفع الصور: " + msg);
           showToast("فشل رفع الصور: " + msg);
         }
       })
@@ -970,6 +983,20 @@
   if (screenshotInput) {
     screenshotInput.addEventListener("change", function () {
       if (currentModalCard) uploadScreenshots(currentModalCard, screenshotInput.files);
+    });
+  }
+
+  var screenshotTokenBtn = document.getElementById("screenshotTokenBtn");
+  if (screenshotTokenBtn) {
+    screenshotTokenBtn.addEventListener("click", function () {
+      var t = requestUploadToken(true);
+      if (t) {
+        showToast("تم حفظ التوكن على هذا الجهاز");
+        setScreenshotStatus("تم حفظ التوكن. اختر الصور لإضافتها.");
+      } else if (t === "") {
+        showToast("تم إلغاء/حذف التوكن");
+        if (currentModalCard) updateScreenshotManager(currentModalCard);
+      }
     });
   }
 
