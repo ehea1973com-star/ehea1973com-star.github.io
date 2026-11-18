@@ -1,6 +1,23 @@
 {
   "apps": [
     {
+      "name": "كاشف الدوال",
+      "package": "com.yahya.app243086",
+      "version": "1.0",
+      "description": "يكشف لك مكان الدوال للتطبيقات",
+      "category": "tools",
+      "filename": "com.yahya.app243086-v1.0.apk",
+      "size": 25063,
+      "sha256": "0e98190ac7be1166457197a3573819d75b2c93c84941646bae7577ed17957026",
+      "updatedAt": "2026-11-18T20:30:04.016Z",
+      "icon": "assets/uploads/com.yahya.app243086.jpg",
+      "screenshots": [
+        "assets/uploads/screens/com.yahya.app243086-1.jpg",
+        "assets/uploads/screens/com.yahya.app243086-2.jpg",
+        "assets/uploads/screens/com.yahya.app243086-3.jpg"
+      ]
+    },
+    {
       "name": "كيبورد يحيى الملكي",
       "package": "com.yahya.royalkeyboard",
       "version": "6.1",
