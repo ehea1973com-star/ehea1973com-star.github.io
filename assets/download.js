@@ -158,6 +158,7 @@
 
   function renderApp(app) {
     currentApp = app;
+    if (window.YahyaAnalytics) window.YahyaAnalytics.trackAppView(app.id);
     var container = document.getElementById("downloadApp");
     if (!container) return;
     container.innerHTML = "";
@@ -217,6 +218,9 @@
     var download = el("a", "btn", "تحميل " + (app.type || "الملف"));
     download.id = "downloadButton";
     download.hidden = true;
+    download.addEventListener("click", function () {
+      if (window.YahyaAnalytics) window.YahyaAnalytics.trackDownload(app.id);
+    });
     actions.appendChild(download);
     var back = el("a", "btn btn-ghost", "العودة إلى الصفحة الرئيسية");
     back.href = "index.html";

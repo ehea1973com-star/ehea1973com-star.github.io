@@ -9,20 +9,30 @@
   <meta name="author" content="Yahya Al-Hamza">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#050914">
-  <script src="assets/theme.js?v=20261117-12"></script>
+  <meta name="application-name" content="Yahya Tech">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Yahya Tech">
+  <script src="assets/theme.js?v=20261118-1"></script>
   <link rel="canonical" href="https://ehea1973com-star.github.io/">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/app-192.png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Yahya Tech | يحيى الحمزة">
   <meta property="og:description" content="تطبيقات أندرويد وأدوات تشخيص هواتف أوفلاين. تحميل مباشر وآمن.">
   <meta property="og:url" content="https://ehea1973com-star.github.io/">
-  <meta property="og:image" content="https://ehea1973com-star.github.io/assets/logo.svg">
+  <meta property="og:image" content="https://ehea1973com-star.github.io/assets/icons/app-512.png">
   <meta property="og:image:alt" content="شعار Yahya Tech">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Yahya Tech | يحيى الحمزة">
   <meta name="twitter:description" content="تطبيقات أندرويد وأدوات تشخيص هواتف أوفلاين.">
-  <meta name="twitter:image" content="https://ehea1973com-star.github.io/assets/logo.svg">
-  <link rel="stylesheet" href="assets/style.css?v=20261117-12">
+  <meta name="twitter:image" content="https://ehea1973com-star.github.io/assets/icons/app-512.png">
+  <link rel="stylesheet" href="assets/style.css?v=20261118-1">
   <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
   <script type="application/ld+json">
   {
@@ -56,6 +66,8 @@
     <nav class="nav" aria-label="التنقل">
       <a href="#web-search">بحث</a>
       <a href="#apps">التطبيقات</a>
+      <a href="#site-stats">الأرقام</a>
+      <a href="#clock">الساعة</a>
       <a href="#services">الخدمات</a>
       <a href="#live">البث</a>
       <a href="#about">عنّي</a>
@@ -109,6 +121,79 @@
           <span class="tag tag-d">Diagnostics</span>
         </div>
       </div>
+    </section>
+
+    <section class="section clock-section" id="clock">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">الوقت المحلي</span>
+          <h2>ساعة سوريا</h2>
+        </div>
+        <span class="muted">تتحدّث كل ثانية</span>
+      </div>
+      <div class="live-clock reveal" id="liveClock">
+        <div class="clock-visual" aria-hidden="true">
+          <div class="clock-glow"></div>
+          <div class="clock-face">
+            <div class="clock-ring"></div>
+            <div class="clock-inner">
+              <div class="clock-ticks" id="clockTicks"></div>
+              <span class="clock-number clock-n12">12</span>
+              <span class="clock-number clock-n3">3</span>
+              <span class="clock-number clock-n6">6</span>
+              <span class="clock-number clock-n9">9</span>
+              <span class="clock-hand clock-hour" id="clockHour"></span>
+              <span class="clock-hand clock-minute" id="clockMinute"></span>
+              <span class="clock-hand clock-second" id="clockSecond"></span>
+              <span class="clock-center"></span>
+            </div>
+          </div>
+        </div>
+        <div class="clock-copy">
+          <span class="eyebrow">الوقت الآن في دمشق</span>
+          <strong class="clock-time" id="clockTime" dir="ltr">--:--:--</strong>
+          <span class="clock-date" id="clockDate">—</span>
+          <span class="clock-hijri" id="clockHijri"></span>
+          <div class="clock-meta">
+            <span class="clock-chip">توقيت دمشق</span>
+            <span class="clock-chip" id="clockOffset">GMT+3</span>
+            <span class="clock-chip">تحديث مباشر</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section site-stats-section" id="site-stats">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">أرقام مباشرة</span>
+          <h2>الموقع بالأرقام</h2>
+        </div>
+        <span class="muted">تُحدّث عند فتح الصفحة (قد تتأخر ثوانٍ)</span>
+      </div>
+      <div class="stats-grid site-stats-grid">
+        <div class="stat-card">
+          <span>الزوار</span>
+          <strong data-site-stat="visitors-total">—</strong>
+          <small>زائر فريد</small>
+        </div>
+        <div class="stat-card">
+          <span>المسجلون</span>
+          <strong data-site-stat="registrations">—</strong>
+          <small>حساب جديد</small>
+        </div>
+        <div class="stat-card">
+          <span>التحميلات</span>
+          <strong data-site-stat="downloads-total">—</strong>
+          <small>مرة تحميل</small>
+        </div>
+        <div class="stat-card">
+          <span>النقرات</span>
+          <strong data-site-stat="clicks-total">—</strong>
+          <small>على التطبيقات</small>
+        </div>
+      </div>
+      <p class="stats-note">أرقام تقريبية تبدأ من تفعيل العدّاد. الزائر الفريد يُحتسب مرة واحدة لكل متصفح، والمسجلون الجدد فقط.</p>
     </section>
 
     <section class="section web-search-section" id="web-search">
@@ -470,9 +555,12 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="assets/firebase-config.js?v=20261117-12" defer></script>
-  <script src="assets/auth.js?v=20261117-12" defer></script>
-  <script src="assets/script.js?v=20261117-12" defer></script>
-  <script src="assets/audio.js?v=20261117-12" defer></script>
+  <script src="assets/analytics.js?v=20261118-1" defer></script>
+  <script src="assets/firebase-config.js?v=20261118-1" defer></script>
+  <script src="assets/auth.js?v=20261118-1" defer></script>
+  <script src="assets/script.js?v=20261118-1" defer></script>
+  <script src="assets/clock.js?v=20261118-1" defer></script>
+  <script src="assets/audio.js?v=20261118-1" defer></script>
+  <script src="assets/pwa.js?v=20261118-1" defer></script>
 </body>
 </html>

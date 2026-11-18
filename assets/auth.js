@@ -311,6 +311,7 @@
         var displayName = result.profile && result.profile.displayName ? result.profile.displayName : name;
         var session = buildSession(data, displayName, email);
         emit();
+        if (window.YahyaAnalytics) window.YahyaAnalytics.trackRegistration();
         resolve(session.user);
       }).catch(reject);
     });
@@ -525,9 +526,9 @@
       if (event.key === SESSION_KEY) updateUI();
     });
     restoreSession().then(function () {
-      updateUI();
+      emit();
     }).catch(function () {
-      updateUI();
+      emit();
     });
   }
 

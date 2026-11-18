@@ -1,0 +1,95 @@
+{
+  "id": "./",
+  "name": "Yahya Tech — يحيى الحمزة",
+  "short_name": "Yahya Tech",
+  "description": "تطبيقات أندرويد وأدوات تشخيص الهواتف من يحيى الحمزة.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#050914",
+  "theme_color": "#050914",
+  "categories": ["tools", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "assets/icons/app-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/app-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/app-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "التطبيقات",
+      "short_name": "التطبيقات",
+      "description": "تصفح تطبيقات Yahya Tech",
+      "url": "./#apps",
+      "icons": [
+        {
+          "src": "assets/icons/app-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "صفحة التحميل",
+      "short_name": "تحميل",
+      "description": "افتح صفحة تحميل التطبيقات",
+      "url": "./download.html",
+      "icons": [
+        {
+          "src": "assets/icons/app-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "الساعة والأرقام",
+      "short_name": "الساعة",
+      "description": "ساعة سوريا وأرقام الموقع",
+      "url": "./#clock",
+      "icons": [
+        {
+          "src": "assets/icons/app-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "لوحة المالك",
+      "short_name": "الإدارة",
+      "description": "إحصائيات الموقع ورفع التطبيقات",
+      "url": "./admin.html",
+      "icons": [
+        {
+          "src": "assets/icons/app-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

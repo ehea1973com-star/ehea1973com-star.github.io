@@ -24,6 +24,55 @@
   var statusBox = document.getElementById("status");
   var categoryInput = document.getElementById("category");
   var screenshotInput = document.getElementById("screenshotFiles");
+  var adminGate = document.getElementById("adminGate");
+  var adminContent = document.getElementById("adminContent");
+  var adminLogin = document.getElementById("adminLogin");
+  var adminLogout = document.getElementById("adminLogout");
+  var adminGateMessage = document.getElementById("adminGateMessage");
+
+  function showAdminGate(message, showLogout) {
+    if (adminGate) adminGate.hidden = false;
+    if (adminContent) adminContent.hidden = true;
+    if (adminGateMessage) {
+      adminGateMessage.textContent = message || "";
+      adminGateMessage.hidden = !message;
+    }
+    if (adminLogout) adminLogout.hidden = !showLogout;
+  }
+
+  function showAdminContent() {
+    if (adminGate) adminGate.hidden = true;
+    if (adminContent) adminContent.hidden = false;
+  }
+
+  function checkAdminAccess() {
+    var auth = window.YahyaAuth;
+    var user = auth && auth.getUser ? auth.getUser() : null;
+    if (!user) {
+      showAdminGate("", false);
+      return;
+    }
+    if (!auth.isOwner()) {
+      showAdminGate("هذا الحساب ليس مالك الموقع. سجّل الخروج ثم ادخل بحساب المالك.", true);
+      return;
+    }
+    showAdminContent();
+  }
+
+  if (adminLogin) {
+    adminLogin.addEventListener("click", function () {
+      if (window.YahyaAuth) window.YahyaAuth.open("login");
+    });
+  }
+
+  if (adminLogout) {
+    adminLogout.addEventListener("click", function () {
+      if (window.YahyaAuth) window.YahyaAuth.logout();
+    });
+  }
+
+  window.addEventListener("yahya-auth-change", checkAdminAccess);
+  checkAdminAccess();
 
   if (!form || !tokenInput || !statusBox) return;
 

@@ -3,13 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>رفع تطبيق من الهاتف | Yahya Tech</title>
+  <title>لوحة المالك | Yahya Tech</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#050914">
-  <script src="assets/theme.js?v=20261117-12"></script>
+  <meta name="application-name" content="Yahya Tech">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Yahya Tech">
+  <script src="assets/theme.js?v=20261118-1"></script>
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
-  <link rel="stylesheet" href="assets/style.css?v=20261117-12">
-  <link rel="stylesheet" href="assets/admin.css?v=20261117-12">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/app-192.png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/style.css?v=20261118-1">
+  <link rel="stylesheet" href="assets/admin.css?v=20261118-1">
 </head>
 <body>
   <div class="page-glow" aria-hidden="true"></div>
@@ -18,7 +26,7 @@
       <img src="assets/logo.svg" alt="" width="42" height="42">
       <span class="brand-text">
         <strong>Yahya Tech</strong>
-        <small>رفع تطبيق جديد</small>
+        <small>لوحة المالك</small>
       </span>
     </a>
     <div class="header-actions">
@@ -31,99 +39,182 @@
   </header>
 
   <main class="section admin-section">
-    <div class="admin-card">
-      <span class="eyebrow">لوحة المطور</span>
-      <h1>رفع تطبيق من الهاتف</h1>
-      <p class="muted">اختر ملف APK، أدخل بيانات التطبيق، ثم ارفعه مباشرة إلى مستودع الموقع. سيظهر التطبيق في الصفحة الرئيسية بعد اكتمال نشر GitHub Pages.</p>
+    <noscript>
+      <div class="admin-card">
+        <h1>JavaScript مطلوب</h1>
+        <p class="muted">لوحة المالك تحتاج JavaScript لعرض الإحصائيات ورفع التطبيقات. فعّل JavaScript ثم أعد تحميل الصفحة.</p>
+      </div>
+    </noscript>
+    <div class="admin-gate" id="adminGate" hidden>
+      <span class="eyebrow">منطقة المالك</span>
+      <h1>دخول خاص</h1>
+      <p class="muted">هذه الصفحة خاصة بمالك الموقع. سجّل الدخول بحساب المالك لعرض الإحصائيات ورفع التطبيقات.</p>
+      <div class="admin-gate-actions">
+        <button class="btn" type="button" id="adminLogin">تسجيل الدخول</button>
+        <button class="btn btn-ghost" type="button" id="adminLogout" hidden>تسجيل الخروج</button>
+        <a class="btn btn-ghost" href="index.html">العودة للموقع</a>
+      </div>
+      <p class="admin-status error" id="adminGateMessage" hidden></p>
+    </div>
 
-      <div class="admin-warning">
-        استخدم GitHub Token بصلاحية <strong>Contents: Read and write</strong> على مستودع الموقع فقط. لا تشارك التوكن مع أي شخص، ويمكنك إلغاؤه من GitHub في أي وقت.
+    <div id="adminContent" hidden>
+      <div class="admin-card stats-card">
+        <span class="eyebrow">مراقبة الموقع</span>
+        <h1>إحصائيات مباشرة</h1>
+        <p class="muted">الزوار والمسجلون والتحميلات والنقرات. تُقرأ الأرقام عند فتح الصفحة أو الضغط على «تحديث الأرقام»، وقد يستغرق التحديث الكامل عدة ثوانٍ.</p>
+
+        <div class="stats-toolbar">
+          <button class="btn btn-small" type="button" id="refreshStats">تحديث الأرقام</button>
+          <span class="muted" id="statsUpdated">—</span>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card">
+            <span>الزوار الفريدون</span>
+            <strong id="statsVisitors">—</strong>
+            <small>إجمالي</small>
+          </div>
+          <div class="stat-card">
+            <span>زيارات الصفحات</span>
+            <strong id="statsVisits">—</strong>
+            <small>مشاهدة</small>
+          </div>
+          <div class="stat-card">
+            <span>المسجلون</span>
+            <strong id="statsRegistrations">—</strong>
+            <small>حساب جديد</small>
+          </div>
+          <div class="stat-card">
+            <span>التحميلات</span>
+            <strong id="statsDownloads">—</strong>
+            <small>مرة</small>
+          </div>
+          <div class="stat-card">
+            <span>النقرات</span>
+            <strong id="statsClicks">—</strong>
+            <small>على التطبيقات</small>
+          </div>
+        </div>
+
+        <div class="stats-today" id="statsToday">
+          <span>اليوم: <strong id="todayVisitors">—</strong> زائر</span>
+          <span><strong id="todayVisits">—</strong> زيارة</span>
+          <span><strong id="todayDownloads">—</strong> تحميل</span>
+          <span><strong id="todayClicks">—</strong> نقرة</span>
+        </div>
+
+        <div class="stats-table-wrap">
+          <table class="stats-table">
+            <thead>
+              <tr>
+                <th>التطبيق</th>
+                <th>النقرات</th>
+                <th>التحميلات</th>
+              </tr>
+            </thead>
+            <tbody id="statsApps">
+              <tr><td colspan="3">جارٍ تحميل الإحصائيات...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="stats-note">يبدأ العدّ من لحظة تفعيل النظام. الزائر الفريد يُحتسب مرة واحدة لكل متصفح/يوم، والمسجلون الجدد فقط. الأرقام تقريبية لأنها تعتمد على عدّاد خارجي بسيط.</p>
       </div>
 
-      <form id="uploadForm" class="admin-form" novalidate>
-        <div class="field field-wide">
-          <label for="token">GitHub Token</label>
-          <div class="token-row">
-            <input id="token" name="token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_...">
-            <button class="btn btn-ghost btn-small" type="button" id="clearToken">مسح</button>
+      <div class="admin-card upload-card">
+        <span class="eyebrow">لوحة المطور</span>
+        <h1>رفع تطبيق من الهاتف</h1>
+        <p class="muted">اختر ملف APK، أدخل بيانات التطبيق، ثم ارفعه مباشرة إلى مستودع الموقع. سيظهر التطبيق في الصفحة الرئيسية بعد اكتمال نشر GitHub Pages.</p>
+
+        <div class="admin-warning">
+          استخدم GitHub Token بصلاحية <strong>Contents: Read and write</strong> على مستودع الموقع فقط. لا تشارك التوكن مع أي شخص، ويمكنك إلغاؤه من GitHub في أي وقت.
+        </div>
+
+        <form id="uploadForm" class="admin-form" novalidate>
+          <div class="field field-wide">
+            <label for="token">GitHub Token</label>
+            <div class="token-row">
+              <input id="token" name="token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_...">
+              <button class="btn btn-ghost btn-small" type="button" id="clearToken">مسح</button>
+            </div>
+            <small>أنشئ توكنًا من <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">GitHub Fine-grained tokens</a> واختر المستودع والصلاحية المذكورة أعلاه.</small>
           </div>
-          <small>أنشئ توكنًا من <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">GitHub Fine-grained tokens</a> واختر المستودع والصلاحية المذكورة أعلاه.</small>
+
+          <div class="field">
+            <label for="appName">اسم التطبيق</label>
+            <input id="appName" name="appName" type="text" required placeholder="مثال: خيال">
+          </div>
+
+          <div class="field">
+            <label for="packageName">اسم الحزمة</label>
+            <input id="packageName" name="packageName" type="text" required placeholder="com.example.app" dir="ltr">
+          </div>
+
+          <div class="field">
+            <label for="version">الإصدار</label>
+            <input id="version" name="version" type="text" required placeholder="1.0.0" dir="ltr">
+          </div>
+
+          <div class="field">
+            <label for="category">القسم</label>
+            <select id="category" name="category">
+              <option value="tools">أدوات</option>
+              <option value="islamic">أذكار</option>
+              <option value="security">حماية</option>
+              <option value="games">شحن ألعاب</option>
+              <option value="diagnostics">تشخيص</option>
+              <option value="system">نظامي</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="apkFile">ملف APK</label>
+            <input id="apkFile" name="apkFile" type="file" accept=".apk,application/vnd.android.package-archive" required>
+            <small>الحد الحالي 25 MB. للملفات الأكبر استخدم GitHub Releases.</small>
+          </div>
+
+          <div class="field field-wide">
+            <label for="iconFile">أيقونة التطبيق (اختياري)</label>
+            <input id="iconFile" name="iconFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+            <small>صورة مربعة PNG أو SVG. إن لم تختر أيقونة، تُستخدم أيقونة عامة.</small>
+          </div>
+
+          <div class="field field-wide">
+            <label for="screenshotFiles">لقطات الشاشة (اختياري)</label>
+            <input id="screenshotFiles" name="screenshotFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple>
+            <small>حتى 3 صور، وكل صورة 1 MB كحد أقصى. تظهر داخل نافذة تفاصيل التطبيق.</small>
+          </div>
+
+          <div class="field field-wide">
+            <label for="description">وصف قصير</label>
+            <textarea id="description" name="description" rows="3" maxlength="240" placeholder="ما الذي يفعله التطبيق؟"></textarea>
+          </div>
+
+          <div class="field field-wide checkbox-field">
+            <label>
+              <input id="saveToken" type="checkbox">
+              <span>حفظ التوكن على هذا الجهاز</span>
+            </label>
+          </div>
+
+          <div class="field field-wide admin-actions">
+            <button class="btn" type="submit" id="uploadButton">رفع التطبيق إلى الموقع</button>
+            <a class="btn btn-ghost" href="https://ehea1973com-star.github.io/" target="_top">إلغاء</a>
+          </div>
+        </form>
+
+        <div class="admin-status" id="status" role="status" aria-live="polite"></div>
+
+        <div class="admin-help">
+          <h2>ماذا يحدث بعد الرفع؟</h2>
+          <ol>
+            <li>يُرفع APK إلى مجلد <span dir="ltr">apps/</span> والأيقونة إلى <span dir="ltr">assets/uploads/</span>.</li>
+            <li>تُرفع لقطات الشاشة إلى <span dir="ltr">assets/uploads/screens/</span> وتظهر في نافذة التفاصيل.</li>
+            <li>تُضاف بيانات التطبيق والقسم إلى <span dir="ltr">apps/manifest.json</span>.</li>
+            <li>تُحدّث بصمة SHA-256 في <span dir="ltr">apps/SHA256SUMS.txt</span>.</li>
+            <li>يظهر التطبيق تلقائيًا في الصفحة الرئيسية بعد نشر GitHub Pages.</li>
+          </ol>
         </div>
-
-        <div class="field">
-          <label for="appName">اسم التطبيق</label>
-          <input id="appName" name="appName" type="text" required placeholder="مثال: خيال">
-        </div>
-
-        <div class="field">
-          <label for="packageName">اسم الحزمة</label>
-          <input id="packageName" name="packageName" type="text" required placeholder="com.example.app" dir="ltr">
-        </div>
-
-        <div class="field">
-          <label for="version">الإصدار</label>
-          <input id="version" name="version" type="text" required placeholder="1.0.0" dir="ltr">
-        </div>
-
-        <div class="field">
-          <label for="category">القسم</label>
-          <select id="category" name="category">
-            <option value="tools">أدوات</option>
-            <option value="islamic">أذكار</option>
-            <option value="security">حماية</option>
-            <option value="games">شحن ألعاب</option>
-            <option value="diagnostics">تشخيص</option>
-            <option value="system">نظامي</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="apkFile">ملف APK</label>
-          <input id="apkFile" name="apkFile" type="file" accept=".apk,application/vnd.android.package-archive" required>
-          <small>الحد الحالي 25 MB. للملفات الأكبر استخدم GitHub Releases.</small>
-        </div>
-
-        <div class="field field-wide">
-          <label for="iconFile">أيقونة التطبيق (اختياري)</label>
-          <input id="iconFile" name="iconFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
-          <small>صورة مربعة PNG أو SVG. إن لم تختر أيقونة، تُستخدم أيقونة عامة.</small>
-        </div>
-
-        <div class="field field-wide">
-          <label for="screenshotFiles">لقطات الشاشة (اختياري)</label>
-          <input id="screenshotFiles" name="screenshotFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple>
-          <small>حتى 3 صور، وكل صورة 1 MB كحد أقصى. تظهر داخل نافذة تفاصيل التطبيق.</small>
-        </div>
-
-        <div class="field field-wide">
-          <label for="description">وصف قصير</label>
-          <textarea id="description" name="description" rows="3" maxlength="240" placeholder="ما الذي يفعله التطبيق؟"></textarea>
-        </div>
-
-        <div class="field field-wide checkbox-field">
-          <label>
-            <input id="saveToken" type="checkbox">
-            <span>حفظ التوكن على هذا الجهاز</span>
-          </label>
-        </div>
-
-        <div class="field field-wide admin-actions">
-          <button class="btn" type="submit" id="uploadButton">رفع التطبيق إلى الموقع</button>
-          <a class="btn btn-ghost" href="https://ehea1973com-star.github.io/" target="_top">إلغاء</a>
-        </div>
-      </form>
-
-      <div class="admin-status" id="status" role="status" aria-live="polite"></div>
-
-      <div class="admin-help">
-        <h2>ماذا يحدث بعد الرفع؟</h2>
-        <ol>
-          <li>يُرفع APK إلى مجلد <span dir="ltr">apps/</span> والأيقونة إلى <span dir="ltr">assets/uploads/</span>.</li>
-          <li>تُرفع لقطات الشاشة إلى <span dir="ltr">assets/uploads/screens/</span> وتظهر في نافذة التفاصيل.</li>
-          <li>تُضاف بيانات التطبيق والقسم إلى <span dir="ltr">apps/manifest.json</span>.</li>
-          <li>تُحدّث بصمة SHA-256 في <span dir="ltr">apps/SHA256SUMS.txt</span>.</li>
-          <li>يظهر التطبيق تلقائيًا في الصفحة الرئيسية بعد نشر GitHub Pages.</li>
-        </ol>
       </div>
     </div>
   </main>
@@ -133,9 +224,15 @@
       <img src="assets/logo.svg" alt="" width="30" height="30">
       <span>Yahya Tech</span>
     </div>
-    <p>لوحة رفع خاصة بالمطور. لا تُشارك رابط التوكن أو كلمة المرور.</p>
+    <p>لوحة إدارة خاصة بمالك الموقع. لا تُشارك رابط التوكن أو كلمة المرور.</p>
   </footer>
 
-  <script src="assets/admin.js?v=20261117-12" defer></script>
+  <script src="assets/firebase-config.js?v=20261118-1" defer></script>
+  <script src="assets/analytics.js?v=20261118-1" defer></script>
+  <script src="assets/auth.js?v=20261118-1" defer></script>
+  <script src="assets/catalog.js?v=20261118-1" defer></script>
+  <script src="assets/admin.js?v=20261118-1" defer></script>
+  <script src="assets/dashboard.js?v=20261118-1" defer></script>
+  <script src="assets/pwa.js?v=20261118-1" defer></script>
 </body>
 </html>
