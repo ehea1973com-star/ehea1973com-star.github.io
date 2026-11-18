@@ -1,6 +1,23 @@
 {
   "apps": [
     {
+      "name": "كيبورد يحيى الملكي",
+      "package": "com.yahya.royalkeyboard",
+      "version": "6.1",
+      "description": "كيبورد يحيى الملكي العالمي تقدر تقير كلشي بيه على كيفك غني بالحركات والميزات 💖💘💋❤️💞💚💛🧡💙🤍🖤👍👉🦾💅",
+      "category": "tools",
+      "filename": "com.yahya.royalkeyboard-v6.1.apk",
+      "size": 14908043,
+      "sha256": "aa85cf0f5f31ecb6b9c4e2ab4566ba7d7733551105d417194b6873d3c6dcee7e",
+      "updatedAt": "2026-11-18T20:05:56.191Z",
+      "icon": "assets/uploads/com.yahya.royalkeyboard.png",
+      "screenshots": [
+        "assets/uploads/screens/com.yahya.royalkeyboard-1.jpg",
+        "assets/uploads/screens/com.yahya.royalkeyboard-2.jpg",
+        "assets/uploads/screens/com.yahya.royalkeyboard-3.jpg"
+      ]
+    },
+    {
       "name": "vip n ehya",
       "package": "com.yahya.app324196",
       "version": "1.0",
@@ -45,18 +62,6 @@
         "assets/uploads/screens/com.yahya.app629650-1795012581487-2.jpg",
         "assets/uploads/screens/com.yahya.app629650-1795012581487-3.jpg"
       ]
-    },
-    {
-      "name": "كيبورد يحيى الملكي",
-      "package": "com.yahya.royalkeyboard",
-      "version": "4.1",
-      "description": "كيبورد عربي وإنجليزي مخصص مع ثيمات، اهتزاز، وتصميم مريح للكتابة - من تطوير يحيى.",
-      "category": "tools",
-      "filename": "com.yahya.royalkeyboard-v4.1.apk",
-      "size": 14908037,
-      "sha256": "79ebc539203bde244eceb96c26d99b906db7f28a24987d6b79f08b64da8059d9",
-      "updatedAt": "2026-11-18T17:00:00.000Z",
-      "icon": "assets/icons/system.svg"
     }
   ]
 }
