@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/><stop offset="60%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#fde68a"/>
+    </linearGradient>
+    <linearGradient id="m1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#334155"/><stop offset="100%" stop-color="#0f172a"/></linearGradient>
+    <linearGradient id="m2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#475569"/><stop offset="100%" stop-color="#1e293b"/></linearGradient>
+    <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#e2e8f0"/></linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#sky)"/>
+  <circle cx="650" cy="90" r="46" fill="#fde047" opacity="0.95"/>
+  <path d="M0 320 L180 140 L320 260 L420 120 L560 260 L650 170 L800 320 Z" fill="url(#m2)"/>
+  <path d="M-20 360 L140 180 L260 300 L380 150 L520 300 L620 210 L820 360 Z" fill="url(#m1)"/>
+  <path d="M380 150 L330 210 L430 210 Z" fill="url(#snow)"/>
+  <path d="M180 140 L150 185 L210 185 Z" fill="url(#snow)" opacity="0.9"/>
+  <rect x="0" y="320" width="800" height="130" fill="#166534"/>
+  <ellipse cx="120" cy="360" rx="120" ry="30" fill="#15803d"/>
+  <ellipse cx="400" cy="380" rx="180" ry="35" fill="#16a34a" opacity="0.8"/>
+  <ellipse cx="700" cy="360" rx="140" ry="28" fill="#15803d"/>
+  <rect x="0" y="380" width="800" height="70" fill="#14532d"/>
+</svg>

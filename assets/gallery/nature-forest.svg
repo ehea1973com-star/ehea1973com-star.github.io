@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="fsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#bbf7d0"/></linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#fsky)"/>
+  <circle cx="120" cy="90" r="38" fill="#fef08a"/>
+  <rect x="0" y="300" width="800" height="150" fill="#4ade80"/>
+  <rect x="0" y="360" width="800" height="90" fill="#22c55e"/>
+  <g>
+    <rect x="90" y="240" width="22" height="120" fill="#78350f"/><polygon points="101,120 30,260 172,260" fill="#166534"/><polygon points="101,170 45,300 157,300" fill="#15803d"/>
+    <rect x="210" y="220" width="26" height="140" fill="#78350f"/><polygon points="223,90 140,250 306,250" fill="#14532d"/><polygon points="223,150 155,310 291,310" fill="#166534"/>
+    <rect x="350" y="230" width="22" height="130" fill="#78350f"/><polygon points="361,110 290,260 432,260" fill="#166534"/><polygon points="361,170 305,300 417,300" fill="#15803d"/>
+    <rect x="470" y="210" width="28" height="150" fill="#78350f"/><polygon points="484,80 395,240 573,240" fill="#14532d"/><polygon points="484,150 410,310 558,310" fill="#166534"/>
+    <rect x="610" y="235" width="22" height="125" fill="#78350f"/><polygon points="621,120 550,260 692,260" fill="#166534"/><polygon points="621,175 565,300 677,300" fill="#15803d"/>
+    <rect x="720" y="225" width="24" height="135" fill="#78350f"/><polygon points="732,100 655,255 809,255" fill="#14532d"/>
+  </g>
+  <path d="M0 380 Q120 360 240 380 T480 380 T800 375" stroke="#86efac" stroke-width="6" fill="none"/>
+</svg>

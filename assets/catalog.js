@@ -88,7 +88,7 @@ window.YAHYA_APP_CATALOG = [
     category: "security",
     icon: "assets/icons/account.svg",
     iconClass: "icon-blue",
-    description: "دليل استعادة وحماية الحسابات: خطوات استعادة منظمة، قائمة تحقق للمصادقة الثنائية، نصائح أمان، دليل أوفلاين، وقفل بصمة اختياري.",
+    description: "دليل استعادة وحماية الحسابات: خطوات استعادة منظمة، قائمة تحقق للمصادقة الثنائية، نصائح أمان، دليل أوفلاين.",
     download: "apps/YahyaAccountHelp-v2.0-system.apk",
     type: "APK"
   },

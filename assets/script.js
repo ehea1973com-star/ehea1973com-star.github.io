@@ -15,6 +15,11 @@
     }, 2400);
   }
 
+  function t(key, fallback) {
+    try { if (window.YahyaI18n && window.YahyaI18n.t) { var v = window.YahyaI18n.t(key); if (v) return v; } } catch (e) {}
+    return fallback || "";
+  }
+
   function copyText(value, done, fail) {
     function fallback() {
       var input = document.createElement("textarea");
@@ -48,8 +53,8 @@
       var value = button.getAttribute("data-copy") || "";
       copyText(
         value,
-        function () { showToast("تم نسخ رابط الموقع"); },
-        function () { showToast("تعذّر نسخ الرابط"); }
+        function () { showToast(t("action.copyLink","تم نسخ رابط الموقع")); },
+        function () { showToast(t("label.copyFail","تعذّر نسخ الرابط")); }
       );
     });
   });
@@ -207,9 +212,9 @@
     if (!readerModal || !url) return;
     readerModal.hidden = false;
     document.body.classList.add("modal-open");
-    if (readerTitle) readerTitle.textContent = title || "قراءة الصفحة";
+    if (readerTitle) readerTitle.textContent = title || t("label.reading","قراءة الصفحة");
     if (readerSource) readerSource.href = url;
-    if (readerContent) readerContent.textContent = "جارٍ تحميل محتوى الصفحة...";
+    if (readerContent) readerContent.textContent = t("label.loadingPage","جاري تحميل الصفحة...");
     tavilyRequest(TAVILY_EXTRACT_URL, { urls: [url] }).then(function (data) {
       var results = data && data.results ? data.results : [];
       var content = results[0] && (results[0].raw_content || results[0].content);
@@ -229,7 +234,7 @@
       var query = webSearchInput ? webSearchInput.value.trim() : "";
       if (!query) {
         if (webSearchInput) webSearchInput.focus();
-        showToast("اكتب كلمة للبحث أولًا");
+        showToast(t("status.searchEmpty","اكتب كلمة للبحث أولًا"));
         return;
       }
       var cached = getCachedWebSearch(query);
@@ -239,9 +244,9 @@
       }
       if (webSearchButton) {
         webSearchButton.disabled = true;
-        webSearchButton.textContent = "جارٍ البحث...";
+        webSearchButton.textContent = t("status.searching","جارٍ البحث...");
       }
-      setWebSearchStatus("جارٍ البحث في الإنترنت عبر Tavily...");
+      setWebSearchStatus(t("status.webSearching","جارٍ البحث في الإنترنت عبر Tavily..."));
       if (webAnswer) webAnswer.hidden = true;
       if (webSearchResults) webSearchResults.innerHTML = "";
       tavilyRequest(TAVILY_SEARCH_URL, {
@@ -257,7 +262,7 @@
       }).then(function () {
         if (webSearchButton) {
           webSearchButton.disabled = false;
-          webSearchButton.textContent = "بحث";
+          webSearchButton.textContent = t("action.search","بحث");
         }
       });
     });
@@ -289,8 +294,8 @@
       function fallbackShare() {
         copyText(
           url,
-          function () { showToast("تم نسخ رابط الموقع للمشاركة"); },
-          function () { showToast("تعذّر نسخ الرابط"); }
+          function () { showToast(t("action.copyLink","تم نسخ رابط الموقع للمشاركة")); },
+          function () { showToast(t("label.copyFail","تعذّر نسخ الرابط")); }
         );
       }
       if (navigator.share) {
@@ -361,29 +366,32 @@
     videos: "https://www.youtube.com/embed/videoseries?list=UUmChpVHGV74adiyqncSyocg",
     live: "https://www.youtube.com/embed/live_stream?channel=UCmChpVHGV74adiyqncSyocg"
   };
-  var LIVE_NOTES = {
-    videos: "يعرض هذا القسم آخر فيديوهات القناة. عند بدء بث مباشر اختر «البث المباشر» أو افتح القناة على يوتيوب.",
-    live: "إذا ظهر «غير متوفر» فهذا يعني أن القناة لا تبث الآن. افتح القناة على يوتيوب لمعرفة موعد البث القادم."
-  };
-
+  var currentLiveTab = "videos";
+  function liveNoteText(name) {
+    if (name === "live") return t("live.noteLive", "إذا ظهر «غير متوفر» فهذا يعني أن القناة لا تبث الآن. افتح القناة على يوتيوب لمعرفة موعد البث القادم.");
+    return t("live.noteVideos", "يعرض هذا القسم آخر فيديوهات القناة. عند بدء بث مباشر اختر «البث المباشر» أو افتح القناة على يوتيوب.");
+  }
   function setLiveTab(name) {
     if (!LIVE_SOURCES[name]) name = "videos";
+    currentLiveTab = name;
     if (liveIframe && liveIframe.getAttribute("src") !== LIVE_SOURCES[name]) {
       liveIframe.setAttribute("src", LIVE_SOURCES[name]);
-      liveIframe.setAttribute("title", name === "live" ? "البث المباشر لقناتي على يوتيوب" : "فيديوهات قناتي على يوتيوب");
+      liveIframe.setAttribute("title", name === "live" ? t("live.live","البث المباشر") : t("live.videos","آخر الفيديوهات"));
     }
-    if (liveNote) liveNote.textContent = LIVE_NOTES[name];
+    if (liveNote) liveNote.textContent = liveNoteText(name);
     Array.prototype.forEach.call(liveTabs, function (button) {
       var active = button.getAttribute("data-live-tab") === name;
       button.classList.toggle("active", active);
       button.setAttribute("aria-selected", active ? "true" : "false");
     });
   }
-
   Array.prototype.forEach.call(liveTabs, function (button) {
     button.addEventListener("click", function () {
       setLiveTab(button.getAttribute("data-live-tab"));
     });
+  });
+  document.addEventListener("yahya:langchange", function () {
+    setLiveTab(currentLiveTab);
   });
 
   var appsGrid = document.getElementById("apps-grid");
@@ -413,14 +421,14 @@
     "Yahya System Module": { category: "system" }
   };
 
+  function categoryLabel(key) {
+    var map = { all:"filter.all", tools:"filter.tools", islamic:"filter.islamic", security:"filter.security", games:"filter.games", diagnostics:"filter.diagnostics", system:"filter.system" };
+    if (map[key]) return t(map[key], key);
+    return key;
+  }
   var CATEGORY_LABELS = {
-    all: "الكل",
-    tools: "أدوات",
-    islamic: "أذكار",
-    security: "حماية",
-    games: "شحن ألعاب",
-    diagnostics: "تشخيص",
-    system: "نظامي"
+    get all(){return categoryLabel("all");}, get tools(){return categoryLabel("tools");}, get islamic(){return categoryLabel("islamic");},
+    get security(){return categoryLabel("security");}, get games(){return categoryLabel("games");}, get diagnostics(){return categoryLabel("diagnostics");}, get system(){return categoryLabel("system");}
   };
 
   function appElement(tag, className, text) {
@@ -618,16 +626,13 @@
     return githubPut("apps/manifest.json", encodeTextBase64(text), "Update app screenshots", sha, token);
   }
 
-  function categoryLabel(category) {
-    return CATEGORY_LABELS[category] || CATEGORY_LABELS.tools;
-  }
-
   function addDetailsButton(card) {
     var actions = card.querySelector(".card-actions");
     if (!actions || actions.querySelector("[data-app-details]")) return;
-    var button = appElement("button", "mini-link app-details", "نظرة سريعة");
+    var button = appElement("button", "mini-link app-details", t("action.quickView","نظرة سريعة"));
     button.type = "button";
     button.setAttribute("data-app-details", "");
+    button.setAttribute("data-i18n", "action.quickView");
     actions.appendChild(button);
   }
 
@@ -678,8 +683,9 @@
     });
 
     if (emptyState) emptyState.hidden = visible !== 0;
-    if (resultCount) resultCount.textContent = "عرض " + visible + " من " + cards.length;
+    if (resultCount) resultCount.textContent = t("apps.showing","عرض") + " " + visible + " / " + cards.length;
   }
+  document.addEventListener("yahya:langchange", function(){ try { applyFilters(); } catch(e){} });
 
   function cardExists(key) {
     var cards = getCards();
@@ -847,6 +853,10 @@
     if (modalTokenInput) {
       var typed = saveUploadToken(modalTokenInput.value);
       if (typed) return typed;
+      try { modalTokenInput.focus(); } catch (e) {}
+      setScreenshotStatus("الصق GitHub Token في الحقل أعلاه ثم اضغط «حفظ التوكن» أو اختر الصور مرة أخرى. المطلوب: Fine-grained token للمستودع ehea1973com-star.github.io بصلاحية Contents: Read and write.");
+      showToast("أدخل التوكن في الحقل المخصص أولًا");
+      return "";
     }
     token = window.prompt(
       "أدخل GitHub Token لرفع لقطات الشاشة (يُحفظ على هذا الجهاز فقط).\n\n" +
@@ -859,7 +869,6 @@
     );
     if (token === null) return "";
     var saved = saveUploadToken(token);
-    if (modalTokenInput) modalTokenInput.value = saved;
     return saved;
   }
 
@@ -890,7 +899,7 @@
 
     var token = requestUploadToken();
     if (!token) {
-      setScreenshotStatus("لم يتم إدخال التوكن، لم تُرفع الصور.");
+      setScreenshotStatus(t("status.tokenMissing","لم يتم إدخال التوكن، لم تُرفع الصور."));
       return;
     }
 
@@ -900,7 +909,7 @@
     var chain = Promise.resolve();
 
     if (screenshotInput) screenshotInput.disabled = true;
-    setScreenshotStatus("جارٍ تجهيز الصور (720×1648) ورفعها...");
+    setScreenshotStatus(t("status.preparingUpload","جارٍ تجهيز الصور ورفعها..."));
 
     selected.forEach(function (file, index) {
       chain = chain.then(function () {
@@ -1112,7 +1121,7 @@
       copyText(
         currentShareUrl,
         function () { showToast("تم نسخ رابط التطبيق"); },
-        function () { showToast("تعذّر نسخ الرابط"); }
+        function () { showToast(t("label.copyFail","تعذّر نسخ الرابط")); }
       );
     });
   }

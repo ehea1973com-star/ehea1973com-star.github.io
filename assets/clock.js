@@ -31,9 +31,25 @@
     return result;
   }
 
+  function currentLang() {
+    try { return localStorage.getItem("yahya_site_lang") || "ar"; } catch (e) { return "ar"; }
+  }
+  function localeFor(lang) {
+    var map = {ar:"ar-SY",en:"en-US",fr:"fr-FR",es:"es-ES",de:"de-DE",tr:"tr-TR",ru:"ru-RU",pt:"pt-PT",it:"it-IT",nl:"nl-NL",id:"id-ID",hi:"hi-IN",ur:"ur-PK",fa:"fa-IR",zh:"zh-CN",ja:"ja-JP",ko:"ko-KR"};
+    return map[lang] || "en-US";
+  }
+  function hijriLocale(lang) {
+    if (lang === "ar" || lang === "ur" || lang === "fa") return lang === "ur" ? "ur-PK-u-ca-islamic-umalqura" : (lang === "fa" ? "fa-IR-u-ca-islamic-umalqura" : "ar-SA-u-ca-islamic-umalqura");
+    return "en-US-u-ca-islamic-umalqura";
+  }
+  function tr(key, fb) {
+    try { if (window.YahyaI18n && window.YahyaI18n.t) { var v = window.YahyaI18n.t(key); if (v) return v; } } catch (e) {}
+    return fb || "";
+  }
+
   function formatTime(now) {
     try {
-      return new Intl.DateTimeFormat("ar-SY", {
+      return new Intl.DateTimeFormat(localeFor(currentLang()), {
         timeZone: TIME_ZONE,
         hour: "2-digit",
         minute: "2-digit",
@@ -47,7 +63,7 @@
 
   function formatDate(now) {
     try {
-      return new Intl.DateTimeFormat("ar-SY", {
+      return new Intl.DateTimeFormat(localeFor(currentLang()), {
         timeZone: TIME_ZONE,
         weekday: "long",
         day: "numeric",
@@ -61,7 +77,7 @@
 
   function formatHijri(now) {
     try {
-      return new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura", {
+      return new Intl.DateTimeFormat(hijriLocale(currentLang()), {
         timeZone: TIME_ZONE,
         day: "numeric",
         month: "long",
@@ -80,9 +96,9 @@
       }).formatToParts(now).filter(function (item) {
         return item.type === "timeZoneName";
       })[0];
-      return part ? String(part.value).replace("GMT", "GMT") : "توقيت محلي";
+      return part ? String(part.value) : tr("clock.damascus","GMT+3");
     } catch (error) {
-      return "توقيت محلي";
+      return tr("clock.damascus","GMT+3");
     }
   }
 

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360">
+  <rect width="900" height="360" fill="#0b1220"/>
+  <g stroke="#334155" stroke-width="1"><path d="M0 40h900M0 80h900M0 120h900M0 160h900M0 200h900M0 240h900M0 280h900M0 320h900"/><path d="M60 0v360M120 0v360M180 0v360M240 0v360M300 0v360M360 0v360M420 0v360M480 0v360M540 0v360M600 0v360M660 0v360M720 0v360M780 0v360M840 0v360"/></g>
+  <rect x="350" y="40" width="200" height="280" rx="24" fill="#111827" stroke="#38bdf8" stroke-width="3"/>
+  <rect x="370" y="70" width="160" height="200" rx="8" fill="#0f172a" stroke="#64748b"/>
+  <rect x="410" y="290" width="80" height="8" rx="4" fill="#334155"/>
+  <rect x="120" y="80" width="120" height="60" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="2"/>
+  <text x="180" y="105" fill="#e2e8f0" font-size="14" text-anchor="middle" font-family="monospace">PMIC</text>
+  <text x="180" y="125" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="monospace">Power</text>
+  <rect x="120" y="220" width="120" height="60" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+  <text x="180" y="245" fill="#e2e8f0" font-size="14" text-anchor="middle" font-family="monospace">Charging</text>
+  <text x="180" y="265" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="monospace">IC/USB</text>
+  <rect x="660" y="80" width="120" height="60" rx="8" fill="#1e293b" stroke="#a78bfa" stroke-width="2"/>
+  <text x="720" y="105" fill="#e2e8f0" font-size="14" text-anchor="middle" font-family="monospace">CPU/SoC</text>
+  <text x="720" y="125" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="monospace">Main Board</text>
+  <rect x="660" y="220" width="120" height="60" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+  <text x="720" y="245" fill="#e2e8f0" font-size="14" text-anchor="middle" font-family="monospace">Display</text>
+  <text x="720" y="265" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="monospace">Connector</text>
+  <path d="M240 110 H350" stroke="#22c55e" stroke-width="3" marker-end="url(#a)"/>
+  <path d="M240 250 H350" stroke="#f59e0b" stroke-width="3"/>
+  <path d="M550 110 H660" stroke="#a78bfa" stroke-width="3"/>
+  <path d="M550 250 H660" stroke="#38bdf8" stroke-width="3"/>
+  <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#22c55e"/></marker></defs>
+  <text x="450" y="330" fill="#94a3b8" font-size="13" text-anchor="middle" font-family="sans-serif">مخطط مبسّط لمسارات الهاتف (طاقة/شحن/معالج/شاشة)</text>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="ssky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7c3aed"/><stop offset="45%" stop-color="#f472b6"/><stop offset="100%" stop-color="#fdba74"/></linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#0c4a6e"/></linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#ssky)"/>
+  <circle cx="400" cy="170" r="50" fill="#fff1f2" opacity="0.9"/>
+  <path d="M380 190 Q400 140 430 170 Q450 120 470 170 Q500 150 490 200 Q520 210 480 220 Q470 250 440 230 Q410 260 390 230 Q350 240 360 210 Q330 200 380 190 Z" fill="#fff" opacity="0.4"/>
+  <rect x="0" y="240" width="800" height="210" fill="url(#sea)"/>
+  <path d="M0 260 Q50 245 100 260 T200 260 T300 260 T400 260 T500 260 T600 260 T700 260 T800 260" stroke="#bae6fd" stroke-width="4" fill="none" opacity="0.7"/>
+  <path d="M0 300 Q60 285 120 300 T240 300 T360 300 T480 300 T600 300 T720 300 T840 300" stroke="#7dd3fc" stroke-width="3" fill="none" opacity="0.5"/>
+  <path d="M0 350 Q70 335 140 350 T280 350 T420 350 T560 350 T700 350 T840 350" stroke="#38bdf8" stroke-width="3" fill="none" opacity="0.4"/>
+  <rect x="0" y="220" width="800" height="30" fill="#eab308"/>
+</svg>

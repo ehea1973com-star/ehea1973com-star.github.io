@@ -11,31 +11,71 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Yahya Tech">
-  <script src="assets/theme.js?v=20261118-10"></script>
+  <script src="assets/theme.js?v=20261118-23"></script>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/app-192.png">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="assets/style.css?v=20261118-10">
-  <link rel="stylesheet" href="assets/admin.css?v=20261118-10">
+  <link rel="stylesheet" href="assets/style.css?v=20261118-23">
+  <link rel="stylesheet" href="assets/admin.css?v=20261118-23">
 </head>
 <body>
   <div class="page-glow" aria-hidden="true"></div>
   <header class="site-header">
+    <div class="top-menu-group right">
+      <button class="top-menu-btn" type="button" id="siteMenuBtn" aria-expanded="false" aria-controls="siteMenuPanel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <span class="btn-label" data-i18n="menu.main">القائمة</span>
+      </button>
+      <div class="top-panel panel-right" id="siteMenuPanel" hidden>
+        <div class="panel-section">
+          <h3 data-i18n="menu.sections">الأقسام - اختر أي مكان</h3>
+          <div class="panel-cards">
+            <a class="panel-card" href="index.html#top"><strong data-i18n="nav.home">الرئيسية</strong><span>Yahya Tech</span></a>
+            <a class="panel-card" href="index.html#apps"><strong data-i18n="nav.apps">التطبيقات</strong><span data-i18n="card.apps">مكتبة التطبيقات</span></a>
+            <a class="panel-card" href="index.html#library"><strong data-i18n="nav.library">المعرض والمكتبة</strong><span data-i18n="section.library">صور ومخططات</span></a>
+            <a class="panel-card" href="index.html#contact"><strong data-i18n="nav.contact">تواصل</strong><span data-i18n="section.contact">تواصل معي</span></a>
+            <a class="panel-card" href="download.html"><strong data-i18n="card.download">صفحة التحميل</strong><span>APK</span></a>
+            <a class="panel-card" href="settings.html"><strong data-i18n="card.settings">إعدادات الموقع</strong><span data-i18n="nav.settings">الإعدادات</span></a>
+            <a class="panel-card" href="admin.html"><strong data-i18n="card.admin">لوحة المالك</strong><span>Admin</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <a class="brand" href="https://ehea1973com-star.github.io/" target="_top" aria-label="Yahya Tech">
       <img src="assets/logo.svg" alt="" width="42" height="42">
       <span class="brand-text">
         <strong>Yahya Tech</strong>
-        <small>لوحة المالك</small>
+        <small data-i18n="nav.admin">لوحة المالك</small>
       </span>
     </a>
     <div class="header-actions">
+      <div class="top-menu-group left">
+        <button class="top-menu-btn" type="button" id="siteSettingsBtn" aria-expanded="false" aria-controls="siteSettingsPanel">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1 1 0 0 0 .2 1.1l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9V20a2 2 0 1 1-4 0v-.1a1 1 0 0 0-.7-.9 1 1 0 0 0-1.1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H4a2 2 0 1 1 0-4h.1a1 1 0 0 0 .9-.7 1 1 0 0 0-.2-1.1l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1 1 0 0 0 1.1.2h.1a1 1 0 0 0 .6-.9V4a2 2 0 1 1 4 0v.1a1 1 0 0 0 .6.9 1 1 0 0 0 1.1-.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1 1 0 0 0-.2 1.1v.1a1 1 0 0 0 .9.6H20a2 2 0 1 1 0 4h-.1a1 1 0 0 0-.9.6z"/></svg>
+          <span class="btn-label" data-i18n="menu.settings">الإعدادات واللغات</span>
+        </button>
+        <div class="top-panel panel-left" id="siteSettingsPanel" hidden>
+          <div class="panel-section">
+            <h3 data-i18n="menu.language">اللغة</h3>
+            <div class="lang-grid" data-lang-options></div>
+          </div>
+          <div class="panel-section">
+            <h3 data-i18n="menu.settings">الإعدادات</h3>
+            <div class="panel-cards">
+              <a class="panel-card" href="settings.html"><strong data-i18n="settings.title">إعدادات الموقع</strong><span data-i18n="settings.cache">مسح الكاش وتحديث الموقع</span></a>
+              <a class="panel-card" href="index.html"><strong data-i18n="nav.home">الرئيسية</strong><span>Yahya Tech</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
       <button class="theme-toggle" type="button" id="themeToggle" aria-label="التبديل إلى الوضع النهاري" title="الوضع النهاري" aria-pressed="false">
         <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>
         <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z"/></svg>
       </button>
-      <a class="btn btn-ghost btn-small" href="settings.html">الإعدادات</a>
-      <a class="btn btn-ghost btn-small" href="https://ehea1973com-star.github.io/" target="_top">العودة للموقع</a>
+      <a class="btn btn-ghost btn-small" href="settings.html" data-i18n="nav.settings">الإعدادات</a>
+      <a class="btn btn-ghost btn-small" href="https://ehea1973com-star.github.io/" target="_top" data-i18n="action.backHome">العودة للموقع</a>
     </div>
   </header>
 
@@ -56,6 +96,7 @@
         <a class="btn btn-ghost" href="index.html">العودة للموقع</a>
       </div>
       <p class="admin-status error" id="adminGateMessage" hidden></p>
+      <p class="muted" style="margin-top:12px">بعد تسجيل الدخول بحساب المالك ستظهر الإحصائيات ونموذج رفع التطبيقات مع حقل <strong>GitHub Token</strong> (زر إظهار/إخفاء التوكن وحفظ تلقائي على هذا الجهاز) لرفع أي تطبيق ولقطات شاشة.</p>
     </div>
 
     <div id="adminContent" hidden>
@@ -230,12 +271,13 @@
     <p>لوحة إدارة خاصة بمالك الموقع. لا تُشارك رابط التوكن أو كلمة المرور.</p>
   </footer>
 
-  <script src="assets/firebase-config.js?v=20261118-10" defer></script>
-  <script src="assets/analytics.js?v=20261118-10" defer></script>
-  <script src="assets/auth.js?v=20261118-10" defer></script>
-  <script src="assets/catalog.js?v=20261118-10" defer></script>
-  <script src="assets/admin.js?v=20261118-10" defer></script>
-  <script src="assets/dashboard.js?v=20261118-10" defer></script>
-  <script src="assets/pwa.js?v=20261118-10" defer></script>
+  <script src="assets/i18n.js?v=20261118-23" defer></script>
+  <script src="assets/firebase-config.js?v=20261118-23" defer></script>
+  <script src="assets/analytics.js?v=20261118-23" defer></script>
+  <script src="assets/auth.js?v=20261118-23" defer></script>
+  <script src="assets/catalog.js?v=20261118-23" defer></script>
+  <script src="assets/admin.js?v=20261118-23" defer></script>
+  <script src="assets/dashboard.js?v=20261118-23" defer></script>
+  <script src="assets/pwa.js?v=20261118-23" defer></script>
 </body>
 </html>

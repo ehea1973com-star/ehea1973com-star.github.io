@@ -5,18 +5,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>الصفحة غير موجودة | Yahya Tech</title>
   <meta name="robots" content="noindex">
+  <script src="/assets/theme.js?v=20261118-23"></script>
   <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
-  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/style.css?v=20261118-23">
 </head>
 <body>
-  <main class="section" style="min-height:100vh;display:grid;place-items:center;text-align:center">
+  <div class="page-glow" aria-hidden="true"></div>
+  <header class="site-header" id="header">
+    <div class="top-menu-group right">
+      <button class="top-menu-btn" type="button" id="siteMenuBtn" aria-expanded="false" aria-controls="siteMenuPanel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <span class="btn-label" data-i18n="menu.main">القائمة</span>
+      </button>
+      <div class="top-panel panel-right" id="siteMenuPanel" hidden>
+        <div class="panel-section">
+          <h3 data-i18n="menu.sections">الأقسام - اختر أي مكان</h3>
+          <div class="panel-cards">
+            <a class="panel-card" href="/index.html#top"><strong data-i18n="nav.home">الرئيسية</strong><span>Yahya Tech</span></a>
+            <a class="panel-card" href="/index.html#apps"><strong data-i18n="nav.apps">التطبيقات</strong><span data-i18n="card.apps">مكتبة التطبيقات</span></a>
+            <a class="panel-card" href="/index.html#library"><strong data-i18n="nav.library">المعرض والمكتبة</strong><span data-i18n="section.library">صور ومخططات</span></a>
+            <a class="panel-card" href="/index.html#contact"><strong data-i18n="nav.contact">تواصل</strong><span data-i18n="section.contact">تواصل معي</span></a>
+            <a class="panel-card" href="/download.html"><strong data-i18n="card.download">صفحة التحميل</strong><span>APK</span></a>
+            <a class="panel-card" href="/settings.html"><strong data-i18n="card.settings">إعدادات الموقع</strong><span data-i18n="nav.settings">الإعدادات</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a class="brand" href="/index.html" aria-label="Yahya Tech">
+      <img src="/assets/logo.svg" alt="" width="42" height="42">
+      <span class="brand-text"><strong>Yahya Tech</strong><small>يحيى الحمزة</small></span>
+    </a>
+    <div class="header-actions">
+      <div class="top-menu-group left">
+        <button class="top-menu-btn" type="button" id="siteSettingsBtn" aria-expanded="false" aria-controls="siteSettingsPanel">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1 1 0 0 0 .2 1.1l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9V20a2 2 0 1 1-4 0v-.1a1 1 0 0 0-.7-.9 1 1 0 0 0-1.1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H4a2 2 0 1 1 0-4h.1a1 1 0 0 0 .9-.7 1 1 0 0 0-.2-1.1l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1 1 0 0 0 1.1.2h.1a1 1 0 0 0 .6-.9V4a2 2 0 1 1 4 0v.1a1 1 0 0 0 .6.9 1 1 0 0 0 1.1-.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1 1 0 0 0-.2 1.1v.1a1 1 0 0 0 .9.6H20a2 2 0 1 1 0 4h-.1a1 1 0 0 0-.9.6z"/></svg>
+          <span class="btn-label" data-i18n="menu.settings">الإعدادات واللغات</span>
+        </button>
+        <div class="top-panel panel-left" id="siteSettingsPanel" hidden>
+          <div class="panel-section">
+            <h3 data-i18n="menu.language">اللغة</h3>
+            <div class="lang-grid" data-lang-options></div>
+          </div>
+          <div class="panel-section">
+            <h3 data-i18n="menu.quick">روابط سريعة</h3>
+            <div class="panel-cards">
+              <a class="panel-card" href="/index.html"><strong data-i18n="nav.home">الرئيسية</strong><span>Yahya Tech</span></a>
+              <a class="panel-card" href="/settings.html"><strong data-i18n="card.settings">إعدادات الموقع</strong><span data-i18n="settings.cache">مسح الكاش وتحديث الموقع</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="btn btn-small" href="/index.html" data-i18n="nav.home">الرئيسية</a>
+    </div>
+  </header>
+  <main class="section" style="min-height:70vh;display:grid;place-items:center;text-align:center">
     <div>
       <img src="/assets/logo.svg" alt="Yahya Tech" width="96" height="96" style="margin:0 auto 20px">
       <p class="eyebrow" style="justify-content:center">404</p>
-      <h1 style="font-size:clamp(38px,8vw,72px)">الصفحة غير موجودة</h1>
-      <p class="muted" style="margin:0 auto 22px">قد يكون الرابط قديمًا أو تم نقل الصفحة.</p>
-      <a class="btn" href="/">العودة إلى الرئيسية</a>
+      <h1 style="font-size:clamp(38px,8vw,72px)" data-i18n="404.title">الصفحة غير موجودة</h1>
+      <p class="muted" style="margin:0 auto 22px" data-i18n="404.desc">قد يكون الرابط قديمًا أو تم نقل الصفحة.</p>
+      <a class="btn" href="/index.html" data-i18n="action.backHome">العودة إلى الرئيسية</a>
     </div>
   </main>
+  <script src="/assets/i18n.js?v=20261118-23" defer></script>
 </body>
 </html>

@@ -1,13 +1,28 @@
 (function () {
-  var CATEGORY_LABELS = {
-    tools: "أدوات",
-    islamic: "أذكار",
-    security: "حماية",
-    games: "شحن ألعاب",
-    diagnostics: "تشخيص",
-    system: "نظامي"
-  };
   var currentApp = null;
+  var currentView = null; // 'app' | 'list' | 'notfound'
+  var cachedApps = null;
+
+  function tr(key, fb) {
+    try {
+      if (window.YahyaI18n && typeof window.YahyaI18n.t === "function") {
+        var v = window.YahyaI18n.t(key);
+        if (v) return v;
+      }
+    } catch (e) {}
+    return fb || "";
+  }
+
+  function langCode() {
+    try { if (window.YahyaI18n && window.YahyaI18n.getLang) return window.YahyaI18n.getLang(); } catch (e) {}
+    return (document.documentElement.lang || "ar").toLowerCase();
+  }
+
+  var CAT_KEYS = {
+    tools: "filter.tools", islamic: "filter.islamic", security: "filter.security",
+    games: "filter.games", diagnostics: "filter.diagnostics", system: "filter.system"
+  };
+  var CAT_FB = { tools:"أدوات", islamic:"أذكار", security:"حماية", games:"شحن ألعاب", diagnostics:"تشخيص", system:"نظامي" };
 
   function el(tag, className, text) {
     var element = document.createElement(tag);
@@ -23,7 +38,8 @@
   }
 
   function categoryLabel(category) {
-    return CATEGORY_LABELS[category] || "تطبيق";
+    var key = CAT_KEYS[category];
+    return key ? tr(key, CAT_FB[category] || category) : (CAT_FB[category] || tr("filter.tools","أدوات"));
   }
 
   function normalizeManifestApp(app) {
@@ -34,7 +50,7 @@
       version: "v" + String(app.version || "1.0").replace(/^v/i, ""),
       size: formatFileSize(app.size),
       platform: "Android",
-      languages: "عربي",
+      languages: "AR/EN",
       category: app.category || "tools",
       icon: app.icon || "assets/icons/system.svg",
       iconClass: "icon-cyan",
@@ -50,18 +66,12 @@
   function loadApps() {
     var staticApps = (window.YAHYA_APP_CATALOG || []).slice();
     var request;
-    try {
-      request = fetch("apps/manifest.json", { cache: "no-store" });
-    } catch (error) {
-      return Promise.resolve(staticApps);
-    }
+    try { request = fetch("apps/manifest.json", { cache: "no-store" }); } catch (error) { return Promise.resolve(staticApps); }
     if (!request || typeof request.then !== "function") return Promise.resolve(staticApps);
     return request.then(function (response) {
       if (!response.ok) return { apps: [] };
       return response.json();
-    }).catch(function () {
-      return { apps: [] };
-    }).then(function (manifest) {
+    }).catch(function () { return { apps: [] }; }).then(function (manifest) {
       var dynamicApps = (manifest.apps || []).map(normalizeManifestApp);
       return staticApps.concat(dynamicApps);
     });
@@ -128,41 +138,37 @@
     if (user) {
       var owner = window.YahyaAuth && window.YahyaAuth.isOwner && window.YahyaAuth.isOwner();
       gate.className = "download-gate ready";
-      gate.appendChild(el("p", "", "أنت مسجل الدخول باسم " + (user.name || user.email) + (owner ? " — مالك الموقع" : "") + ". التحميل جاهز."));
+      var readyText = tr("download.loggedInAs","أنت مسجل الدخول باسم") + " " + (user.name || user.email) + " " + (owner ? tr("download.ownerReady","— مالك الموقع. التحميل جاهز.") : tr("download.ready","التحميل جاهز."));
+      gate.appendChild(el("p", "", readyText));
       button.hidden = false;
       setDownloadLink(button, currentApp);
-      var logout = el("button", "btn btn-ghost btn-small", "تسجيل الخروج");
+      var logout = el("button", "btn btn-ghost btn-small", tr("download.logout","تسجيل الخروج"));
       logout.type = "button";
-      logout.addEventListener("click", function () {
-        if (window.YahyaAuth) window.YahyaAuth.logout();
-      });
+      logout.addEventListener("click", function () { if (window.YahyaAuth) window.YahyaAuth.logout(); });
       gate.appendChild(logout);
       return;
     }
     gate.className = "download-gate locked";
-    gate.appendChild(el("p", "", "التسجيل مطلوب قبل تحميل التطبيقات. أنشئ حسابًا أو سجّل الدخول عبر Firebase للمتابعة."));
-    var login = el("button", "btn", "تسجيل الدخول");
+    gate.appendChild(el("p", "", tr("download.loginRequired","التسجيل مطلوب قبل تحميل التطبيقات. أنشئ حسابًا أو سجّل الدخول عبر Firebase للمتابعة.")));
+    var login = el("button", "btn", tr("download.login","تسجيل الدخول"));
     login.type = "button";
-    login.addEventListener("click", function () {
-      if (window.YahyaAuth) window.YahyaAuth.open("login");
-    });
+    login.addEventListener("click", function () { if (window.YahyaAuth) window.YahyaAuth.open("login"); });
     gate.appendChild(login);
-    var register = el("button", "btn btn-ghost", "إنشاء حساب");
+    var register = el("button", "btn btn-ghost", tr("download.register","إنشاء حساب"));
     register.type = "button";
-    register.addEventListener("click", function () {
-      if (window.YahyaAuth) window.YahyaAuth.open("register");
-    });
+    register.addEventListener("click", function () { if (window.YahyaAuth) window.YahyaAuth.open("register"); });
     gate.appendChild(register);
     button.hidden = true;
   }
 
   function renderApp(app) {
     currentApp = app;
+    currentView = "app";
     if (window.YahyaAnalytics) window.YahyaAnalytics.trackAppView(app.id);
     var container = document.getElementById("downloadApp");
     if (!container) return;
     container.innerHTML = "";
-    document.title = "تحميل " + app.name + " | Yahya Tech";
+    document.title = tr("action.download","تحميل") + " " + app.name + " | Yahya Tech";
 
     var head = el("div", "download-head");
     head.appendChild(createIcon(app, true));
@@ -173,24 +179,24 @@
     head.appendChild(copy);
     container.appendChild(head);
 
-    container.appendChild(el("p", "download-description", app.description || "لا يوجد وصف لهذا التطبيق."));
+    container.appendChild(el("p", "download-description", app.description || tr("download.noDesc","لا يوجد وصف لهذا التطبيق.")));
 
     var meta = el("div", "download-meta");
     if (app.platform) meta.appendChild(el("span", "", app.platform));
     if (app.size) meta.appendChild(el("span", "", app.size));
     if (app.languages) meta.appendChild(el("span", "", app.languages));
     if (app.type) meta.appendChild(el("span", "", app.type));
-    if (app.activation) meta.appendChild(el("span", "", "يتطلب تفعيل " + (Number(app.activation.price) || 25) + "$"));
+    if (app.activation) meta.appendChild(el("span", "", tr("download.activationRequired","يتطلب تفعيل") + " " + (Number(app.activation.price) || 25) + "$"));
     container.appendChild(meta);
 
     if (app.activation) {
       var activation = el("div", "download-activation");
       var price = Number(app.activation.price) || 25;
-      activation.appendChild(el("strong", "", "تفعيل التطبيق — " + price + "$"));
-      activation.appendChild(el("p", "", app.activation.note || "بعد التثبيت افتح التطبيق وانسخ كود الجهاز، ثم أرسله عبر واتساب لطلب كود التفعيل."));
-      var request = el("a", "btn", "طلب كود التفعيل عبر واتساب");
+      activation.appendChild(el("strong", "", tr("download.activationTitle","تفعيل التطبيق") + " — " + price + "$"));
+      activation.appendChild(el("p", "", app.activation.note || tr("download.activationNote","بعد التثبيت افتح التطبيق وانسخ كود الجهاز، ثم أرسله عبر واتساب لطلب كود التفعيل.")));
+      var request = el("a", "btn", tr("download.activationRequest","طلب كود التفعيل عبر واتساب"));
       request.href = app.activation.whatsapp + "?text=" + encodeURIComponent(
-        "أريد تفعيل " + app.name + " — " + price + "$\nسأرسل كود الجهاز بعد التثبيت."
+        tr("download.activationRequest","طلب كود التفعيل") + " " + app.name + " — " + price + "$"
       );
       request.target = "_blank";
       request.rel = "noopener noreferrer";
@@ -203,13 +209,13 @@
       app.screenshots.forEach(function (source) {
         var image = document.createElement("img");
         image.src = source + (source.indexOf("?") === -1 ? "?v=1" : "");
-        image.alt = "لقطة شاشة - " + app.name;
+        image.alt = tr("download.screenshotAlt","لقطة شاشة") + " - " + app.name;
         image.width = 720;
         image.height = 1648;
         image.loading = "lazy";
         image.decoding = "async";
         image.onerror = function () {
-          image.alt = "تعذّر عرض الصورة (قد تحتاج لنشر GitHub Pages أو تحديث الصفحة)";
+          image.alt = tr("download.screenshotFail","تعذّر عرض الصورة");
         };
         screenshots.appendChild(image);
       });
@@ -221,27 +227,27 @@
     container.appendChild(gate);
 
     var actions = el("div", "download-actions");
-    var download = el("a", "btn", "تحميل " + (app.type || "الملف"));
+    var download = el("a", "btn", tr("action.download","تحميل") + " " + (app.type || tr("action.download","تحميل")));
     download.id = "downloadButton";
     download.hidden = true;
     download.addEventListener("click", function () {
       if (window.YahyaAnalytics) window.YahyaAnalytics.trackDownload(app.id);
     });
     actions.appendChild(download);
-    var back = el("a", "btn btn-ghost", "العودة إلى الصفحة الرئيسية");
+    var back = el("a", "btn btn-ghost", tr("action.backHome","العودة إلى الصفحة الرئيسية"));
     back.href = "index.html";
     actions.appendChild(back);
     container.appendChild(actions);
 
     var links = el("div", "download-links");
     if (app.external) {
-      var external = el("a", "text-link", "صفحة التفاصيل");
+      var external = el("a", "text-link", tr("download.detailsPage","صفحة التفاصيل"));
       external.href = app.external;
       external.target = "_blank";
       external.rel = "noopener noreferrer";
       links.appendChild(external);
     }
-    var checksum = el("a", "text-link", "التحقق من SHA-256");
+    var checksum = el("a", "text-link", tr("download.sha","التحقق من SHA-256"));
     checksum.href = "apps/SHA256SUMS.txt";
     checksum.target = "_blank";
     checksum.rel = "noopener noreferrer";
@@ -253,16 +259,17 @@
 
   function renderNotFound() {
     currentApp = null;
+    currentView = "notfound";
     var container = document.getElementById("downloadApp");
     if (!container) return;
     container.innerHTML = "";
-    container.appendChild(el("h1", "", "التطبيق غير موجود"));
-    container.appendChild(el("p", "muted", "لم نعثر على التطبيق المطلوب. يمكنك العودة إلى مكتبة التطبيقات واختيار تطبيق آخر."));
+    container.appendChild(el("h1", "", tr("download.notFoundTitle","التطبيق غير موجود")));
+    container.appendChild(el("p", "muted", tr("download.notFoundDesc","لم نعثر على التطبيق المطلوب. يمكنك العودة إلى مكتبة التطبيقات واختيار تطبيق آخر.")));
     var actions = el("div", "download-actions");
-    var back = el("a", "btn", "العودة إلى الصفحة الرئيسية");
+    var back = el("a", "btn", tr("action.backHome","العودة إلى الصفحة الرئيسية"));
     back.href = "index.html";
     actions.appendChild(back);
-    var apps = el("a", "btn btn-ghost", "عرض كل التطبيقات");
+    var apps = el("a", "btn btn-ghost", tr("download.showAll","عرض كل التطبيقات"));
     apps.href = "index.html#apps";
     actions.appendChild(apps);
     container.appendChild(actions);
@@ -270,13 +277,15 @@
 
   function renderAppList(apps) {
     currentApp = null;
+    currentView = "list";
+    cachedApps = apps || cachedApps || [];
     var container = document.getElementById("downloadApp");
     if (!container) return;
     container.innerHTML = "";
-    container.appendChild(el("h1", "", "اختر تطبيقًا للتحميل"));
-    container.appendChild(el("p", "muted", "كل تطبيق له صفحة تحميل مستقلة مع زر رجوع سهل إلى الصفحة الرئيسية."));
+    container.appendChild(el("h1", "", tr("download.chooseTitle","اختر تطبيقًا للتحميل")));
+    container.appendChild(el("p", "muted", tr("download.chooseDesc","كل تطبيق له صفحة تحميل مستقلة مع زر رجوع سهل إلى الصفحة الرئيسية.")));
     var list = el("div", "download-list");
-    apps.forEach(function (app) {
+    (cachedApps || []).forEach(function (app) {
       var link = document.createElement("a");
       link.href = "download.html?app=" + encodeURIComponent(app.id);
       link.appendChild(createIcon(app, false));
@@ -288,29 +297,32 @@
     });
     container.appendChild(list);
     var actions = el("div", "download-actions");
-    var back = el("a", "btn btn-ghost", "العودة إلى الصفحة الرئيسية");
+    var back = el("a", "btn btn-ghost", tr("action.backHome","العودة إلى الصفحة الرئيسية"));
     back.href = "index.html";
     actions.appendChild(back);
     container.appendChild(actions);
+  }
+
+  function rerender() {
+    if (currentView === "app" && currentApp) renderApp(currentApp);
+    else if (currentView === "list") renderAppList(cachedApps || []);
+    else if (currentView === "notfound") renderNotFound();
+    else updateGate();
   }
 
   function init() {
     var year = document.getElementById("year");
     if (year) year.textContent = String(new Date().getFullYear());
     loadApps().then(function (apps) {
+      cachedApps = apps;
       var key = getAppKey();
-      if (!key) {
-        renderAppList(apps);
-        return;
-      }
+      if (!key) { renderAppList(apps); return; }
       var app = findApp(apps, key);
-      if (!app) {
-        renderNotFound();
-        return;
-      }
+      if (!app) { renderNotFound(); return; }
       renderApp(app);
     });
     window.addEventListener("yahya-auth-change", updateGate);
+    document.addEventListener("yahya:langchange", function () { rerender(); });
   }
 
   if (document.readyState === "loading") {

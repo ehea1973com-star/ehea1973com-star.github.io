@@ -19,18 +19,22 @@
   var sfxGain = null;
   var sfxOn = readSfx();
 
-  function readSfx() {
+  function tr(key, fb) {
     try {
-      return window.localStorage.getItem("yahya_site_sfx") !== "off";
-    } catch (error) {
-      return true;
-    }
+      if (window.YahyaI18n && typeof window.YahyaI18n.t === "function") {
+        var v = window.YahyaI18n.t(key);
+        if (v) return v;
+      }
+    } catch (e) {}
+    return fb || "";
+  }
+
+  function readSfx() {
+    try { return window.localStorage.getItem("yahya_site_sfx") !== "off"; } catch (error) { return true; }
   }
 
   function writeSfx(value) {
-    try {
-      window.localStorage.setItem("yahya_site_sfx", value ? "on" : "off");
-    } catch (error) {}
+    try { window.localStorage.setItem("yahya_site_sfx", value ? "on" : "off"); } catch (error) {}
   }
 
   function ensureContext() {
@@ -71,9 +75,10 @@
   function updateSfxButton() {
     sfxButton.classList.toggle("active", sfxOn);
     sfxButton.setAttribute("aria-pressed", sfxOn ? "true" : "false");
-    sfxButton.setAttribute("aria-label", sfxOn ? "كتم أصوات الأزرار" : "تشغيل أصوات الأزرار");
-    sfxButton.title = sfxOn ? "أصوات الأزرار مفعّلة" : "أصوات الأزرار مكتومة";
-    if (sfxLabel) sfxLabel.textContent = sfxOn ? "أصوات" : "صامت";
+    var label = sfxOn ? tr("audio.sfxMute","كتم أصوات الأزرار") : tr("audio.sfxOn","تشغيل أصوات الأزرار");
+    sfxButton.setAttribute("aria-label", label);
+    sfxButton.title = sfxOn ? tr("audio.sfxEnabled","أصوات الأزرار مفعّلة") : tr("audio.sfxDisabled","أصوات الأزرار مكتومة");
+    if (sfxLabel) sfxLabel.textContent = sfxOn ? tr("audio.sounds","أصوات") : tr("audio.silent","صامت");
   }
 
   function playUiSound() {
@@ -103,6 +108,8 @@
   document.addEventListener("pointerdown", function () {
     if (ctx && ctx.state === "suspended") ctx.resume().catch(function () {});
   }, { passive: true });
+
+  document.addEventListener("yahya:langchange", function () { updateSfxButton(); });
 
   updateSfxButton();
 })();

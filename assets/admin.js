@@ -16,8 +16,15 @@
     system: "نظامي"
   };
 
+
+  function tr(key, fb) {
+    try { if (window.YahyaI18n && typeof window.YahyaI18n.t === "function") { var v = window.YahyaI18n.t(key); if (v) return v; } } catch (e) {}
+    return fb || "";
+  }
+
   var form = document.getElementById("uploadForm");
   var tokenInput = document.getElementById("token");
+  var toggleToken = document.getElementById("toggleToken");
   var saveToken = document.getElementById("saveToken");
   var clearToken = document.getElementById("clearToken");
   var uploadButton = document.getElementById("uploadButton");
@@ -336,7 +343,7 @@
     clearToken.addEventListener("click", function () {
       persistToken("");
       clearStatus();
-      setStatus("تم مسح التوكن من هذا الجهاز.", "ok");
+      setStatus(tr("token.cleared","تم مسح التوكن من هذا الجهاز."), "ok");
     });
   }
 
@@ -461,7 +468,6 @@
           screenshots.push(shotPath);
         }
       }
-      }
 
       setStatus("جارٍ تحديث قائمة التطبيقات...");
       var entry = {
@@ -515,4 +521,12 @@
       uploadButton.textContent = "رفع التطبيق إلى الموقع";
     }
   });
+
+  document.addEventListener("yahya:langchange", function () {
+    if (toggleToken && tokenInput) {
+      var show = tokenInput.type === "text";
+      toggleToken.textContent = show ? tr("token.hide","إخفاء التوكن") : tr("token.show","إظهار التوكن");
+    }
+  });
+
 })();
