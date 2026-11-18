@@ -11,12 +11,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Yahya Tech">
-  <script src="assets/theme.js?v=20261118-8"></script>
+  <script src="assets/theme.js?v=20261118-9"></script>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/app-192.png">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="assets/style.css?v=20261118-8">
+  <link rel="stylesheet" href="assets/style.css?v=20261118-9">
   <style>
     .settings-wrap{max-width:860px;margin:0 auto;display:grid;gap:18px}
     .settings-card{padding:22px;border:1px solid var(--line,rgba(255,255,255,.1));border-radius:20px;background:var(--surface,rgba(255,255,255,.04));backdrop-filter:blur(10px)}
@@ -83,12 +83,12 @@
           <button class="btn" type="button" id="clearCache">مسح الكاش وإعادة التحميل</button>
           <button class="btn btn-ghost" type="button" id="hardReload">تحديث قوي (بدون كاش)</button>
         </div>
-        <p class="settings-status" id="cacheStatus">لن يحذف هذا حساباتك على الخدمات الخارجية، فقط بيانات التخزين المحلي لهذا الموقع.</p>
+        <p class="settings-status" id="cacheStatus">لن يحذف هذا حساباتك على الخدمات الخارجية، فقط بيانات التخزين المحلي/الكاش لهذا الموقع (سيتم الاحتفاظ بـ GitHub Token المحفوظ).</p>
       </section>
 
       <section class="settings-card reveal">
         <h2>معلومات</h2>
-        <p>إصدار واجهة الموقع: <strong dir="ltr">20261118-8</strong></p>
+        <p>إصدار واجهة الموقع: <strong dir="ltr">20261118-9</strong></p>
         <div class="settings-actions">
           <a class="text-link" href="index.html">الصفحة الرئيسية</a>
           <a class="text-link" href="admin.html">لوحة المالك</a>
@@ -104,7 +104,7 @@
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="assets/pwa.js?v=20261118-8" defer></script>
+  <script src="assets/pwa.js?v=20261118-9" defer></script>
   <script>
   (function(){
     var year=document.getElementById('year'); if(year) year.textContent=String(new Date().getFullYear());
@@ -133,18 +133,18 @@
     updateSound();
     var cacheStatus=document.getElementById('cacheStatus');
     function setStatus(m){ if(cacheStatus) cacheStatus.textContent=m; }
-    function clearSiteCache(){
+      function clearSiteCache(){
       setStatus('جارٍ مسح الكاش وملفات الخدمة...');
       var tasks=[];
       if('caches' in window){ tasks.push(caches.keys().then(function(keys){ return Promise.all(keys.map(function(k){ return caches.delete(k); })); })); }
       if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){ tasks.push(navigator.serviceWorker.getRegistrations().then(function(rs){ return Promise.all(rs.map(function(r){ return r.unregister(); })); })); }
       Promise.all(tasks).catch(function(){}).then(function(){
         try{
-          var keep={}; // keep nothing site-specific problematic except maybe not necessary; clear known keys
-          ['yahya_site_theme','yahya_site_last_dark_theme','yahya_site_sfx','yahya_web_search_cache_v1','yahya_site_upload_token'].forEach(function(k){ try{ localStorage.removeItem(k);}catch(e){} });
+          // لا نحذف التوكن المحفوظ حتى لا يضطر المستخدم لإدخاله مجددًا
+          ['yahya_site_theme','yahya_site_last_dark_theme','yahya_site_sfx','yahya_web_search_cache_v1'].forEach(function(k){ try{ localStorage.removeItem(k);}catch(e){} });
           try{ sessionStorage.clear(); }catch(e){}
         }catch(e){}
-        setStatus('تم المسح. جارٍ إعادة التحميل...');
+        setStatus('تم مسح الكاش وملفات الخدمة (مع الاحتفاظ بـ GitHub Token المحفوظ). جارٍ إعادة التحميل...');
         showToast('تم مسح الكاش، سيُعاد تحميل الموقع');
         setTimeout(function(){ window.location.replace('index.html?nocache='+Date.now()); }, 700);
       });

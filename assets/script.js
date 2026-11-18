@@ -911,7 +911,7 @@
           return app && (app.package === data.package || app.name === data.name);
         })[0];
         if (!entry) {
-          throw new Error("هذا التطبيق غير موجود في apps/manifest.json، أضفه من لوحة الإدارة أولًا.");
+          throw new Error("هذا التطبيق غير مسجّل في apps/manifest.json لذا لا يمكن حفظ لقطاته من هنا. (التطبيقات الثابتة تحتاج إضافتها/تحديثها من لوحة المالك admin.html)");
         }
         entry.screenshots = existing.concat(uploaded).slice(0, MAX_SCREENSHOTS);
         entry.updatedAt = new Date().toISOString();
@@ -1103,6 +1103,17 @@
           if (card) {
             appsGrid.appendChild(card);
             added += 1;
+          } else {
+            var key = app.package || app.name;
+            var cards = getCards();
+            for (var i = 0; i < cards.length; i += 1) {
+              var existingCard = cards[i];
+              if (existingCard.getAttribute("data-share-key") === key || existingCard.getAttribute("data-package") === key) {
+                var shots = Array.isArray(app.screenshots) ? app.screenshots.filter(isAssetPath) : [];
+                if (shots.length) existingCard.setAttribute("data-screenshots", shots.join("|"));
+                break;
+              }
+            }
           }
         });
         var counter = document.querySelector("[data-app-count]");

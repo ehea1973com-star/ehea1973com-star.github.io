@@ -103,6 +103,14 @@
     setTimeout(function () { persistToken(tokenInput.value); }, 0);
   });
 
+  if (toggleToken) {
+    toggleToken.addEventListener("click", function () {
+      var show = tokenInput.type === "password";
+      tokenInput.type = show ? "text" : "password";
+      toggleToken.textContent = show ? "إخفاء" : "إظهار";
+    });
+  }
+
   function setStatus(message, type) {
     statusBox.textContent = message;
     statusBox.className = "admin-status show" + (type ? " " + type : "");
