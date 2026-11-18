@@ -202,9 +202,15 @@
       var screenshots = el("div", "download-screenshots");
       app.screenshots.forEach(function (source) {
         var image = document.createElement("img");
-        image.src = source;
-        image.alt = "لقطة من تطبيق " + app.name;
+        image.src = source + (source.indexOf("?") === -1 ? "?v=1" : "");
+        image.alt = "لقطة شاشة - " + app.name;
+        image.width = 720;
+        image.height = 1648;
         image.loading = "lazy";
+        image.decoding = "async";
+        image.onerror = function () {
+          image.alt = "تعذّر عرض الصورة (قد تحتاج لنشر GitHub Pages أو تحديث الصفحة)";
+        };
         screenshots.appendChild(image);
       });
       container.appendChild(screenshots);

@@ -531,6 +531,50 @@
     });
   }
 
+  function resizeScreenshotTo720x1648(file) {
+    return new Promise(function (resolve, reject) {
+      var url = "";
+      try { url = URL.createObjectURL(file); } catch (e) {}
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var targetW = 720;
+          var targetH = 1648;
+          var canvas = document.createElement("canvas");
+          canvas.width = targetW;
+          canvas.height = targetH;
+          var ctx = canvas.getContext("2d");
+          var sw = img.naturalWidth || img.width;
+          var sh = img.naturalHeight || img.height;
+          var scale = Math.max(targetW / sw, targetH / sh);
+          var dw = sw * scale;
+          var dh = sh * scale;
+          var dx = (targetW - dw) / 2;
+          var dy = (targetH - dh) / 2;
+          ctx.fillStyle = "#000";
+          ctx.fillRect(0, 0, targetW, targetH);
+          ctx.drawImage(img, dx, dy, dw, dh);
+          var dataUrl = canvas.toDataURL("image/jpeg", 0.92);
+          var comma = dataUrl.indexOf(",");
+          if (url) { try { URL.revokeObjectURL(url); } catch (e) {} }
+          resolve({ base64: comma >= 0 ? dataUrl.slice(comma + 1) : dataUrl, ext: "jpg" });
+        } catch (err) {
+          if (url) { try { URL.revokeObjectURL(url); } catch (e) {} }
+          reject(new Error("تعذّر معالجة الصورة"));
+        }
+      };
+      img.onerror = function () {
+        if (url) { try { URL.revokeObjectURL(url); } catch (e) {} }
+        reject(new Error("تعذّر فتح الصورة"));
+      };
+      img.src = url || "";
+      if (!url) {
+        // fallback
+        readFileBase64(file).then(function (b64) { resolve({ base64: b64, ext: (file.name.split(".").pop() || "jpg").toLowerCase() }); }).catch(reject);
+      }
+    });
+  }
+
   function decodeBase64Text(base64) {
     var binary = atob(String(base64 || "").replace(/\s/g, ""));
     var bytes = new Uint8Array(binary.length);
@@ -750,10 +794,16 @@
     var strip = appElement("div", "screenshots-strip");
     screenshots.forEach(function (source) {
       var image = document.createElement("img");
-      image.src = source;
-      image.alt = "لقطة من تطبيق " + appName;
+      image.src = source + (source.indexOf("?") === -1 ? "?v=1" : "");
+      image.alt = "لقطة شاشة - " + appName;
+      image.width = 720;
+      image.height = 1648;
       image.loading = "lazy";
       image.decoding = "async";
+      image.onerror = function () {
+        image.alt = "تعذّر عرض الصورة (قد تحتاج لنشر GitHub Pages أو تحديث الصفحة)";
+        image.style.minHeight = "120px";
+      };
       strip.appendChild(image);
     });
     modalScreenshots.appendChild(strip);
@@ -780,8 +830,8 @@
     var hasToken = !!getUploadToken();
     setScreenshotStatus(
       hasToken
-        ? "اختر الصور لإضافتها (حتى " + remaining + "، كل صورة 1 MB). التوكن محفوظ."
-        : "اضغط «إضافة لقطات شاشة» واختر الصور — سيُطلب GitHub Token (Fine-grained: Contents Read and write للمستودع ehea1973com-star.github.io)."
+        ? "اختر الصور لإضافتها (حتى " + remaining + "، حجم 720×1648). التوكن محفوظ."
+        : "اضغط «إضافة لقطات شاشة» واختر الصور (720×1648) — سيُطلب GitHub Token (Fine-grained: Contents Read and write للمستودع ehea1973com-star.github.io)."
     );
   }
 
@@ -824,10 +874,6 @@
         showToast("الصور يجب أن تكون PNG أو JPG أو WEBP.");
         return;
       }
-      if (file.size > MAX_SCREENSHOT_BYTES) {
-        showToast("حجم كل صورة يجب أن يكون 1 MB أو أقل.");
-        return;
-      }
     }
 
     var token = requestUploadToken();
@@ -842,14 +888,15 @@
     var chain = Promise.resolve();
 
     if (screenshotInput) screenshotInput.disabled = true;
-    setScreenshotStatus("جارٍ رفع الصور إلى GitHub...");
+    setScreenshotStatus("جارٍ تجهيز الصور (720×1648) ورفعها...");
 
     selected.forEach(function (file, index) {
       chain = chain.then(function () {
-        return readFileBase64(file).then(function (base64) {
-          var extension = file.name.split(".").pop().toLowerCase();
-          var path = "assets/uploads/screens/" + packageSlug + "-" + stamp + "-" + (index + 1) + "." + extension;
-          return githubPut(path, base64, "Upload screenshot for " + data.name, null, token).then(function () {
+        setScreenshotStatus("جارٍ تجهيز الصورة " + (index + 1) + " من " + selected.length + " (720×1648)...");
+        return resizeScreenshotTo720x1648(file).then(function (processed) {
+          var path = "assets/uploads/screens/" + packageSlug + "-" + stamp + "-" + (index + 1) + "." + (processed.ext || "jpg");
+          setScreenshotStatus("جارٍ رفع الصورة " + (index + 1) + " من " + selected.length + "...");
+          return githubPut(path, processed.base64, "Upload screenshot for " + data.name, null, token).then(function () {
             uploaded.push(path);
             setScreenshotStatus("تم رفع " + uploaded.length + " من " + selected.length + " صور...");
           });
@@ -875,6 +922,7 @@
         card.setAttribute("data-screenshots", next.join("|"));
         renderScreenshots(next, data.name);
         updateScreenshotManager(card);
+        setScreenshotStatus("تم رفع الصور وتحديث القائمة. قد تحتاج الصفحة دقائق لتظهر الصور بعد نشر GitHub Pages (حدّث الصفحة لاحقًا).");
         showToast("تمت إضافة لقطات الشاشة بنجاح");
       })
       .catch(function (error) {

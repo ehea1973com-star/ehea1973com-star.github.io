@@ -1253,8 +1253,10 @@ button.mini-link {
 }
 
 .screenshots-strip img {
-  width: min(250px, 72vw);
+  width: min(220px, 46vw);
+  aspect-ratio: 720 / 1648;
   height: auto;
+  object-fit: cover;
   flex: none;
   border: 1px solid var(--line);
   border-radius: 16px;
@@ -2135,7 +2137,8 @@ html[data-theme="light"] .reader-content {
 
 .download-screenshots img {
   width: 160px;
-  height: 280px;
+  height: auto;
+  aspect-ratio: 720 / 1648;
   object-fit: cover;
   border: 1px solid var(--line);
   border-radius: 14px;

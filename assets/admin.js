@@ -207,8 +207,58 @@
     return new Promise(function (resolve, reject) {
       var reader = new FileReader();
       reader.onload = function () { resolve(reader.result); };
-      reader.onerror = function () { reject(new Error("تعذّر قراءة الملف")); };
+      reader.onerror = function () { reject(new Error("تعذر قراءة الملف.")); };
       reader.readAsArrayBuffer(file);
+    });
+  }
+
+  function resizeScreenshotTo720x1648(file) {
+    return new Promise(function (resolve, reject) {
+      var url = "";
+      try { url = URL.createObjectURL(file); } catch (e) {}
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var targetW = 720;
+          var targetH = 1648;
+          var canvas = document.createElement("canvas");
+          canvas.width = targetW;
+          canvas.height = targetH;
+          var ctx = canvas.getContext("2d");
+          var sw = img.naturalWidth || img.width;
+          var sh = img.naturalHeight || img.height;
+          var scale = Math.max(targetW / sw, targetH / sh);
+          var dw = sw * scale;
+          var dh = sh * scale;
+          var dx = (targetW - dw) / 2;
+          var dy = (targetH - dh) / 2;
+          ctx.fillStyle = "#000";
+          ctx.fillRect(0, 0, targetW, targetH);
+          ctx.drawImage(img, dx, dy, dw, dh);
+          var dataUrl = canvas.toDataURL("image/jpeg", 0.92);
+          var comma = dataUrl.indexOf(",");
+          var base64 = comma >= 0 ? dataUrl.slice(comma + 1) : dataUrl;
+          var binary = atob(base64);
+          var bytes = new Uint8Array(binary.length);
+          for (var i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+          if (url) { try { URL.revokeObjectURL(url); } catch (e) {} }
+          resolve({ base64: base64, bytes: bytes, ext: "jpg" });
+        } catch (err) {
+          if (url) { try { URL.revokeObjectURL(url); } catch (e) {} }
+          reject(new Error("تعذر معالجة لقطة الشاشة."));
+        }
+      };
+      img.onerror = function () {
+        if (url) { try { URL.revokeObjectURL(url); } catch (e) {} }
+        reject(new Error("تعذر فتح لقطة الشاشة."));
+      };
+      img.src = url || "";
+      if (!url) {
+        readFile(file).then(function (buf) {
+          var bytes = new Uint8Array(buf);
+          resolve({ base64: bytesToBase64(bytes), bytes: bytes, ext: (file.name.split(".").pop() || "jpg").toLowerCase() });
+        }).catch(reject);
+      }
     });
   }
 
@@ -320,9 +370,6 @@
       if (!/^(png|jpe?g|webp)$/.test(shotExtension)) {
         return setStatus("لقطات الشاشة يجب أن تكون PNG أو JPG أو WEBP.", "error");
       }
-      if (shot.size > MAX_SCREENSHOT_SIZE) {
-        return setStatus("حجم كل لقطة شاشة يجب أن يكون 1 MB أو أقل.", "error");
-      }
     }
 
     uploadButton.disabled = true;
@@ -381,22 +428,22 @@
         screenshots = [];
         for (var shotFileIndex = 0; shotFileIndex < screenshotFiles.length; shotFileIndex += 1) {
           var shotFile = screenshotFiles[shotFileIndex];
-          var shotExtension = shotFile.name.split(".").pop().toLowerCase();
-          var shotName = slug(packageName) + "-" + (shotFileIndex + 1) + "." + shotExtension;
+          setStatus("جارٍ تجهيز لقطة الشاشة " + (shotFileIndex + 1) + " (720×1648)...");
+          var processedShot = await resizeScreenshotTo720x1648(shotFile);
+          var shotName = slug(packageName) + "-" + (shotFileIndex + 1) + "." + (processedShot.ext || "jpg");
           var shotPath = "assets/uploads/screens/" + shotName;
           setStatus("جارٍ رفع لقطة الشاشة " + (shotFileIndex + 1) + " من " + screenshotFiles.length + "...");
-          var shotBuffer = await readFile(shotFile);
-          var shotBase64 = bytesToBase64(new Uint8Array(shotBuffer));
           var existingShot = await getFile(shotPath, token);
           await putFile(
             shotPath,
-            shotBase64,
-            "Upload screenshot for " + name,
+            processedShot.base64,
+            "Upload screenshot " + (shotFileIndex + 1) + " for " + name,
             existingShot ? existingShot.sha : null,
             token
           );
           screenshots.push(shotPath);
         }
+      }
       }
 
       setStatus("جارٍ تحديث قائمة التطبيقات...");
