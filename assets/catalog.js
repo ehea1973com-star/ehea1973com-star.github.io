@@ -120,5 +120,19 @@ window.YAHYA_APP_CATALOG = [
     description: "وحدة Magisk لتثبيت التطبيقات الثلاثة في /system/priv-app مع صلاحيات صحيحة ودليل تحديث. مخصصة للأجهزة التي تدعم Magisk أو ROM مخصصًا.",
     download: "apps/YahyaApps-System-v2.0-Magisk.zip",
     type: "Magisk"
+  },
+  {
+    id: "app-copier-629650",
+    name: "ناسخ التطبيقات",
+    version: "v1.0",
+    size: "153 KB",
+    platform: "Android 5.0+",
+    languages: "عربي",
+    category: "tools",
+    icon: "assets/uploads/com.yahya.app629650.png",
+    iconClass: "icon-cyan",
+    description: "ينسخ ويشارك التطبيقات ويثبت APK.",
+    download: "apps/com.yahya.app629650-v1.0.apk",
+    type: "APK"
   }
 ];
