@@ -1,6 +1,22 @@
 {
   "apps": [
     {
+      "name": "متصفح كروم  2",
+      "package": "com.yahya.app482165",
+      "version": "1.0",
+      "description": "متصفح  كروم  2",
+      "category": "tools",
+      "filename": "com.yahya.app482165-v1.0.apk",
+      "size": 3457948,
+      "sha256": "be148c369a42c8432ac441af126505fe34a8df77dc71214d8055031299e3415c",
+      "updatedAt": "2026-11-18T20:41:15.996Z",
+      "icon": "assets/uploads/com.yahya.app482165.jpg",
+      "screenshots": [
+        "assets/uploads/screens/com.yahya.app482165-1.jpg",
+        "assets/uploads/screens/com.yahya.app482165-2.jpg"
+      ]
+    },
+    {
       "name": "كاشف الدوال",
       "package": "com.yahya.app243086",
       "version": "1.0",
