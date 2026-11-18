@@ -1,6 +1,23 @@
 {
   "apps": [
     {
+      "name": "كيبورد برتقالي",
+      "package": "com.yahya.app932375",
+      "version": "1.0",
+      "description": "كيبورد  برتقالي👑👑👑👑👑",
+      "category": "tools",
+      "filename": "com.yahya.app932375-v1.0.apk",
+      "size": 14904120,
+      "sha256": "33ac0634de6716e2490c0c5e632730e91f4edb71d3fdd0a5003854bfe2f7fb2e",
+      "updatedAt": "2026-11-18T20:48:16.090Z",
+      "icon": "assets/uploads/com.yahya.app932375.jpg",
+      "screenshots": [
+        "assets/uploads/screens/com.yahya.app932375-1.jpg",
+        "assets/uploads/screens/com.yahya.app932375-2.jpg",
+        "assets/uploads/screens/com.yahya.app932375-3.jpg"
+      ]
+    },
+    {
       "name": "متصفح كروم  2",
       "package": "com.yahya.app482165",
       "version": "1.0",
