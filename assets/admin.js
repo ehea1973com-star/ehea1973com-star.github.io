@@ -82,6 +82,27 @@
     if (saveToken) saveToken.checked = true;
   }
 
+  function persistToken(value) {
+    var token = (value || "").replace(/\s+/g, "");
+    if (tokenInput && tokenInput.value !== token) tokenInput.value = token;
+    try {
+      if (token) window.localStorage.setItem(TOKEN_KEY, token);
+      else window.localStorage.removeItem(TOKEN_KEY);
+    } catch (error) {}
+    if (saveToken) saveToken.checked = !!token;
+    return token;
+  }
+
+  tokenInput.addEventListener("input", function () {
+    persistToken(tokenInput.value);
+  });
+  tokenInput.addEventListener("change", function () {
+    persistToken(tokenInput.value);
+  });
+  tokenInput.addEventListener("paste", function () {
+    setTimeout(function () { persistToken(tokenInput.value); }, 0);
+  });
+
   function setStatus(message, type) {
     statusBox.textContent = message;
     statusBox.className = "admin-status show" + (type ? " " + type : "");
@@ -246,9 +267,7 @@
 
   if (clearToken) {
     clearToken.addEventListener("click", function () {
-      window.localStorage.removeItem(TOKEN_KEY);
-      tokenInput.value = "";
-      if (saveToken) saveToken.checked = false;
+      persistToken("");
       clearStatus();
       setStatus("تم مسح التوكن من هذا الجهاز.", "ok");
     });
@@ -258,7 +277,7 @@
     event.preventDefault();
     clearStatus();
 
-    var token = tokenInput.value.trim();
+    var token = persistToken(tokenInput.value);
     var name = document.getElementById("appName").value.trim();
     var packageName = document.getElementById("packageName").value.trim();
     var version = document.getElementById("version").value.trim();
