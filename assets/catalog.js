@@ -134,5 +134,21 @@ window.YAHYA_APP_CATALOG = [
     description: "ينسخ ويشارك التطبيقات ويثبت APK.",
     download: "apps/com.yahya.app629650-v1.0.apk",
     type: "APK"
+  },
+  {
+    id: "yahya-royal-keyboard",
+    name: "كيبورد يحيى الملكي",
+    package: "com.yahya.royalkeyboard",
+    version: "v4.1",
+    size: "14.2 MB",
+    platform: "Android 6.0+",
+    languages: "عربي / English",
+    category: "tools",
+    icon: "assets/icons/system.svg",
+    iconClass: "icon-violet",
+    description: "كيبورد عربي وإنجليزي مخصص مع ثيمات، اهتزاز، وتصميم مريح للكتابة - من تطوير يحيى.",
+    download: "apps/com.yahya.royalkeyboard-v4.1.apk",
+    type: "APK"
   }
+
 ];
