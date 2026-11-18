@@ -90,6 +90,12 @@
       else window.localStorage.removeItem(TOKEN_KEY);
     } catch (error) {}
     if (saveToken) saveToken.checked = !!token;
+    var hint = document.getElementById("tokenSavedHint");
+    if (hint) {
+      hint.textContent = token
+        ? "✓ التوكن محفوظ على هذا الجهاز (يُستخدم تلقائيًا). يمكنك إظهاره أو مسحه."
+        : "يُحفظ تلقائيًا على هذا الجهاز بعد اللصق. أنشئ Fine-grained token للمستودع ehea1973com-star.github.io بصلاحية Contents: Read and write.";
+    }
     return token;
   }
 
@@ -103,11 +109,14 @@
     setTimeout(function () { persistToken(tokenInput.value); }, 0);
   });
 
+  // reflect saved state on load
+  persistToken(tokenInput.value || "");
+
   if (toggleToken) {
     toggleToken.addEventListener("click", function () {
       var show = tokenInput.type === "password";
       tokenInput.type = show ? "text" : "password";
-      toggleToken.textContent = show ? "إخفاء" : "إظهار";
+      toggleToken.textContent = show ? "إخفاء التوكن" : "إظهار التوكن";
     });
   }
 

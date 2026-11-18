@@ -782,6 +782,9 @@
   var screenshotManager = document.getElementById("screenshotManager");
   var screenshotInput = document.getElementById("modalScreenshotInput");
   var screenshotStatus = document.getElementById("screenshotManagerStatus");
+  var modalTokenInput = document.getElementById("modalTokenInput");
+  var modalToggleToken = document.getElementById("modalToggleToken");
+  var modalSaveToken = document.getElementById("modalSaveToken");
   var lastFocused = null;
 
   function renderScreenshots(screenshots, appName) {
@@ -828,16 +831,23 @@
       return;
     }
     var hasToken = !!getUploadToken();
+    if (modalTokenInput && document.activeElement !== modalTokenInput) {
+      modalTokenInput.value = getUploadToken();
+    }
     setScreenshotStatus(
       hasToken
-        ? "اختر الصور لإضافتها (حتى " + remaining + "، حجم 720×1648). التوكن محفوظ."
-        : "اضغط «إضافة لقطات شاشة» واختر الصور (720×1648) — سيُطلب GitHub Token (Fine-grained: Contents Read and write للمستودع ehea1973com-star.github.io)."
+        ? "✓ التوكن محفوظ على هذا الجهاز. اختر الصور لإضافتها (حتى " + remaining + "، 720×1648)."
+        : "الصق GitHub Token في الحقل أعلاه (سيُحفظ تلقائيًا) ثم اختر الصور لإضافتها (720×1648)."
     );
   }
 
   function requestUploadToken(force) {
     var token = getUploadToken();
     if (token && !force) return token;
+    if (modalTokenInput) {
+      var typed = saveUploadToken(modalTokenInput.value);
+      if (typed) return typed;
+    }
     token = window.prompt(
       "أدخل GitHub Token لرفع لقطات الشاشة (يُحفظ على هذا الجهاز فقط).\n\n" +
       "الخطوات الصحيحة:\n" +
@@ -848,7 +858,9 @@
       "(اتركه فارغًا للإلغاء)"
     );
     if (token === null) return "";
-    return saveUploadToken(token);
+    var saved = saveUploadToken(token);
+    if (modalTokenInput) modalTokenInput.value = saved;
+    return saved;
   }
 
   function uploadScreenshots(card, fileList) {
@@ -907,14 +919,43 @@
     chain
       .then(function () { return loadRemoteManifest(token); })
       .then(function (manifest) {
-        var entry = manifest.apps.filter(function (app) {
-          return app && (app.package === data.package || app.name === data.name);
-        })[0];
+        var entry = null;
+        for (var i = 0; i < manifest.apps.length; i += 1) {
+          var app = manifest.apps[i];
+          if (!app) continue;
+          if (data.package && app.package && app.package === data.package) { entry = app; break; }
+          if (app.name && data.name && app.name === data.name) { entry = app; break; }
+          if (data.shareKey && (app.package === data.shareKey || app.name === data.shareKey)) { entry = app; break; }
+        }
         if (!entry) {
-          throw new Error("هذا التطبيق غير مسجّل في apps/manifest.json لذا لا يمكن حفظ لقطاته من هنا. (التطبيقات الثابتة تحتاج إضافتها/تحديثها من لوحة المالك admin.html)");
+          var href = data.downloadHref || "";
+          var filename = "";
+          var match = /([^\/?#]+\.apk)(?:[?#]|$)/i.exec(href);
+          if (match) filename = match[1];
+          if (!filename && data.package) filename = slugify(data.package) + "-v" + String(data.version || "1.0").replace(/^v/i, "") + ".apk";
+          if (!filename) filename = slugify(data.package || data.shareKey || data.name || "app") + ".apk";
+          var iconSrc = "";
+          var iconImg = card.querySelector(".app-icon img");
+          if (iconImg) iconSrc = iconImg.getAttribute("src") || "";
+          entry = {
+            name: data.name || "تطبيق",
+            package: data.package || data.shareKey || "",
+            version: String(data.version || "1.0").replace(/^v/i, ""),
+            description: data.description || "",
+            category: data.category || "tools",
+            filename: filename,
+            size: 0,
+            sha256: "",
+            updatedAt: new Date().toISOString(),
+            icon: isAssetPath(iconSrc) ? iconSrc : "assets/icons/system.svg",
+            screenshots: []
+          };
+          manifest.apps.push(entry);
         }
         entry.screenshots = existing.concat(uploaded).slice(0, MAX_SCREENSHOTS);
         entry.updatedAt = new Date().toISOString();
+        if (data.description && !entry.description) entry.description = data.description;
+        if (data.category && !entry.category) entry.category = data.category;
         return saveRemoteManifest(manifest.apps, manifest.sha, token);
       })
       .then(function () {
@@ -1034,17 +1075,34 @@
     });
   }
 
-  var screenshotTokenBtn = document.getElementById("screenshotTokenBtn");
-  if (screenshotTokenBtn) {
-    screenshotTokenBtn.addEventListener("click", function () {
-      var t = requestUploadToken(true);
+  if (modalToggleToken && modalTokenInput) {
+    modalToggleToken.addEventListener("click", function () {
+      var show = modalTokenInput.type === "password";
+      modalTokenInput.type = show ? "text" : "password";
+      modalToggleToken.textContent = show ? "إخفاء التوكن" : "إظهار التوكن";
+    });
+  }
+  if (modalSaveToken && modalTokenInput) {
+    modalSaveToken.addEventListener("click", function () {
+      var t = saveUploadToken(modalTokenInput.value);
       if (t) {
         showToast("تم حفظ التوكن على هذا الجهاز");
-        setScreenshotStatus("تم حفظ التوكن. اختر الصور لإضافتها.");
-      } else if (t === "") {
-        showToast("تم إلغاء/حذف التوكن");
+        setScreenshotStatus("✓ تم حفظ التوكن. اختر الصور لإضافتها (720×1648).");
+      } else {
+        showToast("تم حذف التوكن");
         if (currentModalCard) updateScreenshotManager(currentModalCard);
       }
+    });
+  }
+  if (modalTokenInput) {
+    modalTokenInput.addEventListener("input", function () {
+      saveUploadToken(modalTokenInput.value);
+    });
+    modalTokenInput.addEventListener("paste", function () {
+      setTimeout(function () {
+        saveUploadToken(modalTokenInput.value);
+        if (currentModalCard) updateScreenshotManager(currentModalCard);
+      }, 0);
     });
   }
 

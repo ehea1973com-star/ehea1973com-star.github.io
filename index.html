@@ -14,7 +14,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Yahya Tech">
-  <script src="assets/theme.js?v=20261118-9"></script>
+  <script src="assets/theme.js?v=20261118-10"></script>
   <link rel="canonical" href="https://ehea1973com-star.github.io/">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
@@ -32,7 +32,7 @@
   <meta name="twitter:title" content="Yahya Tech | يحيى الحمزة">
   <meta name="twitter:description" content="تطبيقات أندرويد وأدوات تشخيص هواتف أوفلاين.">
   <meta name="twitter:image" content="https://ehea1973com-star.github.io/assets/icons/app-512.png">
-  <link rel="stylesheet" href="assets/style.css?v=20261118-9">
+  <link rel="stylesheet" href="assets/style.css?v=20261118-10">
   <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
   <script type="application/ld+json">
   {
@@ -527,10 +527,15 @@
       <div class="screenshot-manager" id="screenshotManager" hidden>
         <div class="screenshot-manager-actions" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px">
           <label class="btn btn-ghost btn-small" for="modalScreenshotInput">إضافة لقطات شاشة</label>
-          <button class="btn btn-ghost btn-small" type="button" id="screenshotTokenBtn">إدخال/تغيير GitHub Token</button>
         </div>
+        <div class="screenshot-token-row" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0">
+          <input id="modalTokenInput" type="password" placeholder="الصق GitHub Token هنا" autocomplete="off" spellcheck="false" style="flex:1;min-width:180px;padding:8px 10px;border-radius:10px;border:1px solid var(--line,rgba(255,255,255,.12));background:var(--surface-2,rgba(255,255,255,.04));color:inherit">
+          <button class="btn btn-ghost btn-small" type="button" id="modalToggleToken">إظهار التوكن</button>
+          <button class="btn btn-ghost btn-small" type="button" id="modalSaveToken">حفظ التوكن</button>
+        </div>
+        <small style="display:block;color:var(--muted,#a8b3cf);margin-bottom:6px">يُحفظ التوكن تلقائيًا على هذا الجهاز. المطلوب: Fine-grained token للمستودع <span dir="ltr">ehea1973com-star.github.io</span> بصلاحية <strong>Contents: Read and write</strong>.</small>
         <input id="modalScreenshotInput" type="file" accept="image/png,image/jpeg,image/webp,image/*" multiple hidden>
-        <span class="screenshot-manager-status" id="screenshotManagerStatus">حتى 3 صور، الحجم المطلوب 720×1648. يلزم Fine-grained Token للمستودع ehea1973com-star.github.io بصلاحية Contents: Read and write.</span>
+        <span class="screenshot-manager-status" id="screenshotManagerStatus">حتى 3 صور، الحجم المطلوب 720×1648.</span>
       </div>
       <div class="share-row" aria-label="مشاركة التطبيق">
         <span class="share-label">مشاركة:</span>
@@ -568,12 +573,12 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="assets/analytics.js?v=20261118-9" defer></script>
-  <script src="assets/firebase-config.js?v=20261118-9" defer></script>
-  <script src="assets/auth.js?v=20261118-9" defer></script>
-  <script src="assets/script.js?v=20261118-9" defer></script>
-  <script src="assets/clock.js?v=20261118-9" defer></script>
-  <script src="assets/audio.js?v=20261118-9" defer></script>
-  <script src="assets/pwa.js?v=20261118-9" defer></script>
+  <script src="assets/analytics.js?v=20261118-10" defer></script>
+  <script src="assets/firebase-config.js?v=20261118-10" defer></script>
+  <script src="assets/auth.js?v=20261118-10" defer></script>
+  <script src="assets/script.js?v=20261118-10" defer></script>
+  <script src="assets/clock.js?v=20261118-10" defer></script>
+  <script src="assets/audio.js?v=20261118-10" defer></script>
+  <script src="assets/pwa.js?v=20261118-10" defer></script>
 </body>
 </html>
