@@ -754,22 +754,34 @@
   function updateScreenshotManager(card) {
     if (!screenshotManager) return;
     var data = card ? getCardData(card) : null;
-    var packageName = card ? card.getAttribute("data-package") : "";
     var remaining = data ? MAX_SCREENSHOTS - data.screenshots.length : 0;
-    var canAdd = !!(packageName && data && remaining > 0);
+    var canAdd = !!(data && remaining > 0);
     screenshotManager.hidden = !canAdd;
-    if (!canAdd) return;
+    if (screenshotInput) {
+      screenshotInput.disabled = !canAdd;
+      screenshotInput.value = "";
+    }
+    if (!canAdd) {
+      setScreenshotStatus(data && remaining <= 0 ? "الحد الأقصى 3 لقطات لهذا التطبيق." : "");
+      return;
+    }
     setScreenshotStatus(
       getUploadToken()
-        ? "يمكنك إضافة " + remaining + " صور، كل صورة 1 MB."
-        : "سيُطلب منك GitHub Token مرة واحدة عند أول رفع."
+        ? "اختر الصور من جهازك لإضافتها (حتى " + remaining + " صور، كل صورة 1 MB)."
+        : "اضغط «إضافة لقطات شاشة» واختر الصور؛ سيُطلب منك GitHub Token (Contents: Read and write) مرة واحدة."
     );
   }
 
   function requestUploadToken() {
     var token = getUploadToken();
     if (token) return token;
-    token = window.prompt("أدخل GitHub Token بصلاحية Contents: Read and write لإضافة الصور. سيُحفظ على هذا الجهاز فقط.");
+    token = window.prompt(
+      "لرفع لقطات الشاشة إلى الموقع يلزم GitHub Token.\n\n" +
+      "أنشئه من: GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens\n" +
+      "اختر المستودع: ehea1973com-star.github.io\n" +
+      "الصلاحية المطلوبة: Contents → Read and write\n\n" +
+      "الصق التوكن هنا (سيُحفظ على هذا الجهاز فقط):"
+    );
     token = token ? token.trim() : "";
     if (token) {
       try {
@@ -856,8 +868,15 @@
         showToast("تمت إضافة لقطات الشاشة بنجاح");
       })
       .catch(function (error) {
-        setScreenshotStatus("فشل رفع الصور");
-        showToast("فشل رفع الصور: " + (error && error.message ? error.message : String(error)));
+        var msg = error && error.message ? error.message : String(error);
+        if (/401|403|Bad credentials/i.test(msg)) {
+          try { window.localStorage.removeItem(UPLOAD_TOKEN_KEY); } catch (e) {}
+          setScreenshotStatus("التوكن غير صالح أو بلا صلاحية. جرّب مرة أخرى وأدخل توكنًا جديدًا بصلاحية Contents: Read and write.");
+          showToast("التوكن غير صالح أو بلا صلاحية (Contents: Read and write).");
+        } else {
+          setScreenshotStatus("فشل رفع الصور");
+          showToast("فشل رفع الصور: " + msg);
+        }
       })
       .then(function () {
         if (screenshotInput) {
