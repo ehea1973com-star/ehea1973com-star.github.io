@@ -90,6 +90,19 @@
           "type": "image/png"
         }
       ]
+    },
+    {
+      "name": "إعدادات الموقع",
+      "short_name": "الإعدادات",
+      "description": "الثيم، الأصوات، ومسح الكاش",
+      "url": "./settings.html",
+      "icons": [
+        {
+          "src": "assets/icons/app-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }

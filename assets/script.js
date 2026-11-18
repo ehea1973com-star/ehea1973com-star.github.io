@@ -625,9 +625,19 @@
     if (resultCount) resultCount.textContent = "عرض " + visible + " من " + cards.length;
   }
 
+  function cardExists(key) {
+    var cards = getCards();
+    for (var i = 0; i < cards.length; i += 1) {
+      if (cards[i].getAttribute("data-share-key") === key || cards[i].getAttribute("data-package") === key) return true;
+    }
+    return false;
+  }
+
   function makePhoneAppCard(app, index) {
     if (!app || !app.name || !app.filename) return null;
     if (!/^[A-Za-z0-9._-]+\.apk$/.test(app.filename)) return null;
+    var shareKey = app.package || app.name;
+    if (cardExists(shareKey)) return null;
     var colors = ["icon-cyan", "icon-gold", "icon-violet", "icon-rose", "icon-green", "icon-blue"];
     var category = CATEGORY_LABELS[app.category] ? app.category : "tools";
     var screenshots = Array.isArray(app.screenshots) ? app.screenshots.filter(isAssetPath) : [];
@@ -1002,7 +1012,11 @@
           }
         });
         var counter = document.querySelector("[data-app-count]");
-        if (counter && added) counter.textContent = String(appCountBase + added);
+        if (counter && added) {
+          var base = parseInt(counter.textContent, 10);
+          if (isNaN(base)) base = appCountBase;
+          counter.textContent = String(base + added);
+        }
         applyFilters();
         openDeepLink();
       })

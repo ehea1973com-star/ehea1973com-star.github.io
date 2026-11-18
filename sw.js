@@ -1,3 +1,5 @@
+var SW_VERSION = "20261118-2";
+
 self.addEventListener("install", function (event) {
   event.waitUntil(self.skipWaiting());
 });
@@ -12,6 +14,12 @@ self.addEventListener("activate", function (event) {
       return self.clients.claim();
     })
   );
+});
+
+self.addEventListener("message", function (event) {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener("fetch", function () {});
