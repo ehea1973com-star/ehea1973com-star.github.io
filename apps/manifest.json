@@ -146,6 +146,22 @@
         "assets/uploads/screens/yahya-manager-2-1795071957577-2.jpg",
         "assets/uploads/screens/yahya-manager-2-1795071957577-3.jpg"
       ]
+    },
+    {
+      "name": "Yahya RepairLive",
+      "package": "Yahya RepairLive",
+      "version": "1.6.1",
+      "description": "تطبيق إصلاح وبث مباشر مستقل، مع محادثة داخل الفيديو وتحسينات اتصال TURN.",
+      "category": "tools",
+      "filename": "yahya-repairlive.apk",
+      "size": 0,
+      "sha256": "",
+      "updatedAt": "2026-11-19T07:09:29.859Z",
+      "icon": "assets/icons/repair.svg",
+      "screenshots": [
+        "assets/uploads/screens/yahya-repairlive-1795072156910-1.jpg",
+        "assets/uploads/screens/yahya-repairlive-1795072156910-2.jpg"
+      ]
     }
   ]
 }
