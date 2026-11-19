@@ -150,5 +150,21 @@ window.YAHYA_APP_CATALOG = [
     download: "apps/com.yahya.royalkeyboard-v4.1.apk",
     type: "APK"
   }
+,
+  {
+    id: "ehya-apk-bridge",
+    name: "خزنة APK يحيى حمزة",
+    package: "com.ehyahmza.apkbridge",
+    version: "v1.0",
+    size: "165 KB",
+    platform: "Android 5.0+",
+    languages: "عربي",
+    category: "tools",
+    icon: "assets/icons/system.svg",
+    iconClass: "icon-cyan",
+    description: "خزنة ونسخ احتياطي واسترجاع ومشاركة ملفات APK مع بصمة SHA-256، وجسر تبادل عبر GitHub (inbox/outbox) مع تثبيت بعد الموافقة.",
+    download: "apps/com.ehyahmza.apkbridge-v1.0.apk",
+    type: "APK"
+  }
 
 ];
