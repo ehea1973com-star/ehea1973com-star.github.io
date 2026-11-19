@@ -93,8 +93,13 @@
       "filename": "com.yahya.khayal-v0.7.2.apk",
       "size": 22811452,
       "sha256": "76b9027967ef193db6c702a2f6f8e22533a71049db92dc7adf206a3f40617608",
-      "updatedAt": "2026-11-17T12:55:00.891Z",
-      "icon": "assets/icons/system.svg"
+      "updatedAt": "2026-11-19T07:20:28.824Z",
+      "icon": "assets/icons/system.svg",
+      "screenshots": [
+        "assets/uploads/screens/com.yahya.khayal-1795072816328-1.jpg",
+        "assets/uploads/screens/com.yahya.khayal-1795072816328-2.jpg",
+        "assets/uploads/screens/com.yahya.khayal-1795072816328-3.jpg"
+      ]
     },
     {
       "name": "ناسخ التطبيقات",
