@@ -129,6 +129,23 @@
         "assets/uploads/screens/-1795071776331-2.jpg",
         "assets/uploads/screens/-1795071776331-3.jpg"
       ]
+    },
+    {
+      "name": "Yahya Manager 2",
+      "package": "Yahya Manager 2",
+      "version": "2.0.0",
+      "description": "أدوات إدارة وتشخيص متقدمة للأجهزة، مع واجهة تقنية موجهة للمستخدم المتقدم.",
+      "category": "tools",
+      "filename": "yahya-manager-2.apk",
+      "size": 0,
+      "sha256": "",
+      "updatedAt": "2026-11-19T07:06:06.818Z",
+      "icon": "assets/icons/manager.svg",
+      "screenshots": [
+        "assets/uploads/screens/yahya-manager-2-1795071957577-1.jpg",
+        "assets/uploads/screens/yahya-manager-2-1795071957577-2.jpg",
+        "assets/uploads/screens/yahya-manager-2-1795071957577-3.jpg"
+      ]
     }
   ]
 }
