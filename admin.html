@@ -11,13 +11,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Yahya Tech">
-  <script src="assets/theme.js?v=20261118-25"></script>
+  <script src="assets/theme.js?v=20261118-26"></script>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/app-192.png">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="assets/style.css?v=20261118-25">
-  <link rel="stylesheet" href="assets/admin.css?v=20261118-25">
+  <link rel="stylesheet" href="assets/style.css?v=20261118-26">
+  <link rel="stylesheet" href="assets/admin.css?v=20261118-26">
 </head>
 <body>
   <div class="page-glow" aria-hidden="true"></div>
@@ -260,6 +260,39 @@
           </ol>
         </div>
       </div>
+
+      <div class="admin-card edit-card" id="editPublishedCard">
+        <span class="eyebrow">تعديل بعد النشر</span>
+        <h1>تعديل تطبيق منشور</h1>
+        <p class="muted">غيّر الأيقونة والوصف لأي تطبيق منشور (من القائمة). الحفظ يحتاج GitHub Token أعلاه بصلاحية <strong>Contents: Read and write</strong>.</p>
+        <div class="admin-form" id="editAppForm">
+          <div class="field field-wide">
+            <label for="editAppSelect">اختر التطبيق</label>
+            <select id="editAppSelect"><option value="">— جارٍ تحميل القائمة —</option></select>
+          </div>
+          <div class="field">
+            <label>الأيقونة الحالية</label>
+            <div style="display:flex;align-items:center;gap:12px;min-height:72px">
+              <img id="editIconPreview" src="assets/icons/system.svg" alt="" style="width:64px;height:64px;object-fit:contain;border-radius:14px;background:rgba(255,255,255,0.06);border:1px solid var(--line)">
+              <small id="editAppMeta" class="muted"></small>
+            </div>
+          </div>
+          <div class="field">
+            <label for="editIconFile">أيقونة جديدة (اختياري)</label>
+            <input id="editIconFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+            <small>PNG أو JPG أو WEBP أو SVG حتى 1 MB.</small>
+          </div>
+          <div class="field field-wide">
+            <label for="editDescription">الوصف</label>
+            <textarea id="editDescription" rows="4" maxlength="500" placeholder="وصف التطبيق..."></textarea>
+          </div>
+          <div class="field field-wide admin-actions">
+            <button class="btn" type="button" id="editSaveBtn">حفظ التعديلات</button>
+            <button class="btn btn-ghost" type="button" id="editReloadBtn">تحديث القائمة</button>
+          </div>
+        </div>
+        <div class="admin-status" id="editStatus" role="status" aria-live="polite"></div>
+      </div>
     </div>
   </main>
 
@@ -271,13 +304,13 @@
     <p>لوحة إدارة خاصة بمالك الموقع. لا تُشارك رابط التوكن أو كلمة المرور.</p>
   </footer>
 
-  <script src="assets/i18n.js?v=20261118-25" defer></script>
-  <script src="assets/firebase-config.js?v=20261118-25" defer></script>
-  <script src="assets/analytics.js?v=20261118-25" defer></script>
-  <script src="assets/auth.js?v=20261118-25" defer></script>
-  <script src="assets/catalog.js?v=20261118-25" defer></script>
-  <script src="assets/admin.js?v=20261118-25" defer></script>
-  <script src="assets/dashboard.js?v=20261118-25" defer></script>
-  <script src="assets/pwa.js?v=20261118-25" defer></script>
+  <script src="assets/i18n.js?v=20261118-26" defer></script>
+  <script src="assets/firebase-config.js?v=20261118-26" defer></script>
+  <script src="assets/analytics.js?v=20261118-26" defer></script>
+  <script src="assets/auth.js?v=20261118-26" defer></script>
+  <script src="assets/catalog.js?v=20261118-26" defer></script>
+  <script src="assets/admin.js?v=20261118-26" defer></script>
+  <script src="assets/dashboard.js?v=20261118-26" defer></script>
+  <script src="assets/pwa.js?v=20261118-26" defer></script>
 </body>
 </html>

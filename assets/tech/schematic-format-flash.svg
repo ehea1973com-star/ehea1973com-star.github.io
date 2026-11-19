@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0ea5e9"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
+  <rect width="900" height="420" fill="#0b1220"/>
+  <text x="450" y="36" fill="#e5eefc" font-size="22" font-family="Arial" text-anchor="middle" font-weight="700">مسار الفرمتة وتنزيل السوفتوير (عام)</text>
+  <rect x="30" y="70" width="180" height="70" rx="12" fill="#111827" stroke="#22d3ee"/><text x="120" y="100" fill="#fff" font-size="14" text-anchor="middle">1) نسخ احتياطي</text><text x="120" y="122" fill="#9fb3d1" font-size="11" text-anchor="middle">صور/ملفات/حسابات</text>
+  <rect x="250" y="70" width="180" height="70" rx="12" fill="#111827" stroke="#22d3ee"/><text x="340" y="100" fill="#fff" font-size="14" text-anchor="middle">2) شحن 50%+</text><text x="340" y="122" fill="#9fb3d1" font-size="11" text-anchor="middle">وكابل USB أصلي</text>
+  <rect x="470" y="70" width="180" height="70" rx="12" fill="#111827" stroke="#22d3ee"/><text x="560" y="100" fill="#fff" font-size="14" text-anchor="middle">3) تحميل ROM</text><text x="560" y="122" fill="#9fb3d1" font-size="11" text-anchor="middle">رسمي مطابق للموديل</text>
+  <rect x="690" y="70" width="180" height="70" rx="12" fill="#111827" stroke="#22d3ee"/><text x="780" y="100" fill="#fff" font-size="14" text-anchor="middle">4) وضع الفلاش</text><text x="780" y="122" fill="#9fb3d1" font-size="11" text-anchor="middle">Fastboot/Download/EDL</text>
+  <line x1="210" y1="105" x2="250" y2="105" stroke="#38bdf8" stroke-width="3"/><line x1="430" y1="105" x2="470" y2="105" stroke="#38bdf8" stroke-width="3"/><line x1="650" y1="105" x2="690" y2="105" stroke="#38bdf8" stroke-width="3"/>
+  <rect x="140" y="200" width="180" height="70" rx="12" fill="#111827" stroke="#34d399"/><text x="230" y="230" fill="#fff" font-size="14" text-anchor="middle">5) أداة الفلاش</text><text x="230" y="252" fill="#9fb3d1" font-size="11" text-anchor="middle">Odin/MiFlash/ADB</text>
+  <rect x="360" y="200" width="180" height="70" rx="12" fill="#111827" stroke="#34d399"/><text x="450" y="230" fill="#fff" font-size="14" text-anchor="middle">6) فلاش/فورمات</text><text x="450" y="252" fill="#9fb3d1" font-size="11" text-anchor="middle">اتبع الخيار الآمن</text>
+  <rect x="580" y="200" width="180" height="70" rx="12" fill="#111827" stroke="#34d399"/><text x="670" y="230" fill="#fff" font-size="14" text-anchor="middle">7) إقلاع أول</text><text x="670" y="252" fill="#9fb3d1" font-size="11" text-anchor="middle">قد يستغرق دقائق</text>
+  <line x1="780" y1="140" x2="780" y2="170" stroke="#38bdf8" stroke-width="3"/><line x1="780" y1="170" x2="320" y2="170" stroke="#38bdf8" stroke-width="3"/><line x1="320" y1="170" x2="320" y2="200" stroke="#38bdf8" stroke-width="3"/>
+  <line x1="320" y1="235" x2="360" y2="235" stroke="#34d399" stroke-width="3"/><line x1="540" y1="235" x2="580" y2="235" stroke="#34d399" stroke-width="3"/>
+  <rect x="30" y="310" width="840" height="85" rx="14" fill="#111827" stroke="#f59e0b"/>
+  <text x="450" y="338" fill="#fde68a" font-size="14" text-anchor="middle" font-weight="700">تنبيهات مهمة</text>
+  <text x="450" y="360" fill="#e5eefc" font-size="12" text-anchor="middle">الفورمات/الفلاش قد يمسح البيانات وقد يفعّل قفل FRP (حساب Google/Samsung/Xiaomi) — تأكد من معرفة بيانات الحساب.</text>
+  <text x="450" y="380" fill="#e5eefc" font-size="12" text-anchor="middle">استخدم رومًا رسميًا مطابقًا للموديل/المنطقة (CSC) وتجنب قطع الاتصال أثناء العملية.</text>
+</svg>

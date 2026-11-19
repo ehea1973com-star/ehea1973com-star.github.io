@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420">
+  <rect width="900" height="420" fill="#0b1220"/>
+  <text x="450" y="34" fill="#e5eefc" font-size="22" font-family="Arial" text-anchor="middle" font-weight="700">مخطط تدفق للهندسة العكسية (برمجيات/تطبيقات)</text>
+  <rect x="40" y="80" width="170" height="70" rx="12" fill="#111827" stroke="#38bdf8"/><text x="125" y="110" fill="#fff" font-size="13" text-anchor="middle">جمع العينة</text><text x="125" y="130" fill="#9fb3d1" font-size="11" text-anchor="middle">APK/ملف/فيرموير</text>
+  <rect x="240" y="80" width="170" height="70" rx="12" fill="#111827" stroke="#38bdf8"/><text x="325" y="110" fill="#fff" font-size="13" text-anchor="middle">تحليل ثابت</text><text x="325" y="130" fill="#9fb3d1" font-size="11" text-anchor="middle">Ghidra/JADX/strings</text>
+  <rect x="440" y="80" width="170" height="70" rx="12" fill="#111827" stroke="#38bdf8"/><text x="525" y="110" fill="#fff" font-size="13" text-anchor="middle">تحليل ديناميكي</text><text x="525" y="130" fill="#9fb3d1" font-size="11" text-anchor="middle">Frida/Debugger</text>
+  <rect x="640" y="80" width="220" height="70" rx="12" fill="#111827" stroke="#34d399"/><text x="750" y="110" fill="#fff" font-size="13" text-anchor="middle">توثيق النتائج</text><text x="750" y="130" fill="#9fb3d1" font-size="11" text-anchor="middle">ثغرات/سلوك/تصحيح</text>
+  <line x1="210" y1="115" x2="240" y2="115" stroke="#38bdf8" stroke-width="3"/><line x1="410" y1="115" x2="440" y2="115" stroke="#38bdf8" stroke-width="3"/><line x1="610" y1="115" x2="640" y2="115" stroke="#34d399" stroke-width="3"/>
+  <rect x="70" y="210" width="760" height="170" rx="14" fill="#111827" stroke="#f59e0b"/>
+  <text x="450" y="240" fill="#fde68a" font-size="15" text-anchor="middle" font-weight="700">أدوات شائعة (تعليمية)</text>
+  <text x="160" y="275" fill="#e5eefc" font-size="13">• JADX / apktool (APK)</text>
+  <text x="160" y="300" fill="#e5eefc" font-size="13">• Ghidra / IDA Free (ثنائيات)</text>
+  <text x="160" y="325" fill="#e5eefc" font-size="13">• Frida / objection (ديناميكي)</text>
+  <text x="160" y="350" fill="#e5eefc" font-size="13">• Wireshark / mitmproxy (شبكة)</text>
+  <text x="520" y="275" fill="#e5eefc" font-size="13">• strings / binwalk / hexdump</text>
+  <text x="520" y="300" fill="#e5eefc" font-size="13">• ADB / logcat (أندرويد)</text>
+  <text x="520" y="325" fill="#e5eefc" font-size="13">• QEMU / emulators (بيئات)</text>
+  <text x="520" y="350" fill="#e5eefc" font-size="13">• التزم بالقانون وحقوق الملكية</text>
+</svg>

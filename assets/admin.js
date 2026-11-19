@@ -522,6 +522,202 @@
     }
   });
 
+  // ---- Edit published app (icon/description) ----
+  var editAppSelect = document.getElementById("editAppSelect");
+  var editIconPreview = document.getElementById("editIconPreview");
+  var editIconFile = document.getElementById("editIconFile");
+  var editDescription = document.getElementById("editDescription");
+  var editSaveBtn = document.getElementById("editSaveBtn");
+  var editReloadBtn = document.getElementById("editReloadBtn");
+  var editStatus = document.getElementById("editStatus");
+  var editAppMeta = document.getElementById("editAppMeta");
+  var editApps = [];
+  var editLoaded = false;
+
+  function setEditStatus(message, type) {
+    if (!editStatus) return;
+    editStatus.textContent = message || "";
+    editStatus.className = "admin-status show" + (type ? " " + type : "");
+    if (!message) editStatus.className = "admin-status";
+  }
+
+  function appKey(app) {
+    if (!app) return "";
+    return String(app.package || app.id || app.name || "").trim();
+  }
+
+  async function loadEditApps() {
+    if (!editAppSelect) return;
+    setEditStatus("جارٍ تحميل قائمة التطبيقات...", "");
+    try {
+      var manifestApps = [];
+      try {
+        var res = await fetch("apps/manifest.json?t=" + Date.now(), { cache: "no-store" });
+        if (res && res.ok) {
+          var data = await res.json();
+          manifestApps = Array.isArray(data) ? data : (data && Array.isArray(data.apps) ? data.apps : []);
+        }
+      } catch (e) {}
+      var catalogApps = (window.YAHYA_APP_CATALOG || []).slice();
+      var map = {};
+      var list = [];
+      function add(app, source) {
+        var k = appKey(app);
+        if (!k) return;
+        if (!map[k]) {
+          var item = {};
+          for (var p in app) { if (Object.prototype.hasOwnProperty.call(app, p)) item[p] = app[p]; }
+          item._key = k;
+          item._source = source;
+          map[k] = item;
+          list.push(item);
+        } else {
+          var m = map[k];
+          if (source === "manifest") {
+            if (app.description) m.description = app.description;
+            if (app.icon) m.icon = app.icon;
+            if (app.name) m.name = app.name;
+            if (app.package) m.package = app.package;
+            if (app.category) m.category = app.category;
+            if (app.version) m.version = app.version;
+            if (app.filename) m.filename = app.filename;
+          } else {
+            if (!m.download && app.download) m.download = app.download;
+            if (!m.id && app.id) m.id = app.id;
+          }
+        }
+      }
+      catalogApps.forEach(function (a) { add(a, "catalog"); });
+      manifestApps.forEach(function (a) { add(a, "manifest"); });
+      list.sort(function (a, b) { return String(a.name || a._key).localeCompare(String(b.name || b._key), "ar"); });
+      editApps = list;
+      editAppSelect.innerHTML = '<option value="">— اختر تطبيقًا —</option>';
+      list.forEach(function (a, i) {
+        var opt = document.createElement("option");
+        opt.value = String(i);
+        opt.textContent = (a.name || a._key) + (a.package ? " (" + a.package + ")" : "");
+        editAppSelect.appendChild(opt);
+      });
+      editLoaded = true;
+      setEditStatus("تم تحميل " + list.length + " تطبيقًا. اختر تطبيقًا للتعديل.", "ok");
+      if (list.length) { editAppSelect.value = "0"; onEditSelect(); }
+    } catch (err) {
+      setEditStatus("تعذر تحميل القائمة: " + (err && err.message ? err.message : String(err)), "error");
+    }
+  }
+
+  function onEditSelect() {
+    if (!editAppSelect) return;
+    var idx = editAppSelect.value;
+    var app = (idx !== "" && editApps[Number(idx)]) ? editApps[Number(idx)] : null;
+    if (!app) {
+      if (editDescription) editDescription.value = "";
+      if (editIconPreview) editIconPreview.src = "assets/icons/system.svg";
+      if (editAppMeta) editAppMeta.textContent = "";
+      if (editIconFile) editIconFile.value = "";
+      return;
+    }
+    if (editDescription) editDescription.value = app.description || "";
+    if (editIconPreview) editIconPreview.src = (app.icon && typeof app.icon === "string") ? app.icon : "assets/icons/system.svg";
+    if (editAppMeta) editAppMeta.textContent = [app.package || app.id || "", app.version || "", app.category || ""].filter(Boolean).join(" • ");
+    if (editIconFile) editIconFile.value = "";
+  }
+
+  async function saveEditApp() {
+    if (!editAppSelect) return;
+    var idx = editAppSelect.value;
+    var app = (idx !== "" && editApps[Number(idx)]) ? editApps[Number(idx)] : null;
+    if (!app) return setEditStatus("اختر تطبيقًا أولًا.", "error");
+    var token = persistToken(tokenInput ? tokenInput.value : "");
+    if (!token) return setEditStatus("أدخل GitHub Token أولًا (في حقل التوكن بالأعلى) بصلاحية Contents: Read and write.", "error");
+    var newDesc = editDescription ? String(editDescription.value || "").trim() : (app.description || "");
+    var iconFile = editIconFile && editIconFile.files ? editIconFile.files[0] : null;
+    if (editSaveBtn) { editSaveBtn.disabled = true; editSaveBtn.textContent = "جارٍ الحفظ..."; }
+    try {
+      var iconPath = (app.icon && /^assets\/[A-Za-z0-9._\/-]+$/.test(app.icon) && app.icon.indexOf("..") === -1) ? app.icon : "assets/icons/system.svg";
+      if (iconFile) {
+        var ext = String(iconFile.name.split(".").pop() || "png").toLowerCase();
+        if (!/^(png|jpe?g|webp|svg)$/.test(ext)) throw new Error("الأيقونة يجب أن تكون PNG أو JPG أو WEBP أو SVG.");
+        if (iconFile.size > 1024 * 1024) throw new Error("حجم الأيقونة أكبر من 1 MB.");
+        var slugKey = slug(app.package || app.id || app.name || "app") || "app";
+        iconPath = "assets/uploads/" + slugKey + "." + ext;
+        setEditStatus("جارٍ رفع الأيقونة...", "");
+        var buf = await readFile(iconFile);
+        var b64 = bytesToBase64(new Uint8Array(buf));
+        var existingIcon = await getFile(iconPath, token);
+        await putFile(iconPath, b64, "Update icon for " + (app.name || slugKey), existingIcon ? existingIcon.sha : null, token);
+      }
+
+      setEditStatus("جارٍ تحديث قائمة التطبيقات...", "");
+      var manifest = await loadManifest(token);
+      var key = app._key || appKey(app);
+      var entry = null;
+      for (var i = 0; i < manifest.apps.length; i++) {
+        var a = manifest.apps[i];
+        if (!a) continue;
+        var ak = String(a.package || a.name || "");
+        if ((app.package && a.package === app.package) || (app.name && a.name === app.name) || ak === key) { entry = a; break; }
+      }
+      if (!entry) {
+        var dl = String(app.download || "");
+        var filename = (app.filename || "");
+        if (!filename) {
+          var m1 = /([^\/?#]+\.apk)(?:[?#]|$)/i.exec(dl);
+          var m2 = /([^\/?#]+\.zip)(?:[?#]|$)/i.exec(dl);
+          if (m1) filename = m1[1];
+          else if (m2) filename = m2[1];
+        }
+        var ver = String(app.version || "1.0").replace(/^v/i, "");
+        var pkg = app.package || "";
+        if (!pkg && app.id && String(app.id).indexOf(".") >= 0) pkg = app.id;
+        entry = {
+          name: app.name || key,
+          package: pkg || key,
+          version: ver,
+          description: newDesc,
+          category: app.category || "tools",
+          filename: filename || "",
+          size: (typeof app.size === "number" ? app.size : 0),
+          sha256: app.sha256 || "",
+          updatedAt: new Date().toISOString(),
+          icon: iconPath,
+          screenshots: Array.isArray(app.screenshots) ? app.screenshots : []
+        };
+        manifest.apps.push(entry);
+      } else {
+        entry.description = newDesc;
+        entry.icon = iconPath;
+        entry.updatedAt = new Date().toISOString();
+        if (!entry.category && app.category) entry.category = app.category;
+      }
+      var manifestText = JSON.stringify({ apps: manifest.apps }, null, 2) + "\n";
+      await putFile("apps/manifest.json", encodeText(manifestText), "Update app details: " + (app.name || key), manifest.file ? manifest.file.sha : null, token);
+      app.description = newDesc; app.icon = iconPath;
+      if (editIconPreview) editIconPreview.src = iconPath;
+      setEditStatus("تم حفظ التعديلات لـ " + (app.name || key) + ". قد تحتاج الصفحة الرئيسية دقيقة أو اثنتين لتظهر التغييرات بعد نشر GitHub Pages.", "ok");
+      editLoaded = false;
+    } catch (err) {
+      setEditStatus("فشل الحفظ: " + (err && err.message ? err.message : String(err)), "error");
+    } finally {
+      if (editSaveBtn) { editSaveBtn.disabled = false; editSaveBtn.textContent = "حفظ التعديلات"; }
+    }
+  }
+
+  if (editAppSelect) editAppSelect.addEventListener("change", onEditSelect);
+  if (editSaveBtn) editSaveBtn.addEventListener("click", function(){ saveEditApp(); });
+  if (editReloadBtn) editReloadBtn.addEventListener("click", function(){ editLoaded = false; loadEditApps(); });
+  if (editIconFile) editIconFile.addEventListener("change", function(){
+    var f = editIconFile.files && editIconFile.files[0];
+    if (f && editIconPreview) {
+      try { editIconPreview.src = URL.createObjectURL(f); } catch(e){}
+    }
+  });
+  function maybeLoadEdit() {
+    if (adminContent && !adminContent.hidden && !editLoaded && editAppSelect) loadEditApps();
+  }
+  window.addEventListener("yahya-auth-change", maybeLoadEdit);
+  setTimeout(maybeLoadEdit, 300);
+
   document.addEventListener("yahya:langchange", function () {
     if (toggleToken && tokenInput) {
       var show = tokenInput.type === "text";

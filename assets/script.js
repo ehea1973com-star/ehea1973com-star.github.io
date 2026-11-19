@@ -1172,12 +1172,33 @@
             added += 1;
           } else {
             var key = app.package || app.name;
+            var key2 = app.id || "";
             var cards = getCards();
             for (var i = 0; i < cards.length; i += 1) {
               var existingCard = cards[i];
-              if (existingCard.getAttribute("data-share-key") === key || existingCard.getAttribute("data-package") === key) {
+              var sk = existingCard.getAttribute("data-share-key") || "";
+              var pk = existingCard.getAttribute("data-package") || "";
+              if (sk === key || pk === key || (key2 && (sk === key2 || pk === key2)) || sk === app.name || pk === app.name) {
                 var shots = Array.isArray(app.screenshots) ? app.screenshots.filter(isAssetPath) : [];
                 if (shots.length) existingCard.setAttribute("data-screenshots", shots.join("|"));
+                if (app.description) {
+                  var descEl = existingCard.querySelector(".app-body p");
+                  if (descEl) descEl.textContent = app.description;
+                }
+                if (app.icon) {
+                  var iconImg = existingCard.querySelector(".app-icon img");
+                  if (iconImg) {
+                    iconImg.src = app.icon;
+                  } else {
+                    var iconDiv = existingCard.querySelector(".app-icon");
+                    if (iconDiv) {
+                      iconDiv.innerHTML = "";
+                      var im = document.createElement("img");
+                      im.src = app.icon; im.alt = ""; im.width = 38; im.height = 38; im.loading = "lazy"; im.decoding = "async";
+                      iconDiv.appendChild(im);
+                    }
+                  }
+                }
                 break;
               }
             }
