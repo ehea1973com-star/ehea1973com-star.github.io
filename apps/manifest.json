@@ -162,6 +162,23 @@
         "assets/uploads/screens/yahya-repairlive-1795072156910-1.jpg",
         "assets/uploads/screens/yahya-repairlive-1795072156910-2.jpg"
       ]
+    },
+    {
+      "name": "Yahya Shield",
+      "package": "Yahya Shield",
+      "version": "2.0",
+      "description": "درع حماية شامل: فحص الروابط عبر VirusTotal، موسوعة أعطال أوفلاين، خلفيات، دليل تفاعلي، قفل بصمة، وسبعة أيقونات للشاشة الرئيسية.",
+      "category": "security",
+      "filename": "yahya-shield.apk",
+      "size": 0,
+      "sha256": "",
+      "updatedAt": "2026-11-19T07:14:46.369Z",
+      "icon": "assets/icons/shield.svg",
+      "screenshots": [
+        "assets/uploads/screens/yahya-shield-1795072462893-1.jpg",
+        "assets/uploads/screens/yahya-shield-1795072462893-2.jpg",
+        "assets/uploads/screens/yahya-shield-1795072462893-3.jpg"
+      ]
     }
   ]
 }
