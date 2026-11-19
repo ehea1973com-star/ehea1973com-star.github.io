@@ -230,6 +230,18 @@
       "sha256": "18105300c352021937f5c3d2b1609658da6d632df8e2d7f30cb788f5095e6b99",
       "updatedAt": "2026-11-19T13:35:26.000Z",
       "icon": "assets/icons/system.svg"
+    },
+    {
+      "name": "حاسبة يحيى برو",
+      "package": "com.ehyahmza.supercalc",
+      "version": "1.0",
+      "description": "حاسبة شاملة بخمس واجهات: أساسية، علمية، مبرمج، مالية وحياة، ومحولات لكل الوحدات مع بحث وسجل وثيمات ونغمات لمس وإعدادات.",
+      "category": "tools",
+      "filename": "com.ehyahmza.supercalc-v1.0.apk",
+      "size": 66079,
+      "sha256": "0419f0f81d7302bc5a3275dbf06dcb37ac74e76dc833dd38df8e4f5c9d833685",
+      "updatedAt": "2026-11-19T20:05:07.000Z",
+      "icon": "assets/uploads/com.ehyahmza.supercalc.png"
     }
   ]
 }

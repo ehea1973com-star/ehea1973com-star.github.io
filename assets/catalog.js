@@ -165,6 +165,20 @@ window.YAHYA_APP_CATALOG = [
     description: "خزنة ونسخ احتياطي واسترجاع ومشاركة ملفات APK مع بصمة SHA-256، وجسر تبادل عبر GitHub (inbox/outbox) مع تثبيت بعد الموافقة.",
     download: "apps/com.ehyahmza.apkbridge-v1.0.apk",
     type: "APK"
+  },
+  {
+    id: "ehya-super-calc",
+    name: "حاسبة يحيى برو",
+    package: "com.ehyahmza.supercalc",
+    version: "v1.0",
+    size: "65 KB",
+    platform: "Android 5.0+",
+    languages: "عربي / English",
+    category: "tools",
+    icon: "assets/uploads/com.ehyahmza.supercalc.png",
+    iconClass: "icon-cyan",
+    description: "حاسبة شاملة بخمس واجهات: أساسية، علمية، مبرمج، مالية وحياة، ومحولات لكل الوحدات مع بحث وسجل وثيمات ونغمات لمس وإعدادات.",
+    download: "apps/com.ehyahmza.supercalc-v1.0.apk",
+    type: "APK"
   }
-
 ];
