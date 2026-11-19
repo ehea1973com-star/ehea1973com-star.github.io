@@ -240,8 +240,13 @@
       "filename": "com.ehyahmza.supercalc-v1.0.apk",
       "size": 66079,
       "sha256": "0419f0f81d7302bc5a3275dbf06dcb37ac74e76dc833dd38df8e4f5c9d833685",
-      "updatedAt": "2026-11-19T20:05:07.000Z",
-      "icon": "assets/uploads/com.ehyahmza.supercalc.png"
+      "updatedAt": "2026-11-19T21:42:37.566Z",
+      "icon": "assets/uploads/com.ehyahmza.supercalc.png",
+      "screenshots": [
+        "assets/uploads/screens/com.ehyahmza.supercalc-1795124521120-1.jpg",
+        "assets/uploads/screens/com.ehyahmza.supercalc-1795124521120-2.jpg",
+        "assets/uploads/screens/com.ehyahmza.supercalc-1795124521120-3.jpg"
+      ]
     }
   ]
 }
