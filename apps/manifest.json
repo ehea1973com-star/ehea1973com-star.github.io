@@ -179,6 +179,23 @@
         "assets/uploads/screens/yahya-shield-1795072462893-2.jpg",
         "assets/uploads/screens/yahya-shield-1795072462893-3.jpg"
       ]
+    },
+    {
+      "name": "Yahya Account Help",
+      "package": "Yahya Account Help",
+      "version": "2.0",
+      "description": "دليل استعادة وحماية الحسابات: خطوات استعادة منظمة، قائمة تحقق للمصادقة الثنائية، نصائح أمان، دليل أوفلاين.",
+      "category": "security",
+      "filename": "yahya-account-help.apk",
+      "size": 0,
+      "sha256": "",
+      "updatedAt": "2026-11-19T07:17:40.722Z",
+      "icon": "assets/icons/account.svg",
+      "screenshots": [
+        "assets/uploads/screens/yahya-account-help-1795072643703-1.jpg",
+        "assets/uploads/screens/yahya-account-help-1795072643703-2.jpg",
+        "assets/uploads/screens/yahya-account-help-1795072643703-3.jpg"
+      ]
     }
   ]
 }
