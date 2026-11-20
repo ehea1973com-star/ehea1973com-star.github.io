@@ -3618,3 +3618,33 @@ html[data-theme="light"] .brightness-btn {
     bottom: 72px;
   }
 }
+
+/* Inline gallery viewer (phone-gallery style) */
+.gallery-inline-view {
+  margin: 10px 0 14px;
+  border: 1px solid var(--line, rgba(255,255,255,.12));
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface-2, rgba(255,255,255,.03));
+}
+.gallery-inline-view[hidden] { display: none !important; }
+.gallery-inline-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+  background: #0b1220;
+}
+.gallery-inline-caption {
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text, #fff);
+  border-top: 1px solid var(--line, rgba(255,255,255,.1));
+}
+.gallery-item.active {
+  outline: 2px solid var(--cyan, #22d3ee);
+  outline-offset: -2px;
+}
