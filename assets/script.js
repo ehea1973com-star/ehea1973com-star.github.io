@@ -1233,7 +1233,8 @@
   }
 })();
 
-// Image/schematic zoom modal (any image click)
+
+// Image gallery + zoom modal (any image click, with prev/next browsing)
 (function initImageZoom(){
   var imageModal = document.getElementById("imageModal");
   if (!imageModal) return;
@@ -1246,7 +1247,12 @@
   var zoomOutBtn = document.getElementById("zoomOutBtn");
   var zoomResetBtn = document.getElementById("zoomResetBtn");
   var zoomDownloadBtn = document.getElementById("zoomDownloadBtn");
+  var zoomPrevBtn = document.getElementById("zoomPrevBtn");
+  var zoomNextBtn = document.getElementById("zoomNextBtn");
+  var zoomCounter = document.getElementById("zoomCounter");
   var zoomScale = 1;
+  var gallery = [];
+  var currentIndex = 0;
 
   function applyZoom(){
     if (!imageModalImg) return;
@@ -1256,25 +1262,92 @@
   function getFileName(src){
     try { return (src.split("?")[0].split("#")[0].split("/").pop()) || "image"; } catch(e){ return "image"; }
   }
-  function openImageModal(src, title, desc){
-    if (!src) return;
-    if (imageModalImg){ imageModalImg.src = src; imageModalImg.alt = title || ""; }
-    if (imageModalTitle) imageModalTitle.textContent = title || "عرض الصورة";
-    if (imageModalDesc) imageModalDesc.textContent = desc || "";
+  function isExcludedImg(img){
+    if (!img) return true;
+    if (img.hasAttribute("data-no-zoom")) return true;
+    if (img.closest && img.closest(".brand, .nav-toggle, .modal-close, .footer-brand, .modal-actions")) return true;
+    return false;
+  }
+  function makeItem(src, title, desc){
+    if (!src) return null;
+    return { src: src, title: title || "عرض الصورة", desc: desc || "" };
+  }
+  function itemFromImg(img){
+    return makeItem(img.currentSrc || img.src || img.getAttribute("src"), img.getAttribute("data-zoom-title") || img.getAttribute("alt"), img.getAttribute("data-zoom-desc"));
+  }
+  function itemFromTrigger(el){
+    var src = el.getAttribute("data-zoom-src") || (el.tagName === "IMG" ? (el.currentSrc || el.src || el.getAttribute("src")) : "");
+    return makeItem(src, el.getAttribute("data-zoom-title") || el.getAttribute("alt"), el.getAttribute("data-zoom-desc"));
+  }
+  function getScope(el){
+    if (!el || !el.closest) return document;
+    return el.closest(".rich-grid, .schematic-grid, .icon-grid, .screenshots-strip, .modal-screenshots, .tech-grid, .google-links, .gallery-grid, .problem-grid") || el.closest("section") || document;
+  }
+  function buildGallery(contextEl, currentItem){
+    var scope = getScope(contextEl);
+    var nodes = Array.prototype.slice.call(scope.querySelectorAll("img, [data-zoom-src]"));
+    var seen = {};
+    var items = [];
+    nodes.forEach(function(node){
+      if (imageModal.contains(node)) return;
+      var it = null;
+      if (node.tagName === "IMG") {
+        if (isExcludedImg(node)) return;
+        it = itemFromImg(node);
+      } else if (node.hasAttribute("data-zoom-src")) {
+        it = itemFromTrigger(node);
+      }
+      if (!it || !it.src) return;
+      var key = it.src;
+      if (seen[key]) return;
+      seen[key] = true;
+      items.push(it);
+    });
+    var idx = 0;
+    if (currentItem && currentItem.src){
+      for (var i=0;i<items.length;i++){ if (items[i].src === currentItem.src){ idx = i; break; } }
+      if (!items.length || items[idx].src !== currentItem.src){ items.unshift(currentItem); idx = 0; }
+    } else if (!items.length && currentItem){ items = [currentItem]; idx = 0; }
+    return { items: items, index: idx };
+  }
+  function updateNav(){
+    var multi = gallery.length > 1;
+    if (zoomPrevBtn){ zoomPrevBtn.style.display = multi ? "" : "none"; }
+    if (zoomNextBtn){ zoomNextBtn.style.display = multi ? "" : "none"; }
+    if (zoomCounter){ zoomCounter.textContent = multi ? ((currentIndex + 1) + " / " + gallery.length) : ""; }
+  }
+  function showIndex(i){
+    if (!gallery.length) return;
+    if (i < 0) i = gallery.length - 1;
+    if (i >= gallery.length) i = 0;
+    currentIndex = i;
+    var it = gallery[currentIndex];
+    if (imageModalImg){ imageModalImg.src = it.src; imageModalImg.alt = it.title || ""; }
+    if (imageModalTitle) imageModalTitle.textContent = it.title || "عرض الصورة";
+    if (imageModalDesc) imageModalDesc.textContent = it.desc || "";
     if (zoomDownloadBtn){
-      zoomDownloadBtn.href = src;
-      zoomDownloadBtn.setAttribute("download", getFileName(src));
+      zoomDownloadBtn.href = it.src;
+      zoomDownloadBtn.setAttribute("download", getFileName(it.src));
       zoomDownloadBtn.setAttribute("target", "_blank");
       zoomDownloadBtn.setAttribute("rel", "noopener");
     }
     zoomScale = 1; applyZoom();
+    if (imageZoomWrap){ try{ imageZoomWrap.scrollTop = 0; imageZoomWrap.scrollLeft = 0; }catch(e){} }
+    updateNav();
+  }
+  function openFrom(contextEl, item){
+    if (!item || !item.src) return;
+    var g = buildGallery(contextEl, item);
+    gallery = g.items;
+    currentIndex = g.index;
     imageModal.hidden = false;
     document.body.classList.add("modal-open");
-    if (imageZoomWrap){ try{ imageZoomWrap.scrollTop = 0; imageZoomWrap.scrollLeft = 0; }catch(e){} }
+    showIndex(currentIndex);
   }
   function closeImageModal(){
     imageModal.hidden = true;
     if (imageModalImg) imageModalImg.src = "";
+    gallery = []; currentIndex = 0;
     var anyOpen = false;
     ["appModal","readerModal","installModal"].forEach(function(id){
       var el = document.getElementById(id);
@@ -1285,34 +1358,53 @@
   if (zoomInBtn) zoomInBtn.addEventListener("click", function(){ zoomScale = Math.min(+(zoomScale + 0.25).toFixed(2), 8); applyZoom(); });
   if (zoomOutBtn) zoomOutBtn.addEventListener("click", function(){ zoomScale = Math.max(+(zoomScale - 0.25).toFixed(2), 0.5); applyZoom(); });
   if (zoomResetBtn) zoomResetBtn.addEventListener("click", function(){ zoomScale = 1; applyZoom(); if(imageZoomWrap){ try{imageZoomWrap.scrollTop=0; imageZoomWrap.scrollLeft=0;}catch(e){} } });
+  if (zoomPrevBtn) zoomPrevBtn.addEventListener("click", function(e){ e.preventDefault(); e.stopPropagation(); showIndex(currentIndex - 1); });
+  if (zoomNextBtn) zoomNextBtn.addEventListener("click", function(e){ e.preventDefault(); e.stopPropagation(); showIndex(currentIndex + 1); });
   Array.prototype.forEach.call(document.querySelectorAll("[data-image-close]"), function(btn){ btn.addEventListener("click", closeImageModal); });
   imageModal.addEventListener("click", function(ev){
     var t = ev.target;
     if (t && t.getAttribute && t.getAttribute("data-image-close") !== null) closeImageModal();
   });
-  document.addEventListener("keydown", function(ev){ if (ev.key === "Escape" && !imageModal.hidden) closeImageModal(); });
-
+  document.addEventListener("keydown", function(ev){
+    if (imageModal.hidden) return;
+    if (ev.key === "Escape") { closeImageModal(); return; }
+    if (ev.key === "ArrowRight" || ev.key === "ArrowDown") { ev.preventDefault(); showIndex(currentIndex + 1); }
+    if (ev.key === "ArrowLeft" || ev.key === "ArrowUp") { ev.preventDefault(); showIndex(currentIndex - 1); }
+  });
+  var touchStartX = null, touchStartY = null;
+  if (imageZoomWrap){
+    imageZoomWrap.addEventListener("touchstart", function(e){
+      if (e.touches && e.touches.length === 1){ touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; }
+      else { touchStartX = null; touchStartY = null; }
+    }, {passive:true});
+    imageZoomWrap.addEventListener("touchend", function(e){
+      if (touchStartX == null || gallery.length <= 1) { touchStartX = null; touchStartY = null; return; }
+      var t0 = e.changedTouches && e.changedTouches[0];
+      if (!t0) { touchStartX = null; touchStartY = null; return; }
+      var dx = t0.clientX - touchStartX;
+      var dy = t0.clientY - touchStartY;
+      touchStartX = null; touchStartY = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)){
+        if (dx < 0) showIndex(currentIndex + 1); else showIndex(currentIndex - 1);
+      }
+    }, {passive:true});
+  }
   document.addEventListener("click", function(ev){
     var t = ev.target;
     if (!t || !t.closest) return;
-    // ignore clicks inside image modal controls except image itself? allow
-    if (imageModal && imageModal.contains(t) && !t.closest("#imageModalImg")) return;
+    if (imageModal && !imageModal.hidden && imageModal.contains(t)) return;
     var trigger = t.closest("[data-zoom-src]");
     if (trigger){
       ev.preventDefault(); ev.stopPropagation();
-      openImageModal(trigger.getAttribute("data-zoom-src"), trigger.getAttribute("data-zoom-title") || trigger.getAttribute("alt") || "عرض الصورة", trigger.getAttribute("data-zoom-desc") || "");
+      openFrom(trigger, itemFromTrigger(trigger));
       return;
     }
     var img = (t.tagName === "IMG") ? t : t.closest("img");
     if (!img) return;
-    // skip icons inside buttons/links where click should do action? still allow zoom for content images; but avoid breaking nav icons: allow zoom but not if parent is menu/logo button small
-    var src = img.currentSrc || img.src || img.getAttribute("src");
-    if (!src) return;
-    if (img.hasAttribute("data-no-zoom")) return;
-    if (img.closest(".brand, .nav-toggle, .modal-close, .footer-brand")) return;
+    if (isExcludedImg(img)) return;
+    var item = itemFromImg(img);
+    if (!item || !item.src) return;
     ev.preventDefault(); ev.stopPropagation();
-    var title = img.getAttribute("data-zoom-title") || img.getAttribute("alt") || "عرض الصورة";
-    var desc = img.getAttribute("data-zoom-desc") || "";
-    openImageModal(src, title, desc);
+    openFrom(img, item);
   }, true);
 })();
