@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Yahya Tech Android bodybuilder logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1220"/>
+      <stop offset="55%" stop-color="#0f2740"/>
+      <stop offset="100%" stop-color="#143b2a"/>
+    </linearGradient>
+    <linearGradient id="android" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7CFF9E"/>
+      <stop offset="45%" stop-color="#3DDC84"/>
+      <stop offset="100%" stop-color="#1FA65A"/>
+    </linearGradient>
+    <linearGradient id="androidDark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2FCB73"/>
+      <stop offset="100%" stop-color="#138A4A"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#3DDC84" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#3DDC84" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#bg)"/>
+  <circle cx="256" cy="210" r="210" fill="url(#glow)"/>
+  <g filter="url(#shadow)" transform="translate(256 286)">
+    <!-- legs -->
+    <rect x="-70" y="92" width="44" height="86" rx="22" fill="url(#android)"/>
+    <rect x="26" y="92" width="44" height="86" rx="22" fill="url(#android)"/>
+    <rect x="-70" y="150" width="44" height="22" rx="11" fill="url(#androidDark)" opacity="0.7"/>
+    <rect x="26" y="150" width="44" height="22" rx="11" fill="url(#androidDark)" opacity="0.7"/>
+
+    <!-- torso (muscular) -->
+    <path d="M-118,-20
+             C-118,-78 -72,-110 0,-110
+             C72,-110 118,-78 118,-20
+             L126,70
+             C126,102 100,128 68,128
+             L-68,128
+             C-100,128 -126,102 -126,70 Z" fill="url(#android)"/>
+    <!-- chest/pecs -->
+    <path d="M-78,-34 C-52,-56 -18,-58 0,-34 C18,-58 52,-56 78,-34 C58,-8 30,4 0,-8 C-30,4 -58,-8 -78,-34 Z" fill="#eafff3" opacity="0.22"/>
+    <path d="M0,-34 L0,8" stroke="#0f5f36" stroke-width="6" stroke-linecap="round" opacity="0.25"/>
+    <!-- abs -->
+    <rect x="-18" y="10" width="36" height="26" rx="10" fill="#eafff3" opacity="0.18"/>
+    <rect x="-18" y="42" width="36" height="26" rx="10" fill="#eafff3" opacity="0.16"/>
+    <rect x="-18" y="74" width="36" height="24" rx="10" fill="#eafff3" opacity="0.14"/>
+    <path d="M0,6 L0,102" stroke="#0f5f36" stroke-width="5" stroke-linecap="round" opacity="0.18"/>
+    <path d="M-22,38 L22,38 M-22,70 L22,70" stroke="#0f5f36" stroke-width="5" stroke-linecap="round" opacity="0.14"/>
+
+    <!-- arms akimbo (hands on waist) -->
+    <!-- left upper arm -->
+    <path d="M-126,-10 C-168,-8 -190,18 -176,48 C-166,72 -140,76 -120,58" fill="none" stroke="url(#android)" stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M-126,-10 C-168,-8 -190,18 -176,48 C-166,72 -140,76 -120,58" fill="none" stroke="#dfffea" stroke-width="14" stroke-linecap="round" opacity="0.12"/>
+    <!-- left forearm to waist -->
+    <path d="M-120,58 C-96,42 -78,44 -62,58" fill="none" stroke="url(#android)" stroke-width="42" stroke-linecap="round"/>
+    <circle cx="-60" cy="60" r="18" fill="url(#androidDark)"/>
+
+    <!-- right upper arm -->
+    <path d="M126,-10 C168,-8 190,18 176,48 C166,72 140,76 120,58" fill="none" stroke="url(#android)" stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M126,-10 C168,-8 190,18 176,48 C166,72 140,76 120,58" fill="none" stroke="#dfffea" stroke-width="14" stroke-linecap="round" opacity="0.12"/>
+    <!-- right forearm to waist -->
+    <path d="M120,58 C96,42 78,44 62,58" fill="none" stroke="url(#android)" stroke-width="42" stroke-linecap="round"/>
+    <circle cx="60" cy="60" r="18" fill="url(#androidDark)"/>
+
+    <!-- head -->
+    <path d="M-92,-118 C-92,-170 -52,-196 0,-196 C52,-196 92,-170 92,-118 Z" fill="url(#android)"/>
+    <!-- antennae -->
+    <rect x="-52" y="-228" width="10" height="40" rx="5" transform="rotate(-25 -47 -208)" fill="url(#android)"/>
+    <rect x="42" y="-228" width="10" height="40" rx="5" transform="rotate(25 47 -208)" fill="url(#android)"/>
+    <circle cx="-64" cy="-232" r="8" fill="#b7ffd0"/>
+    <circle cx="64" cy="-232" r="8" fill="#b7ffd0"/>
+    <!-- eyes -->
+    <circle cx="-30" cy="-150" r="9" fill="#0b1220"/>
+    <circle cx="30" cy="-150" r="9" fill="#0b1220"/>
+    <circle cx="-33" cy="-153" r="3" fill="#ffffff" opacity="0.9"/>
+    <circle cx="27" cy="-153" r="3" fill="#ffffff" opacity="0.9"/>
+    <!-- brow/muscle vibe highlight -->
+    <path d="M-58,-166 C-40,-178 -20,-178 -4,-168" stroke="#0f5f36" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.18"/>
+    <path d="M58,-166 C40,-178 20,-178 4,-168" stroke="#0f5f36" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.18"/>
+  </g>
+</svg>

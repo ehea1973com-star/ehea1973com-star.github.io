@@ -20,7 +20,7 @@
     "404.title":"الصفحة غير موجودة","404.desc":"قد يكون الرابط قديمًا أو تم نقل الصفحة.",
     "clock.local":"الوقت المحلي","clock.live":"تتحدّث كل ثانية","clock.now":"الوقت الآن في دمشق","clock.damascus":"توقيت دمشق","clock.updating":"تحديث مباشر",
     "stats.live":"أرقام مباشرة","stats.updateNote":"تُحدّث عند فتح الصفحة (قد تتأخر ثوانٍ)","stats.visitors":"الزوار","stats.unique":"زائر فريد","stats.registered":"المسجلون","stats.newAccount":"حساب جديد","stats.downloads":"التحميلات","stats.times":"مرة تحميل","stats.clicks":"النقرات","stats.onApps":"على التطبيقات","stats.note":"أرقام تقريبية تبدأ من تفعيل العدّاد. الزائر الفريد يُحتسب مرة واحدة لكل متصفح، والمسجلون الجدد فقط.",
-    "live.videos":"آخر الفيديوهات","live.live":"البث المباشر","live.noteVideos":"يعرض هذا القسم آخر فيديوهات القناة. عند بدء بث مباشر اختر «البث المباشر» أو افتح القناة على يوتيوب.","live.noteLive":"إذا ظهر «غير متوفر» فهذا يعني أن القناة لا تبث الآن. افتح القناة على يوتيوب لمعرفة موعد البث القادم.",
+    "live.videos":"آخر الفيديوهات","live.live":"البث المباشر",    "live.noteVideos":"يعرض هذا القسم آخر فيديوهات القناة. عند بدء بث مباشر اختر «البث المباشر» أو افتح القناة على يوتيوب. إذا لم يظهر التشغيل داخل الموقع افتح القناة مباشرة.","live.noteLive":"إذا ظهر «غير متوفر» فهذا يعني أن القناة لا تبث الآن. افتح القناة على يوتيوب لمعرفة موعد البث القادم. إذا لم يظهر التشغيل داخل الموقع افتح القناة مباشرة.",
     "status.searching":"جارٍ البحث...","status.webSearching":"جارٍ البحث في الإنترنت...","status.searchEmpty":"اكتب كلمة للبحث أولًا","status.tokenMissing":"لم يتم إدخال التوكن، لم تُرفع الصور.","status.preparingUpload":"جارٍ تجهيز الصور ورفعها...","status.copyFail":"تعذّر نسخ الرابط","status.copied":"تم النسخ",
     "settings.langHelp":"اختر لغة واجهة الموقع (كل اللغات مدعومة). يتم الحفظ على هذا الجهاز.","settings.themeHelp":"اختر المظهر المناسب لك.","settings.soundHelp":"تحكم بأصوات النقر على الأزرار والروابط في الموقع.","settings.cacheHelp":"إذا لم تظهر التحديثات أو واجهت مشكلة، امسح كاش المتصفح وملفات Service Worker لهذا الموقع ثم أعد التحميل.","settings.hardReload":"تحديث قوي (بدون كاش)","settings.infoTitle":"معلومات","settings.versionLabel":"إصدار واجهة الموقع:","settings.galleryTitle":"معرض وأدوات سريعة",
     "apps.showing":"عرض","action.quickView":"نظرة سريعة","live.noteLive":"إذا ظهر \"غير متوفر\" فهذا يعني أن القناة لا تبث الآن. افتح القناة على يوتيوب لمعرفة موعد البث القادم.",
@@ -337,11 +337,35 @@
         p.hidden = true; if (b) b.setAttribute("aria-expanded","false");
       }
     }
+    function positionPanel(panel, btn, panelId) {
+      if (!panel || !btn) return;
+      var r = btn.getBoundingClientRect();
+      panel.style.position = "fixed";
+      panel.style.top = Math.max(56, r.bottom + 8) + "px";
+      if (panelId === "siteMenuPanel") {
+        panel.style.insetInlineStart = "8px";
+        panel.style.insetInlineEnd = "auto";
+        panel.style.left = "8px";
+        panel.style.right = "auto";
+      } else {
+        panel.style.insetInlineEnd = "8px";
+        panel.style.insetInlineStart = "auto";
+        panel.style.right = "8px";
+        panel.style.left = "auto";
+      }
+    }
     for (var j = 0; j < pairs.length; j++) {
       (function(pair){
         var btn=document.getElementById(pair.btn), panel=document.getElementById(pair.panel);
         if(!btn||!panel) return;
-        btn.addEventListener("click", function(e){ e.stopPropagation(); var open=panel.hidden; closeAll(open?pair.panel:null); panel.hidden=!open; btn.setAttribute("aria-expanded",open?"true":"false"); });
+        btn.addEventListener("click", function(e){
+          e.stopPropagation();
+          var open=panel.hidden;
+          closeAll(open?pair.panel:null);
+          panel.hidden=!open;
+          btn.setAttribute("aria-expanded",open?"true":"false");
+          if (open) positionPanel(panel, btn, pair.panel);
+        });
       })(pairs[j]);
     }
     document.addEventListener("click", function(e){ var inside=e.target&&e.target.closest&&e.target.closest(".top-panel, .top-menu-btn"); if(!inside) closeAll(null); });

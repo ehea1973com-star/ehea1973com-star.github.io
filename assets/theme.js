@@ -134,8 +134,21 @@
 
     button.addEventListener("click", function (event) {
       event.stopPropagation();
+      var willOpen = menu.hidden;
       menu.hidden = !menu.hidden;
       button.setAttribute("aria-expanded", menu.hidden ? "false" : "true");
+      if (willOpen) {
+        var r = button.getBoundingClientRect();
+        var right = Math.max(8, window.innerWidth - r.right);
+        menu.style.position = "fixed";
+        menu.style.top = (r.bottom + 8) + "px";
+        menu.style.bottom = "auto";
+        menu.style.left = "auto";
+        menu.style.right = right + "px";
+        menu.style.insetInlineStart = "auto";
+        menu.style.insetInlineEnd = right + "px";
+        menu.style.zIndex = "130";
+      }
     });
 
     document.addEventListener("click", function (event) {
@@ -169,10 +182,10 @@
 
   // Brightness control
   var BRIGHT_KEY = "yahya_site_brightness";
-  var BRIGHT_MIN = 0.6;
-  var BRIGHT_MAX = 2.0;
+  var BRIGHT_MIN = 0.5;
+  var BRIGHT_MAX = 1.8;
   var BRIGHT_STEP = 0.1;
-  var BRIGHT_DEFAULT = 1.3;
+  var BRIGHT_DEFAULT = 1.0;
   var brightness = BRIGHT_DEFAULT;
   var brightnessOverlay = null;
 
@@ -202,20 +215,23 @@
     brightness = clampBrightness(val);
     var ov = ensureBrightnessOverlay();
     if (ov) {
+      ov.style.background = "transparent";
+      ov.style.mixBlendMode = "normal";
+      ov.style.width = "100%";
+      ov.style.height = "100%";
+      ov.style.left = "0";
+      ov.style.top = "0";
+      ov.style.right = "0";
+      ov.style.bottom = "0";
       if (Math.abs(brightness - 1) < 0.001) {
-        ov.style.background = "transparent";
-        ov.style.mixBlendMode = "normal";
         ov.style.opacity = "0";
-      } else if (brightness > 1) {
-        var w = Math.min((brightness - 1) * 0.55, 0.5);
-        ov.style.background = "rgba(255,255,255,1)";
-        ov.style.mixBlendMode = "screen";
-        ov.style.opacity = String(w);
+        ov.style.backdropFilter = "";
+        ov.style.webkitBackdropFilter = "";
       } else {
-        var b = Math.min((1 - brightness) * 0.85, 0.65);
-        ov.style.background = "rgba(0,0,0,1)";
-        ov.style.mixBlendMode = "normal";
-        ov.style.opacity = String(b);
+        var f = "brightness(" + brightness + ")";
+        ov.style.opacity = "1";
+        ov.style.backdropFilter = f;
+        ov.style.webkitBackdropFilter = f;
       }
     }
     try { root.style.setProperty("--site-brightness", String(brightness)); } catch (e) {}

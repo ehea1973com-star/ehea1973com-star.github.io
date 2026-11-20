@@ -328,8 +328,8 @@
   var liveNote = document.getElementById("liveNote");
   var liveTabs = document.querySelectorAll("[data-live-tab]");
   var LIVE_SOURCES = {
-    videos: "https://www.youtube.com/embed/videoseries?list=UUmChpVHGV74adiyqncSyocg",
-    live: "https://www.youtube.com/embed/live_stream?channel=UCmChpVHGV74adiyqncSyocg"
+    videos: "https://www.youtube-nocookie.com/embed/videoseries?list=UUmChpVHGV74adiyqncSyocg&rel=0",
+    live: "https://www.youtube-nocookie.com/embed/live_stream?channel=UCmChpVHGV74adiyqncSyocg&rel=0"
   };
   var currentLiveTab = "videos";
   function liveNoteText(name) {

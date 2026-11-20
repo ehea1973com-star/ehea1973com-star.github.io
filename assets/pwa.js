@@ -29,8 +29,8 @@
     installButton.className = "btn btn-ghost btn-small pwa-install-button";
     installButton.type = "button";
     installButton.id = "pwaInstall";
-    installButton.textContent = "ثبّت الموقع";
-    installButton.hidden = !deferredPrompt;
+    installButton.textContent = "تنزيل وتثبيت الموقع";
+    installButton.hidden = isStandalone();
     installButton.addEventListener("click", function () {
       if (deferredPrompt) {
         try { deferredPrompt.prompt(); } catch (error) {}
@@ -38,10 +38,10 @@
         deferredPrompt = null;
         if (p && p.userChoice && typeof p.userChoice.then === "function") {
           p.userChoice.then(function () {
-            if (installButton) installButton.hidden = true;
+            if (installButton) installButton.hidden = isStandalone();
           }).catch(function () {});
         } else {
-          if (installButton) installButton.hidden = true;
+          if (installButton) installButton.hidden = isStandalone();
         }
       } else {
         openInstallModal();
@@ -162,5 +162,99 @@
     window.addEventListener("load", function () {
       navigator.serviceWorker.register("sw.js").catch(function () {});
     });
+  }
+})();
+
+// Exit confirmation on back (mobile bottom bar / browser back)
+(function () {
+  if (window.__yahyaExitGuardInit) return;
+  window.__yahyaExitGuardInit = true;
+  var allowExit = false;
+
+  function hasOpenUi() {
+    try {
+      if (document.body && document.body.classList && document.body.classList.contains("modal-open")) return true;
+      var sels = [".app-modal", "#readerModal", "#imageModal", "#appModal", "#installModal", "#exitConfirmModal"];
+      for (var i = 0; i < sels.length; i++) {
+        var nodes = document.querySelectorAll(sels[i]);
+        for (var j = 0; j < nodes.length; j++) {
+          var n = nodes[j];
+          if (n && n.hidden === false) return true;
+          if (n && n.getAttribute && n.getAttribute("aria-hidden") === "false") return true;
+        }
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  function closeExitModal(modal) {
+    if (!modal) return;
+    modal.hidden = true;
+    if (document.body && document.body.classList) document.body.classList.remove("modal-open");
+  }
+
+  function showExitConfirm() {
+    var modal = document.getElementById("exitConfirmModal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "exitConfirmModal";
+      modal.className = "app-modal";
+      modal.hidden = true;
+      modal.innerHTML =
+        '<div class="app-modal-backdrop" data-exit-no></div>' +
+        '<div class="app-modal-panel" role="dialog" aria-modal="true" aria-labelledby="exitConfirmTitle">' +
+          '<h2 id="exitConfirmTitle" style="margin:0 0 10px">تأكيد الخروج</h2>' +
+          '<p style="margin:0 0 16px;line-height:1.8">هل تريد الخروج من موقع يحيى؟</p>' +
+          '<div style="display:flex;flex-wrap:wrap;gap:8px">' +
+            '<button class="btn" type="button" id="exitConfirmYes">نعم</button>' +
+            '<button class="btn btn-ghost" type="button" data-exit-no>لا</button>' +
+          '</div>' +
+        '</div>';
+      if (document.body) document.body.appendChild(modal);
+      Array.prototype.forEach.call(modal.querySelectorAll("[data-exit-no]"), function (btn) {
+        btn.addEventListener("click", function () {
+          closeExitModal(modal);
+          try { history.pushState({ yahyaExitGuard: 1 }, "", location.href); } catch (e) {}
+        });
+      });
+      var yes = modal.querySelector("#exitConfirmYes");
+      if (yes) {
+        yes.addEventListener("click", function () {
+          closeExitModal(modal);
+          allowExit = true;
+          try { history.back(); } catch (e) { try { window.close(); } catch (e2) {} }
+          window.setTimeout(function () {
+            allowExit = false;
+            try { history.pushState({ yahyaExitGuard: 1 }, "", location.href); } catch (e) {}
+          }, 800);
+        });
+      }
+    }
+    modal.hidden = false;
+    if (document.body && document.body.classList) document.body.classList.add("modal-open");
+  }
+
+  function initExitGuard() {
+    try {
+      if (!(window.history && history.pushState)) return;
+      history.pushState({ yahyaExitGuard: 1 }, "", location.href);
+      window.addEventListener("popstate", function () {
+        if (allowExit) return;
+        // If another modal/overlay is open, don't trap (best-effort).
+        var exitModal = document.getElementById("exitConfirmModal");
+        var exitOpen = exitModal && !exitModal.hidden;
+        if (hasOpenUi() && !exitOpen) {
+          try { history.pushState({ yahyaExitGuard: 1 }, "", location.href); } catch (e) {}
+          return;
+        }
+        showExitConfirm();
+      });
+    } catch (e) {}
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initExitGuard);
+  } else {
+    initExitGuard();
   }
 })();
