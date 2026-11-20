@@ -23,14 +23,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3.2.2
-
-      - name: Accept Android SDK licenses
-        run: yes | sdkmanager --licenses || true
-
       - name: Install Android SDK components
-        run: sdkmanager --install "platforms;android-34" "build-tools;34.0.0" "platform-tools"
+        run: |
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
+          yes | sdkmanager --licenses || true
+          sdkmanager --install "platforms;android-34" "build-tools;34.0.0" "platform-tools"
 
       - name: Cache Gradle
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
