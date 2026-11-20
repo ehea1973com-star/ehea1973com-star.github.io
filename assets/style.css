@@ -131,7 +131,7 @@ p {
   background: rgba(7, 12, 24, 0.78);
   backdrop-filter: blur(18px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
-  transition: border-color 0.25s ease, background 0.25s ease, transform 0.35s ease, opacity 0.35s ease;
+  transition: border-color 0.25s ease, background 0.25s ease;
 }
 
 .site-header.scrolled {
@@ -139,11 +139,6 @@ p {
   border-color: rgba(34, 211, 238, 0.28);
 }
 
-.site-header.header-hidden {
-  transform: translateY(calc(-100% - 24px));
-  opacity: 0;
-  pointer-events: none;
-}
 
 .header-actions {
   display: flex;
@@ -3194,3 +3189,147 @@ html[data-theme="light"] .pwa-install-button:focus-visible {
 .image-zoom-wrap { overflow: auto; max-height: 62vh; border: 1px solid var(--line, rgba(255,255,255,.12)); border-radius: 12px; background: rgba(11,18,32,.9); -webkit-overflow-scrolling: touch; touch-action: pan-x pan-y pinch-zoom; }
 .image-zoom-wrap img { display: block; width: 100%; height: auto; max-width: none; transform-origin: 0 0; }
 
+
+/* Brightness control & overlay (no motion/snow) */
+#brightnessOverlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+  background: transparent;
+  opacity: 0;
+  mix-blend-mode: normal;
+}
+
+.brightness-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.045);
+}
+.brightness-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  padding: 0 2px;
+}
+
+.brightness-btn {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.brightness-btn:hover:not(:disabled) {
+  border-color: rgba(34, 211, 238, 0.42);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.brightness-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.brightness-level {
+  min-width: 46px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  direction: ltr;
+}
+
+html[data-theme="light"] .brightness-control,
+html[data-theme="light"] .brightness-btn {
+  background: rgba(15, 23, 42, 0.04);
+}
+
+/* Disable animations/motion/snow (user request) */
+*,
+*::before,
+*::after {
+  animation: none !important;
+}
+.will-reveal,
+.reveal {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+.animated-name,
+.phone-mock,
+.phone-mock::before,
+.phone-mock::after,
+.hero-art,
+.hero-orb,
+.hero-orb .ring,
+.hero-orb .core,
+.hero-orb .core::before,
+.dot,
+.live-dot {
+  animation: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* Photo galleries */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+.gallery-item {
+  margin: 0;
+  border: 1px solid var(--line, rgba(255,255,255,.12));
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface-2, rgba(255,255,255,.03));
+}
+.gallery-item img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  cursor: zoom-in;
+}
+.gallery-item figcaption {
+  padding: 4px 6px;
+  font-size: 11px;
+  text-align: center;
+  color: var(--muted, #a8b3cf);
+}
+.gallery-category { scroll-margin-top: 90px; }
+.gallery-end-note {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px dashed var(--line, rgba(255,255,255,.18));
+  border-radius: 12px;
+  background: var(--surface-2, rgba(255,255,255,.03));
+}
+.gallery-end-note p { margin: 0 0 8px; }
+.zoom-nav-prompt {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line, rgba(255,255,255,.16));
+  border-radius: 10px;
+  background: var(--surface-2, rgba(255,255,255,.04));
+  color: var(--text, #fff);
+  font-size: .95rem;
+  line-height: 1.7;
+}
+.zoom-nav-prompt a { color: var(--cyan, #22d3ee); font-weight: 700; text-decoration: underline; }
+@media (max-width: 640px) {
+  .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
+}

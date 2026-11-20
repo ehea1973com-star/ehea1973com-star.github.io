@@ -164,12 +164,144 @@
     updatePicker(root.getAttribute("data-theme") || DEFAULT_THEME);
     updateToggle(themeMeta(root.getAttribute("data-theme") || DEFAULT_THEME), root.getAttribute("data-theme") || DEFAULT_THEME);
     updatePickerToggle();
+    updateBrightnessUI();
   }
 
+  // Brightness control
+  var BRIGHT_KEY = "yahya_site_brightness";
+  var BRIGHT_MIN = 0.6;
+  var BRIGHT_MAX = 2.0;
+  var BRIGHT_STEP = 0.1;
+  var BRIGHT_DEFAULT = 1.3;
+  var brightness = BRIGHT_DEFAULT;
+  var brightnessOverlay = null;
+
+  function clampBrightness(v) {
+    var n = parseFloat(v);
+    if (!isFinite(n)) n = BRIGHT_DEFAULT;
+    if (n < BRIGHT_MIN) n = BRIGHT_MIN;
+    if (n > BRIGHT_MAX) n = BRIGHT_MAX;
+    return Math.round(n * 100) / 100;
+  }
+
+  function ensureBrightnessOverlay() {
+    if (brightnessOverlay && brightnessOverlay.parentNode) return brightnessOverlay;
+    brightnessOverlay = document.getElementById("brightnessOverlay");
+    if (!brightnessOverlay) {
+      brightnessOverlay = document.createElement("div");
+      brightnessOverlay.id = "brightnessOverlay";
+      brightnessOverlay.setAttribute("aria-hidden", "true");
+    }
+    if (!brightnessOverlay.parentNode) {
+      (document.body || root).appendChild(brightnessOverlay);
+    }
+    return brightnessOverlay;
+  }
+
+  function applyBrightness(val, persist) {
+    brightness = clampBrightness(val);
+    var ov = ensureBrightnessOverlay();
+    if (ov) {
+      if (Math.abs(brightness - 1) < 0.001) {
+        ov.style.background = "transparent";
+        ov.style.mixBlendMode = "normal";
+        ov.style.opacity = "0";
+      } else if (brightness > 1) {
+        var w = Math.min((brightness - 1) * 0.55, 0.5);
+        ov.style.background = "rgba(255,255,255,1)";
+        ov.style.mixBlendMode = "screen";
+        ov.style.opacity = String(w);
+      } else {
+        var b = Math.min((1 - brightness) * 0.85, 0.65);
+        ov.style.background = "rgba(0,0,0,1)";
+        ov.style.mixBlendMode = "normal";
+        ov.style.opacity = String(b);
+      }
+    }
+    try { root.style.setProperty("--site-brightness", String(brightness)); } catch (e) {}
+    updateBrightnessUI();
+    if (persist) {
+      try { window.localStorage.setItem(BRIGHT_KEY, String(brightness)); } catch (e) {}
+    }
+  }
+
+  function updateBrightnessUI() {
+    var pct = Math.round(brightness * 100) + "%";
+    Array.prototype.forEach.call(document.querySelectorAll("[data-brightness-level]"), function (el) {
+      el.textContent = pct;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-brightness-down]"), function (btn) {
+      btn.disabled = brightness <= BRIGHT_MIN + 0.001;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-brightness-up]"), function (btn) {
+      btn.disabled = brightness >= BRIGHT_MAX - 0.001;
+    });
+  }
+
+  function buildBrightnessControl() {
+    if (document.getElementById("brightnessControl")) return;
+    var actions = document.querySelector(".header-actions");
+    if (!actions) return;
+
+    var wrap = document.createElement("div");
+    wrap.className = "brightness-control";
+    wrap.id = "brightnessControl";
+    wrap.setAttribute("aria-label", "تحكم بالإضاءة");
+
+    var title = document.createElement("span");
+    title.className = "brightness-title";
+    title.textContent = "إضاءة";
+
+    var down = document.createElement("button");
+    down.type = "button";
+    down.className = "brightness-btn";
+    down.setAttribute("data-brightness-down", "1");
+    down.setAttribute("aria-label", "تخفيف الإضاءة");
+    down.title = "تخفيف الإضاءة";
+    down.textContent = "−";
+
+    var label = document.createElement("span");
+    label.className = "brightness-level";
+    label.setAttribute("data-brightness-level", "1");
+    label.title = "مستوى الإضاءة";
+
+    var up = document.createElement("button");
+    up.type = "button";
+    up.className = "brightness-btn";
+    up.setAttribute("data-brightness-up", "1");
+    up.setAttribute("aria-label", "زيادة الإضاءة");
+    up.title = "زيادة الإضاءة";
+    up.textContent = "+";
+
+    down.addEventListener("click", function () { applyBrightness(brightness - BRIGHT_STEP, true); });
+    up.addEventListener("click", function () { applyBrightness(brightness + BRIGHT_STEP, true); });
+
+    wrap.appendChild(title);
+    wrap.appendChild(down);
+    wrap.appendChild(label);
+    wrap.appendChild(up);
+
+    var picker = document.getElementById("themePicker");
+    if (picker && picker.nextSibling) actions.insertBefore(wrap, picker.nextSibling);
+    else if (picker) actions.appendChild(wrap);
+    else actions.insertBefore(wrap, actions.firstChild);
+
+    updateBrightnessUI();
+  }
+
+  try {
+    var savedB = window.localStorage.getItem(BRIGHT_KEY);
+    if (savedB != null) brightness = clampBrightness(savedB);
+  } catch (e) {}
+
   apply(saved, false);
+  // apply initial brightness early (overlay will attach when body exists)
+  try { applyBrightness(brightness, false); } catch (e) {}
 
   document.addEventListener("DOMContentLoaded", function () {
     buildPicker();
+    buildBrightnessControl();
+    applyBrightness(brightness, false);
     var button = document.getElementById("themeToggle");
     if (button) {
       button.addEventListener("click", function () {
