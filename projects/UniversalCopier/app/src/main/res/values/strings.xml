@@ -1,0 +1,104 @@
+<resources>
+    <string name="app_name">ناسخ شامل</string>
+    <string name="accessibility_service_label">ناسخ شامل - قراءة النصوص</string>
+    <string name="accessibility_service_description">تتيح هذه الخدمة قراءة النصوص الظاهرة على الشاشة من التطبيقات لاستخراجها ونسخها عند طلبك. تتم المعالجة محليًا على الجهاز.</string>
+    <string name="tile_label">ناسخ شامل</string>
+
+    <string name="main_title">ناسخ شامل</string>
+    <string name="main_subtitle">ناسخ عادي + ناسخ صيني وكوري وياباني وهندي، OCR أوفلاين، حافظة سريعة وذاكرة قوية</string>
+
+    <string name="status_accessibility_on">خدمة إمكانية الوصول: مفعّلة</string>
+    <string name="status_accessibility_off">خدمة إمكانية الوصول: غير مفعّلة</string>
+    <string name="status_overlay_on">إذن الظهور فوق التطبيقات: متاح</string>
+    <string name="status_overlay_off">إذن الظهور فوق التطبيقات: غير متاح</string>
+
+    <string name="btn_enable_accessibility">إعدادات إمكانية الوصول (نظامي)</string>
+    <string name="btn_overlay_permission">إذن الظهور فوق التطبيقات (نظامي)</string>
+    <string name="btn_notification_settings">إعدادات الإشعارات (نظامي)</string>
+    <string name="btn_battery_settings">تجاهل تحسين البطارية (للسرعة)</string>
+    <string name="btn_start_overlay">تشغيل الزر العائم السريع</string>
+    <string name="btn_stop_overlay">إيقاف الزر العائم</string>
+    <string name="btn_scan_screen">مسح الشاشة ضوئيًا الآن</string>
+    <string name="btn_copy_ui_now">نسخ نصوص الواجهة الآن</string>
+    <string name="btn_quick_clipboard">الحافظة السريعة</string>
+    <string name="btn_history">سجل النسخ (الذاكرة)</string>
+    <string name="btn_settings">الإعدادات</string>
+
+    <string name="mode_label">وضع الناسخ الحالي</string>
+    <string name="mode_ui">ناسخ عادي (نصوص واجهة التطبيقات - كل اللغات)</string>
+    <string name="mode_ocr_latin">ناسخ OCR - عام/لاتيني/إنجليزي</string>
+    <string name="mode_ocr_chinese">ناسخ OCR - صيني</string>
+    <string name="mode_ocr_korean">ناسخ OCR - كوري</string>
+    <string name="mode_ocr_japanese">ناسخ OCR - ياباني</string>
+    <string name="mode_ocr_devanagari">ناسخ OCR - هندي (Devanagari)</string>
+
+    <string name="hint_usage">• الناسخ العادي يقرأ نصوص الواجهة عبر إمكانية الوصول (سريع ويدعم العربية وباقي اللغات داخل التطبيقات).\n• ناسخ OCR يلتقط الشاشة ويقرأ النص من الصور أوفلاين حسب الوضع (صيني/كوري/ياباني/هندي/لاتيني).\n• استخدم الزر العائم أو مربع الإعدادات السريعة للعمل فوق أي تطبيق.\n• الحافظة السريعة والذاكرة تحفظ النسخ للوصول الفوري.\n\nملاحظة: بعض التطبيقات المحمية قد تمنع قراءة الواجهة. دقة OCR تعتمد على وضوح الصورة والوضع المختار.</string>
+
+    <string name="notif_channel_name">ناسخ شامل</string>
+    <string name="notif_overlay_title">ناسخ شامل يعمل</string>
+    <string name="notif_overlay_text">الزر العائم جاهز: نسخ سريع، OCR، حافظة وسجل</string>
+    <string name="notif_capture_title">ناسخ شامل - OCR</string>
+    <string name="notif_capture_text">جاري التقاط الشاشة والتعرف على النص…</string>
+
+    <string name="action_copy_texts">نسخ الواجهة (عادي)</string>
+    <string name="action_ocr">مسح OCR (الوضع الحالي)</string>
+    <string name="action_quick_clip">الحافظة السريعة</string>
+    <string name="action_history">السجل</string>
+    <string name="action_close">إغلاق</string>
+
+    <string name="toast_accessibility_required">فعّل خدمة إمكانية الوصول أولاً</string>
+    <string name="toast_overlay_required">امنح إذن الظهور فوق التطبيقات أولاً</string>
+    <string name="toast_no_text">لم يتم العثور على نص</string>
+    <string name="toast_copied">تم النسخ إلى الحافظة</string>
+    <string name="toast_saved">تم الحفظ في الذاكرة</string>
+    <string name="toast_capture_failed">فشل التقاط الشاشة أو تم الإلغاء</string>
+    <string name="toast_ocr_failed">فشل التعرف على النص</string>
+    <string name="toast_ocr_running">جاري المسح الضوئي…</string>
+
+    <string name="extracted_text_title">النص المستخرج</string>
+    <string name="btn_copy_all">نسخ الكل</string>
+    <string name="btn_share">مشاركة</string>
+    <string name="btn_save_memory">حفظ في الذاكرة</string>
+    <string name="no_text_found">لم يتم العثور على نص.</string>
+
+    <string name="history_title">سجل النسخ (ذاكرة قوية)</string>
+    <string name="history_empty">لا توجد عناصر محفوظة بعد</string>
+    <string name="history_search_hint">بحث في السجل…</string>
+    <string name="history_clear">مسح السجل</string>
+    <string name="history_clear_confirm">مسح كل السجل غير المثبّت؟</string>
+    <string name="history_cleared">تم مسح السجل</string>
+    <string name="history_deleted">تم الحذف</string>
+    <string name="history_pinned">تم التثبيت</string>
+    <string name="history_unpinned">تم إلغاء التثبيت</string>
+    <string name="pin">تثبيت</string>
+    <string name="unpin">إلغاء التثبيت</string>
+    <string name="delete">حذف</string>
+    <string name="copy">نسخ</string>
+
+    <string name="quick_clipboard_title">الحافظة السريعة</string>
+    <string name="quick_clip_current">النص الحالي في الحافظة</string>
+    <string name="quick_clip_recent">آخر العناصر المحفوظة</string>
+    <string name="quick_clip_refresh">تحديث</string>
+    <string name="quick_clip_empty">(الحافظة فارغة)</string>
+
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_section_modes">أوضاع الناسخ</string>
+    <string name="settings_default_mode">الوضع الافتراضي للـ OCR</string>
+    <string name="settings_section_behavior">السلوك والسرعة</string>
+    <string name="settings_auto_copy">نسخ النتيجة تلقائيًا إلى الحافظة</string>
+    <string name="settings_auto_save">حفظ النتيجة تلقائيًا في الذاكرة</string>
+    <string name="settings_open_result">فتح شاشة النتيجة بعد النسخ/OCR</string>
+    <string name="settings_section_memory">الذاكرة (الحافظة والسجل)</string>
+    <string name="settings_history_limit">الحد الأقصى لعناصر السجل</string>
+    <string name="settings_clear_all">مسح كل السجل</string>
+    <string name="settings_section_system">إعدادات نظامية</string>
+    <string name="settings_open_accessibility">فتح إعدادات إمكانية الوصول</string>
+    <string name="settings_open_overlay">فتح إذن الظهور فوق التطبيقات</string>
+    <string name="settings_open_notifications">فتح إعدادات الإشعارات</string>
+    <string name="settings_open_battery">فتح تحسين البطارية</string>
+    <string name="settings_about">ناسخ شامل - نسخ نصوص الواجهة وOCR أوفلاين متعدد الأوضاع مع حافظة سريعة وذاكرة قوية.</string>
+
+    <string name="source_ui">واجهة</string>
+    <string name="source_ocr">OCR</string>
+    <string name="source_manual">يدوي</string>
+</resources>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/overlay_bg"
+    android:padding="8dp">
+
+    <ImageButton
+        android:id="@+id/fabMain"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/app_name"
+        android:src="@android:drawable/ic_menu_edit"
+        android:scaleType="centerInside" />
+
+    <LinearLayout
+        android:id="@+id/menuPanel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:paddingTop="4dp">
+
+        <Button
+            android:id="@+id/btnCopyUi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_copy_texts"
+            android:textSize="12sp"
+            android:minHeight="0dp"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp" />
+
+        <Button
+            android:id="@+id/btnOcr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_ocr"
+            android:textSize="12sp"
+            android:minHeight="0dp"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp" />
+
+        <Button
+            android:id="@+id/btnQuickClip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_quick_clip"
+            android:textSize="12sp"
+            android:minHeight="0dp"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp" />
+
+        <Button
+            android:id="@+id/btnHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_history"
+            android:textSize="12sp"
+            android:minHeight="0dp"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp" />
+
+        <Button
+            android:id="@+id/btnCloseOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_close"
+            android:textSize="12sp"
+            android:minHeight="0dp"
+            android:padding="8dp" />
+    </LinearLayout>
+</LinearLayout>

@@ -17,7 +17,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/app-192.png">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
   <link rel="stylesheet" href="assets/style.css?v=20261118-46">
-  <link rel="stylesheet" href="assets/admin.css?v=20261118-46">
+  <link rel="stylesheet" href="assets/admin.css?v=20261120-01">
 </head>
 <body>
   <div class="page-glow" aria-hidden="true"></div>
@@ -219,7 +219,7 @@
           <div class="field field-wide">
             <label for="iconFile">أيقونة التطبيق (اختياري)</label>
             <input id="iconFile" name="iconFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
-            <small>صورة مربعة PNG أو SVG. إن لم تختر أيقونة، تُستخدم أيقونة عامة.</small>
+            <small>صورة مربعة PNG أو SVG. إن لم تختر أيقونة الآن، يمكنك إضافتها أو تغييرها لاحقًا بعد النشر من قسم «تعديل بعد النشر» أدناه.</small>
           </div>
 
           <div class="field field-wide">
@@ -263,8 +263,8 @@
 
       <div class="admin-card edit-card" id="editPublishedCard">
         <span class="eyebrow">تعديل بعد النشر</span>
-        <h1>تعديل تطبيق منشور</h1>
-        <p class="muted">غيّر الأيقونة والوصف لأي تطبيق منشور (من القائمة). الحفظ يحتاج GitHub Token أعلاه بصلاحية <strong>Contents: Read and write</strong>.</p>
+        <h1>إضافة/تعديل أيقونة التطبيق بعد النشر</h1>
+        <p class="muted">أضف أو غيّر الأيقونة والوصف لأي تطبيق منشور في أي وقت — حتى لو نسيته عند الرفع أو بعد نشر التطبيق. اختر التطبيق من القائمة، ارفع أيقونة جديدة (اختياري) واحفظ. الحفظ يحتاج GitHub Token أعلاه بصلاحية <strong>Contents: Read and write</strong> وقد يستغرق ظهوره دقيقة أو اثنتين بعد نشر GitHub Pages.</p>
         <div class="admin-form" id="editAppForm">
           <div class="field field-wide">
             <label for="editAppSelect">اختر التطبيق</label>
@@ -280,7 +280,7 @@
           <div class="field">
             <label for="editIconFile">أيقونة جديدة (اختياري)</label>
             <input id="editIconFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
-            <small>PNG أو JPG أو WEBP أو SVG حتى 1 MB.</small>
+            <small>PNG أو JPG أو WEBP أو SVG حتى 1 MB. اتركه فارغًا إذا أردت تعديل الوصف فقط.</small>
           </div>
           <div class="field field-wide">
             <label for="editDescription">الوصف</label>
@@ -333,7 +333,7 @@
   <script src="assets/analytics.js?v=20261118-46" defer></script>
   <script src="assets/auth.js?v=20261118-46" defer></script>
   <script src="assets/catalog.js?v=20261118-46" defer></script>
-  <script src="assets/admin.js?v=20261118-46" defer></script>
+  <script src="assets/admin.js?v=20261120-01" defer></script>
   <script src="assets/dashboard.js?v=20261118-46" defer></script>
   <script src="assets/pwa.js?v=20261118-46" defer></script>
   <nav class="bottom-nav" aria-label="التنقل السفلي">
