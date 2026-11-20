@@ -130,12 +130,15 @@ p {
   top: 0;
   z-index: 50;
   width: min(1200px, calc(100% - 32px));
-  margin: 14px auto 0;
-  padding: 12px 16px;
+  height: 60px;
+  min-height: 60px;
+  margin: 8px auto 0;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
+  flex-wrap: nowrap;
   border: 1px solid var(--line);
   border-radius: 18px;
   background: rgba(7, 12, 24, 0.78);
@@ -1777,7 +1780,7 @@ body.modal-open {
 
 @media (max-width: 767px) {
   html {
-    scroll-padding-top: 150px;
+    scroll-padding-top: 76px;
   }
 
   .section {
@@ -1787,7 +1790,29 @@ body.modal-open {
 
   .site-header {
     width: calc(100% - 16px);
+    height: 60px;
+    min-height: 60px;
     margin-top: 8px;
+    padding: 0 16px;
+    gap: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+
+  .site-header .nav,
+  .site-header .header-actions {
+    display: none !important;
+  }
+
+  .brand {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .brand-text small {
+    display: none;
   }
 
   .nav a {
@@ -3324,7 +3349,15 @@ html[data-theme="light"] .pwa-install-button:focus-visible {
   .panel-cards { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 600px) {
-  .site-header { gap: 8px; padding: 10px 12px; }
+  .site-header {
+    height: 60px;
+    min-height: 60px;
+    gap: 12px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   .brand-text small { display: none; }
   .panel-cards { grid-template-columns: 1fr; }
 }
@@ -3500,15 +3533,19 @@ html[data-theme="light"] .brightness-btn {
 .top-menu-group { flex: 0 0 auto; }
 @media (max-width: 767px) {
   .site-header {
+    display: flex;
     flex-wrap: nowrap;
-    justify-content: flex-start;
-    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     width: calc(100% - 16px);
-    padding: 10px 10px;
+    height: 60px;
+    min-height: 60px;
+    padding: 0 16px;
   }
   .brand-text small { display: none; }
-  .nav { order: 0; width: auto; justify-content: flex-start; max-width: 42vw; }
-  .header-actions { width: auto; justify-content: flex-start; max-width: 48vw; }
+  .site-header .nav,
+  .site-header .header-actions { display: none !important; }
   .top-menu-btn .btn-label { display: none; }
 }
 
