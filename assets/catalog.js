@@ -177,7 +177,7 @@ window.YAHYA_APP_CATALOG = [
     category: "tools",
     icon: "assets/uploads/com.ehyahmza.supercalc.png",
     iconClass: "icon-cyan",
-    description: "حاسبة شاملة بخمس واجهات: أساسية، علمية، مبرمج، مالية وحياة، ومحولات لكل الوحدات مع بحث وسجل وثيمات ونغمات لمس وإعدادات.",
+    description: "حاسبة شاملة بخمس واجهات: أساسية، علمية، مبرمج، مالية وحياة، ومحولات لكل الوحدات بتحكم مباشر مع بحث وسجل وثيمات ونغمات لمس وإعدادات وزر مشاركة.",
     download: "apps/com.ehyahmza.supercalc-v1.0.apk",
     type: "APK"
   }
