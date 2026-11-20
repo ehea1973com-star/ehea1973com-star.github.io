@@ -141,8 +141,14 @@ p {
   background: rgba(7, 12, 24, 0.78);
   backdrop-filter: blur(18px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
-  transition: border-color 0.25s ease, background 0.25s ease;
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.28s ease, opacity 0.2s ease;
   overflow: visible;
+}
+
+.site-header.header-hidden {
+  transform: translateY(calc(-100% - 24px));
+  opacity: 0;
+  pointer-events: none;
 }
 .site-header > * {
   flex: 0 0 auto;

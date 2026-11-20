@@ -311,9 +311,18 @@
   }
 
   var header = document.getElementById("header");
+  var lastScrollY = window.scrollY || window.pageYOffset || 0;
   function onScroll() {
-    var y = window.scrollY || 0;
-    if (header) header.classList.toggle("scrolled", y > 16);
+    var y = window.scrollY || window.pageYOffset || 0;
+    if (header) {
+      header.classList.toggle("scrolled", y > 16);
+      if (y > 140 && y > lastScrollY + 8) {
+        header.classList.add("header-hidden");
+      } else if (y < lastScrollY - 8 || y <= 80) {
+        header.classList.remove("header-hidden");
+      }
+    }
+    lastScrollY = y;
   }
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
