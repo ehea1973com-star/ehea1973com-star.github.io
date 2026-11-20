@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>حاسبة يحيى برو</title>
+<style>
+:root{--bg:#071826;--bg2:#0b2b45;--card:rgba(255,255,255,.08);--card2:rgba(255,255,255,.16);--text:#eaf6ff;--sub:#9fd4f3;--accent:#38bdf8;--accent2:#7dd3fc;--key:#12314a;--key2:#184564;--op:#0284c7;--eq:#22c55e;--danger:#ef4444;--border:rgba(125,211,252,.25);--shadow:0 10px 30px rgba(0,0,0,.28);--num:#f8fbff}
+body.theme-sky{--bg:#071826;--bg2:#0b2b45;--card:rgba(255,255,255,.08);--card2:rgba(255,255,255,.16);--text:#eaf6ff;--sub:#9fd4f3;--accent:#38bdf8;--accent2:#7dd3fc;--key:#12314a;--key2:#184564;--op:#0284c7;--eq:#22c55e;--border:rgba(125,211,252,.25);--num:#ffffff}
+body.theme-wood{--bg:#f6eddc;--bg2:#ecd8b8;--card:rgba(120,72,24,.08);--card2:rgba(120,72,24,.16);--text:#3b2614;--sub:#6b4a2d;--accent:#b7791f;--accent2:#d69e2e;--key:#efe0c8;--key2:#e2cfa8;--op:#c05621;--eq:#2f855a;--border:rgba(120,72,24,.18);--num:#2b1a0d}
+body.theme-wood-dark{--bg:#2b1d14;--bg2:#3a281b;--card:rgba(255,236,210,.07);--card2:rgba(255,236,210,.14);--text:#f7e7cf;--sub:#d8c3a5;--accent:#d69e2e;--accent2:#f6ad55;--key:#3f2c1d;--key2:#523825;--op:#dd6b20;--eq:#38a169;--border:rgba(246,173,85,.22);--num:#fff7e6}
+body.theme-crystal{--bg:#0b1020;--bg2:#111827;--card:rgba(255,255,255,.10);--card2:rgba(255,255,255,.20);--text:#f8fbff;--sub:#c7d2fe;--accent:#a78bfa;--accent2:#67e8f9;--key:rgba(255,255,255,.10);--key2:rgba(255,255,255,.20);--op:#8b5cf6;--eq:#22d3ee;--border:rgba(255,255,255,.30);--num:#ffffff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(160deg,var(--bg),var(--bg2));color:var(--text)}
+body.theme-crystal{background:radial-gradient(1200px 600px at 10% -10%,rgba(103,232,249,.25),transparent),radial-gradient(800px 500px at 110% 0%,rgba(167,139,250,.25),transparent),linear-gradient(160deg,#050814,#0b1020 50%,#111827)}
+body.theme-wood{background:repeating-linear-gradient(90deg,rgba(120,72,24,.04) 0 6px,rgba(120,72,24,.08) 6px 12px),linear-gradient(160deg,var(--bg),var(--bg2))}
+body.theme-wood-dark{background:repeating-linear-gradient(90deg,rgba(255,236,210,.03) 0 7px,rgba(0,0,0,.06) 7px 14px),linear-gradient(160deg,var(--bg),var(--bg2))}
+.app{max-width:560px;margin:0 auto;min-height:100%;padding:8px 8px 90px}
+.topbar{position:sticky;top:0;z-index:10;padding:6px 0 4px;background:linear-gradient(180deg,var(--bg),rgba(0,0,0,0))}
+.header{border:1px solid var(--border);backdrop-filter:blur(12px);box-shadow:var(--shadow);padding:10px 12px;overflow:hidden;position:relative}
+.header.ui-basic{border-radius:22px;background:linear-gradient(135deg,var(--card2),var(--card))}
+.header.ui-sci{border-radius:10px 26px 10px 26px;background:linear-gradient(135deg,rgba(56,189,248,.18),var(--card))}
+.header.ui-prog{border-radius:6px;background:linear-gradient(180deg,#0b1220,var(--card));border-color:rgba(34,197,94,.35)}
+.header.ui-fin{border-radius:26px 26px 10px 10px;background:linear-gradient(135deg,rgba(214,158,46,.18),var(--card))}
+.header.ui-more{border-radius:30px;background:linear-gradient(135deg,rgba(167,139,250,.22),rgba(103,232,249,.12),var(--card))}
+.hrow{display:flex;align-items:center;gap:8px}
+.brand-wrap{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
+.brand{font-weight:800;font-size:16px;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gear{width:30px;height:30px;border-radius:999px;border:1px solid var(--border);background:linear-gradient(135deg,var(--key2),var(--key));color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:17px;line-height:1;padding:0;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);animation:gearSpin 2.2s linear infinite, gearHue 4s linear infinite;flex:0 0 auto}
+.gear:active{transform:scale(.92)}
+@keyframes gearSpin{to{transform:rotate(360deg)}}
+@keyframes gearHue{0%{filter:hue-rotate(0deg) brightness(1.1)}50%{filter:hue-rotate(180deg) brightness(1.2)}100%{filter:hue-rotate(360deg) brightness(1.1)}}
+.pill{border:1px solid var(--border);background:var(--card);color:var(--text);padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.pill:active{transform:scale(.96)}
+.search{margin-top:8px}
+.search input{width:100%;border:1px solid var(--border);background:var(--key);color:var(--text);padding:10px 12px;border-radius:14px;font-size:14px;outline:none}
+.nav{display:flex;gap:6px;overflow:auto;padding:8px 2px 2px}
+.nav button{white-space:nowrap;border:1px solid var(--border);background:var(--key);color:var(--text);padding:8px 12px;border-radius:14px;font-size:13px;font-weight:700}
+.nav button.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#041018;border-color:transparent}
+.page{display:none}.page.active{display:block;animation:fade .12s ease}
+@keyframes fade{from{opacity:.4;transform:translateY(3px)}to{opacity:1;transform:none}}
+.card{border:1px solid var(--border);background:linear-gradient(180deg,var(--card2),var(--card));backdrop-filter:blur(10px);border-radius:20px;padding:12px;margin:10px 0;box-shadow:var(--shadow)}
+.sub{font-size:13px;color:var(--sub);margin:0 2px 8px;font-weight:700}
+.display{min-height:112px;display:flex;flex-direction:column;justify-content:flex-end;gap:4px}
+.expr{color:var(--sub);font-size:15px;min-height:22px;word-break:break-all;text-align:left;direction:ltr}
+.result{font-size:38px;font-weight:900;word-break:break-all;text-align:left;direction:ltr;color:var(--num);text-shadow:0 2px 10px rgba(0,0,0,.18)}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.key{position:relative;border:1px solid var(--border);background:linear-gradient(180deg,var(--key2),var(--key));color:var(--num);padding:16px 6px;border-radius:16px;font-size:22px;font-weight:900;text-align:center;user-select:none;box-shadow:0 4px 0 rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.12);transform:translateZ(0);transition:transform .04s ease, box-shadow .04s ease, filter .04s ease;will-change:transform}
+.key.small{font-size:14px;padding:13px 4px;font-weight:800}
+.key.op{background:linear-gradient(180deg,var(--accent2),var(--op));color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.key.eq{background:linear-gradient(180deg,#34d399,var(--eq));color:#04160b}
+.key.util{background:linear-gradient(180deg,var(--key2),var(--key));color:var(--accent2)}
+.key.danger{background:linear-gradient(180deg,#fb7185,var(--danger));color:#fff}
+.key.pressed,.key:active{transform:scale(.92) translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 3px rgba(125,211,252,.18) inset;filter:brightness(1.08)}
+body.theme-wood .key,body.theme-wood-dark .key{box-shadow:0 4px 0 rgba(60,30,10,.25),inset 0 1px 0 rgba(255,255,255,.18)}
+.field{display:flex;flex-direction:column;gap:4px;margin:6px 0}
+.field label{font-size:12px;color:var(--sub);font-weight:700}
+.field input,.field select,textarea{width:100%;border:1px solid var(--border);background:var(--key);color:var(--text);padding:10px 12px;border-radius:12px;font-size:15px;outline:none}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{border:1px solid var(--border);background:var(--key);border-radius:14px;padding:10px}
+.item b{display:block;direction:ltr;text-align:left;font-size:15px;color:var(--num)}
+.item .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.item .mini-grid .field{margin:0}
+.item .mini-grid .field label{font-size:11px}
+.item .mini-grid input,.item .mini-grid select{padding:8px 10px;font-size:13px;border-radius:10px}
+.item .mini-out{margin-top:6px;font-size:13px;color:var(--accent2);font-weight:700;direction:ltr;text-align:left}
+.muted{color:var(--sub);font-size:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.btn{border:1px solid var(--border);background:var(--key2);color:var(--text);padding:10px 12px;border-radius:12px;font-size:13px;font-weight:700}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#041018;border:none}
+.btn.danger{background:linear-gradient(135deg,#fb7185,var(--danger));color:#fff;border:none}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:var(--key);font-size:12px;font-weight:700}
+.chip.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#041018;border-color:transparent}
+.footer{margin-top:14px;text-align:center;color:var(--sub);font-size:12px;line-height:1.8;padding:8px}
+.footer a{color:var(--accent2);text-decoration:none}
+hr.sep{border:0;border-top:1px solid var(--border);margin:10px 0}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0}
+.toggle span{font-weight:700}
+</style>
+</head>
+<body class="theme-sky">
+<div class="app">
+  <div class="topbar">
+    <div class="header ui-basic" id="hdr">
+      <div class="hrow">
+        <div class="brand-wrap">
+          <button class="gear" id="gearBtn" title="الإعدادات" aria-label="الإعدادات">⚙</button>
+          <div class="brand" id="brand">حاسبة يحيى برو</div>
+        </div>
+        <button class="pill" id="langBtn">EN</button>
+        <button class="pill" id="shareBtn">مشاركة</button>
+        <button class="pill" id="copyBtn">نسخ</button>
+      </div>
+      <div class="search"><input id="searchInput" placeholder="بحث في الأدوات والتحويلات والسجل..."></div>
+      <div class="nav" id="nav"></div>
+    </div>
+  </div>
+
+  <div id="page-basic" class="page active">
+    <div class="card">
+      <div class="sub" id="h-basic">الواجهة 1: أساسية — حساب يومي سريع</div>
+      <div class="display"><div class="expr" id="b-expr"></div><div class="result" id="b-res">0</div></div>
+      <div class="actions"><button class="btn" id="b-copy">نسخ</button><button class="btn" id="b-paste">لصق</button><button class="btn" id="b-save">حفظ</button><button class="btn" id="b-mc">MC</button><button class="btn" id="b-mr">MR</button><button class="btn" id="b-mp">M+</button></div>
+    </div>
+    <div class="card"><div class="grid4" id="basicKeys"></div></div>
+  </div>
+
+  <div id="page-sci" class="page">
+    <div class="card">
+      <div class="sub" id="h-sci">الواجهة 2: علمية — دوال ومثلثات وقوى</div>
+      <div class="display"><div class="expr" id="s-expr"></div><div class="result" id="s-res">0</div></div>
+      <div class="actions"><button class="btn" id="s-copy">نسخ</button><button class="btn" id="s-save">حفظ</button><button class="btn" id="s-deg">RAD</button></div>
+    </div>
+    <div class="card"><div class="grid5" id="sciKeys"></div></div>
+  </div>
+
+  <div id="page-prog" class="page">
+    <div class="card">
+      <div class="sub" id="h-prog">الواجهة 3: مبرمج — أنظمة وعمليات بت</div>
+      <div class="display"><div class="expr" id="p-expr"></div><div class="result" id="p-res">0</div></div>
+      <div class="row"><div class="field"><label>DEC</label><input id="p-dec" inputmode="numeric"></div></div>
+      <div class="row"><div class="field"><label>HEX</label><input id="p-hex"></div><div class="field"><label>BIN</label><input id="p-bin"></div></div>
+      <div class="row"><div class="field"><label>OCT</label><input id="p-oct"></div></div>
+      <div class="actions"><button class="btn" data-pop="AND">AND</button><button class="btn" data-pop="OR">OR</button><button class="btn" data-pop="XOR">XOR</button><button class="btn" data-pop="NOT">NOT</button><button class="btn" data-pop="<<">&lt;&lt;</button><button class="btn" data-pop=">>">&gt;&gt;</button></div>
+    </div>
+    <div class="card"><div class="grid4" id="progKeys"></div></div>
+  </div>
+
+  <div id="page-fin" class="page">
+    <div class="card">
+      <div class="sub" id="h-fin">الواجهة 4: مالية وحياة — نسبة، خصم، ضريبة، فائدة، BMI، عمر</div>
+      <div class="field"><label id="l-mode">نوع الحساب</label><select id="finMode"></select></div>
+      <div id="finForm"></div>
+      <div class="actions"><button class="btn primary" id="finCalc">احسب</button><button class="btn" id="finCopy">نسخ الناتج</button></div>
+      <div class="item" style="margin-top:8px"><b id="finOut">—</b><div class="muted" id="finNote"></div></div>
+    </div>
+    <div class="card">
+      <div class="sub" id="h-formula">صيغ وثوابت سريعة</div>
+      <div class="list" id="formulaList"></div>
+    </div>
+  </div>
+
+  <div id="page-more" class="page">
+    <div class="card">
+      <div class="sub" id="h-conv">الواجهة 5: المحولات والشامل — بحث وتحويل كل الوحدات</div>
+      <div class="row"><div class="field"><label id="l-cat">الفئة</label><select id="convCat"></select></div></div>
+      <div class="row"><div class="field"><label id="l-from">من</label><select id="convFrom"></select></div><div class="field"><label id="l-to">إلى</label><select id="convTo"></select></div></div>
+      <div class="row"><div class="field"><label id="l-val">القيمة</label><input id="convVal" inputmode="decimal" value="1"></div><div class="field"><label id="l-out">الناتج</label><input id="convOut" readonly></div></div>
+      <div class="actions"><button class="btn primary" id="convSwap">عكس</button><button class="btn" id="convCopy">نسخ</button></div>
+    </div>
+    <div class="card"><div class="sub" id="h-convlist">كل المحولات</div><div class="list" id="convList"></div></div>
+    <div class="card">
+      <div class="sub" id="h-set">الإعدادات</div>
+      <div class="toggle"><span id="t-sound">النغمات عند اللمس/النقر</span><input type="checkbox" id="setSound" checked></div>
+      <div class="toggle"><span id="t-haptic">اهتزاز</span><input type="checkbox" id="setHaptic" checked></div>
+      <div class="toggle"><span id="t-fast">أرقام نافرة سريعة جدًا</span><input type="checkbox" id="setFast" checked></div>
+      <div class="field"><label id="t-vol">مستوى الصوت</label><input type="range" id="setVol" min="1" max="100" value="35"></div>
+      <hr class="sep">
+      <div class="sub" id="h-theme">الثيمات</div>
+      <div class="chips" id="themeChips"></div>
+      <div class="actions" style="margin-top:10px"><button class="btn" id="pasteAny">لصق</button><button class="btn danger" id="clearHist">مسح السجل</button></div>
+    </div>
+    <div class="card"><div class="sub" id="h-hist">السجل والحافظة</div><div class="list" id="histList"></div></div>
+    <div class="card"><div class="sub" id="h-about">حول وحقوق</div><div id="aboutBox" class="muted" style="line-height:1.9"></div><div class="actions" id="linksBox"></div></div>
+  </div>
+
+  <div class="footer" id="footer"></div>
+</div>
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var settings={sound:localStorage.getItem('ec_sound')!=='0',haptic:localStorage.getItem('ec_haptic')!=='0',fast:localStorage.getItem('ec_fast')!=='0',vol:(parseInt(localStorage.getItem('ec_vol')||'35',10)||35)/100};
+  var state={lang:localStorage.getItem('ec_lang')||'ar',theme:localStorage.getItem('ec_theme')||'sky',page:'basic',bExpr:'',bRes:'0',sExpr:'',sRes:'0',deg:false,pVal:0,mem:0,hist:JSON.parse(localStorage.getItem('ec_hist')||'[]'),search:'',convUI:{}};
+  var AC=null;
+  function haptic(ms){ if(!settings.haptic) return; try{ if(window.Android&&Android.vibrate) Android.vibrate(ms||8); else if(navigator.vibrate) navigator.vibrate(ms||8);}catch(e){} }
+  function beep(type){
+    haptic(type==='eq'?14:8);
+    if(!settings.sound) return;
+    try{
+      if(!AC) AC=new (window.AudioContext||window.webkitAudioContext)();
+      if(AC.state==='suspended') AC.resume();
+      var o=AC.createOscillator(), g=AC.createGain();
+      var f=440; if(type==='op') f=520; else if(type==='eq') f=700; else if(type==='util') f=360; else f=460 + Math.random()*40;
+      o.type=(type==='eq'?'triangle':'sine'); o.frequency.value=f;
+      g.gain.value=settings.vol; o.connect(g); g.connect(AC.destination);
+      var now=AC.currentTime; o.start(now); g.gain.exponentialRampToValueAtTime(0.0001, now+0.075); o.stop(now+0.085);
+    }catch(e){}
+  }
+  var i18n={
+    ar:{brand:'حاسبة يحيى برو',copy:'نسخ',share:'مشاركة',search:'بحث في الأدوات والتحويلات والسجل...',tabs:['أساسية','علمية','مبرمج','مالية وحياة','محولات+إعدادات'],
+      hBasic:'الواجهة 1: أساسية — حساب يومي سريع',hSci:'الواجهة 2: علمية — دوال ومثلثات وقوى',hProg:'الواجهة 3: مبرمج — أنظمة وعمليات بت',hFin:'الواجهة 4: مالية وحياة — نسبة، خصم، ضريبة، فائدة، BMI، عمر',hConv:'الواجهة 5: المحولات والشامل — بحث وتحويل كل الوحدات',
+      hConvList:'كل المحولات (شامل) — تحكم مباشر',hSet:'الإعدادات',hTheme:'الثيمات',hHist:'السجل والحافظة',hAbout:'حول وحقوق',hFormula:'صيغ وثوابت سريعة',
+      cat:'الفئة',from:'من',to:'إلى',val:'القيمة',out:'الناتج',swap:'عكس',mode:'نوع الحساب',calc:'احسب',copyOut:'نسخ الناتج',paste:'لصق',save:'حفظ',clear:'مسح السجل',empty:'لا يوجد عناصر',
+      tSound:'نغمات جميلة عند اللمس/النقر',tHaptic:'اهتزاز',tFast:'أرقام نافرة وسريعة جدًا',tVol:'مستوى الصوت',
+      themes:{sky:'سماوي',wood:'خشبي فاتح',woodDark:'خشبي غامق',crystal:'بلوري'},
+      rights:'© يحيى حمزة — جميع الحقوق محفوظة. حاسبة يحيى برو: أساسية، علمية، مبرمج، مالية وحياة، ومحولات شاملة لكل الوحدات — خمس واجهات مختلفة، لغتان، ثيمات متعددة.',
+      links:[['الموقع','https://ehea1973com-star.github.io/'],['تيليجرام','https://t.me/ehea1973hmza'],['يوتيوب','https://youtube.com/channel/UCmChpVHGV74adiyqncSyocg?si=9XQ_fkqIzcQNvxIM'],['فيسبوك','https://www.facebook.com/share/1A24B9417b/'],['مجموعة فيسبوك','https://www.facebook.com/share/g/182uiov2Xo/']]
+    },
+    en:{brand:'Ehya Pro Calculator',copy:'Copy',share:'Share',search:'Search tools, converters, history...',tabs:['Basic','Scientific','Programmer','Finance & Life','Converters+Settings'],
+      hBasic:'UI 1: Basic — fast daily math',hSci:'UI 2: Scientific — functions & trig & powers',hProg:'UI 3: Programmer — bases & bitwise',hFin:'UI 4: Finance & Life — %, discount, tax, interest, BMI, age',hConv:'UI 5: Converters & All — search and convert all units',
+      hConvList:'All converters (comprehensive) — direct control',hSet:'Settings',hTheme:'Themes',hHist:'History & Clipboard',hAbout:'About & Rights',hFormula:'Quick formulas & constants',
+      cat:'Category',from:'From',to:'To',val:'Value',out:'Result',swap:'Swap',mode:'Calculation',calc:'Calculate',copyOut:'Copy result',paste:'Paste',save:'Save',clear:'Clear history',empty:'No items',
+      tSound:'Nice tap/click tones',tHaptic:'Vibration',tFast:'Bold & ultra-fast keys',tVol:'Volume',
+      themes:{sky:'Sky',wood:'Light Wood',woodDark:'Dark Wood',crystal:'Crystal'},
+      rights:'© Yahya Hamza — All rights reserved. Ehya Pro Calculator: Basic, Scientific, Programmer, Finance & Life, and comprehensive unit converters — 5 distinct UIs, bilingual, multiple themes.',
+      links:[['Website','https://ehea1973com-star.github.io/'],['Telegram','https://t.me/ehea1973hmza'],['YouTube','https://youtube.com/channel/UCmChpVHGV74adiyqncSyocg?si=9XQ_fkqIzcQNvxIM'],['Facebook','https://www.facebook.com/share/1A24B9417b/'],['FB Group','https://www.facebook.com/share/g/182uiov2Xo/']]
+    }
+  };
+  function t(){return i18n[state.lang]}
+  function fmt(n){ if(n===null||n===undefined||n===''||isNaN(n)) return '—'; var x=Math.round((Number(n)+Number.EPSILON)*1e12)/1e12; var s=String(x); if(Math.abs(x)>=1e12|| (Math.abs(x)>0 && Math.abs(x)<1e-9)) s=x.toExponential(8); return s; }
+
+  var cats={
+    length:{ar:'الطول',en:'Length',u:{m:1,km:1000,cm:0.01,mm:0.001,um:1e-6,nm:1e-9,mi:1609.344,yd:0.9144,ft:0.3048,in:0.0254,nmi:1852}},
+    mass:{ar:'الكتلة/الوزن',en:'Mass/Weight',u:{kg:1,g:0.001,mg:1e-6,ug:1e-9,t:1000,lb:0.45359237,oz:0.028349523125,ct:0.0002,st:6.35029318}},
+    temp:{ar:'الحرارة',en:'Temperature',u:['C','F','K']},
+    area:{ar:'المساحة',en:'Area',u:{sqm:1,sqkm:1e6,sqcm:1e-4,sqmm:1e-6,ha:10000,acre:4046.8564224,sqmi:2589988.110336,sqyd:0.83612736,sqft:0.09290304,sqin:0.00064516}},
+    volume:{ar:'الحجم',en:'Volume',u:{l:1,ml:0.001,m3:1000,cm3:0.001,gal_us:3.785411784,gal_uk:4.54609,qt:0.946352946,pt:0.473176473,cup:0.2365882365, floz:0.0295735295625,tbsp:0.01478676478125,tsp:0.00492892159375}},
+    speed:{ar:'السرعة',en:'Speed',u:{mps:1,kmh:1/3.6,mph:0.44704,kn:0.514444,fts:0.3048}},
+    time:{ar:'الزمن',en:'Time',u:{s:1,ms:0.001,us:1e-6,min:60,h:3600,day:86400,week:604800,month:2629800,year:31557600}},
+    data:{ar:'البيانات',en:'Data',u:{B:1,KB:1024,MB:1048576,GB:1073741824,TB:1099511627776,bit:0.125,Kb:128,Mb:131072,Gb:134217728}},
+    pressure:{ar:'الضغط',en:'Pressure',u:{Pa:1,kPa:1000,bar:100000,atm:101325,psi:6894.757293168,mmHg:133.3223684211}},
+    energy:{ar:'الطاقة',en:'Energy',u:{J:1,kJ:1000,cal:4.184,kcal:4184,Wh:3600,kWh:3600000,eV:1.602176634e-19,BTU:1055.05585262}},
+    power:{ar:'القدرة',en:'Power',u:{W:1,kW:1000,MW:1e6,hp:745.699872,PS:735.49875}},
+    force:{ar:'القوة',en:'Force',u:{N:1,kN:1000,lbf:4.4482216152605,kgf:9.80665,dyn:1e-5}},
+    angle:{ar:'الزوايا',en:'Angle',u:{deg:1,rad:57.29577951308232,grad:0.9,arcmin:1/60,arcsec:1/3600}},
+    freq:{ar:'التردد',en:'Frequency',u:{Hz:1,kHz:1000,MHz:1e6,GHz:1e9,rpm:1/60}},
+    fuel:{ar:'استهلاك الوقود',en:'Fuel Economy',u:{kmpl:1,mpg_us:0.4251437075,mpg_uk:0.35400619,l100km:-1}},
+    density:{ar:'الكثافة',en:'Density',u:{kgm3:1,gcm3:1000,kgl:1000,gml:1000}}
+  };
+
+  function setTheme(th){state.theme=th;localStorage.setItem('ec_theme',th);document.body.className='theme-'+th;renderThemes();applyFast()}
+  function applyHeaderStyle(){ var h=$('hdr'); if(!h)return; h.className='header ui-'+({basic:'basic',sci:'sci',prog:'prog',fin:'fin',more:'more'}[state.page]||'basic'); }
+  function setLang(l){state.lang=l;localStorage.setItem('ec_lang',l);document.documentElement.lang=l;document.documentElement.dir=(l==='ar'?'rtl':'ltr');renderAll()}
+  function navTo(p){state.page=p;['basic','sci','prog','fin','more'].forEach(function(x){$('page-'+x).classList.toggle('active',x===p)});renderNav();applyHeaderStyle();applySearch()}
+  function applyFast(){ var on=settings.fast; document.querySelectorAll('.key').forEach(function(k){k.style.transition=on?'transform .03s ease, box-shadow .03s ease, filter .03s ease':'transform .08s ease, box-shadow .08s ease'}) }
+
+  function copyText(txt){txt=String(txt==null?'':txt); try{if(window.Android&&Android.copy){Android.copy(txt);return}}catch(e){} if(navigator.clipboard) navigator.clipboard.writeText(txt).catch(function(){})}
+  function shareText(txt){txt=String(txt==null?'':txt); try{if(window.Android&&Android.share){Android.share(txt);return}}catch(e){} if(navigator.share){navigator.share({text:txt}).catch(function(){})} else {copyText(txt)} }
+  function pasteText(cb){ try{if(window.Android&&Android.paste){cb(Android.paste()||'');return}}catch(e){} if(navigator.clipboard&&navigator.clipboard.readText){navigator.clipboard.readText().then(function(v){cb(v||'')}).catch(function(){cb('')})} else cb('') }
+  function pushHist(entry){state.hist.unshift({t:Date.now(),v:String(entry)}); if(state.hist.length>60) state.hist.pop(); localStorage.setItem('ec_hist',JSON.stringify(state.hist)); renderHist()}
+
+  function safeEval(expr){
+    if(!expr && expr!==0) return 0; var s=String(expr);
+    s=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/π/g,'Math.PI').replace(/√\(/g,'Math.sqrt(').replace(/\^/g,'**');
+    s=s.replace(/\bANS\b/g, String(state.bRes||0));
+    if(!/^[0-9+\-*/().,%\sA-Za-z_]+$/.test(s)) throw 1;
+    if(/(constructor|prototype|window|document|this|;|\{|\}|=>)/.test(s)) throw 1;
+    var v=Function('"use strict";var E=Math.E,PI=Math.PI,sqrt=Math.sqrt,pow=Math.pow,abs=Math.abs,sin=Math.sin,cos=Math.cos,tan=Math.tan,asin=Math.asin,acos=Math.acos,atan=Math.atan,log=Math.log,log10=Math.log10||function(x){return Math.log(x)/Math.LN10},exp=Math.exp,floor=Math.floor,ceil=Math.ceil,round=Math.round;return('+s+')')();
+    if(typeof v!=='number' || !isFinite(v)) throw 1; return Math.round((v+Number.EPSILON)*1e12)/1e12;
+  }
+
+  function bindKeys(container, handler){
+    container.querySelectorAll('.key').forEach(function(el){
+      var fire=function(ev){ev.preventDefault(); ev.stopPropagation(); var k=el.getAttribute('data-k'); if(settings.fast){el.classList.add('pressed'); setTimeout(function(){el.classList.remove('pressed')},55)} var tp='num'; if('=＝'.indexOf(k)>=0) tp='eq'; else if('+-×÷*/^%ANDORXORNOT'.indexOf(k)>=0||/sin|cos|tan|log|ln/.test(k)) tp='op'; else if(k==='C'||k==='⌫'||k==='AC') tp='util'; beep(tp); handler(k)};
+      el.addEventListener('pointerdown',fire,{passive:false});
+      el.addEventListener('click',function(e){e.preventDefault()});
+    });
+  }
+
+  function renderNav(){ var ids=['basic','sci','prog','fin','more'],names=t().tabs; $('nav').innerHTML=ids.map(function(id,i){return '<button class="'+(state.page===id?'active':'')+'" data-p="'+id+'">'+names[i]+'</button>'}).join(''); $('nav').querySelectorAll('button').forEach(function(b){b.onclick=function(){beep('util');navTo(b.getAttribute('data-p'))}}) }
+
+  // BASIC
+  function renderBasic(){ $('h-basic').textContent=t().hBasic; $('b-expr').textContent=state.bExpr; $('b-res').textContent=state.bRes; $('b-copy').textContent=t().copy; $('b-paste').textContent=t().paste; $('b-save').textContent=t().save;
+    var keys=['C','⌫','%','÷','7','8','9','×','4','5','6','−','1','2','3','+','±','0','.','='];
+    $('basicKeys').innerHTML=keys.map(function(k){var c='key'; if('÷×−+'.indexOf(k)>=0)c+=' op'; if(k==='=')c='key eq'; if('C⌫%±'.indexOf(k)>=0)c+=' util'; if(k==='C')c='key danger'; return '<div class="'+c+'" data-k="'+k+'">'+k+'</div>'}).join('');
+    bindKeys($('basicKeys'),basicPress); applyFast(); }
+  function basicPress(k){ if(k==='C'){state.bExpr='';state.bRes='0'} else if(k==='⌫'){state.bExpr=state.bExpr.slice(0,-1)} else if(k==='='){try{state.bRes=String(safeEval(state.bExpr||state.bRes));}catch(e){state.bRes='Error'}} else if(k==='±'){state.bExpr = state.bExpr && state.bExpr.charAt(0)==='-'?state.bExpr.slice(1):('-'+(state.bExpr||''))} else {state.bExpr+=k} $('b-expr').textContent=state.bExpr; $('b-res').textContent=state.bRes; }
+
+  // SCI
+  function renderSci(){ $('h-sci').textContent=t().hSci; $('s-expr').textContent=state.sExpr; $('s-res').textContent=state.sRes; $('s-deg').textContent=state.deg?'DEG':'RAD';
+    var keys=['sin','cos','tan','asin','acos','atan','sinh','cosh','tanh','ln','log','exp','√','x²','x³','xʸ','10ˣ','π','e','(',')','|x|','1/x','n!','mod','7','8','9','÷','C','4','5','6','×','⌫','1','2','3','−','±','0','.','=','%'];
+    $('sciKeys').innerHTML=keys.map(function(k){var c='key small'; if(['÷','×','−','+','='].indexOf(k)>=0)c+=' op'; if(k==='=')c='key small eq'; if(['C','⌫'].indexOf(k)>=0)c='key small util'; if(k==='C')c='key small danger'; return '<div class="'+c+'" data-k="'+k+'">'+k+'</div>'}).join('');
+    bindKeys($('sciKeys'),sciPress); applyFast(); }
+  function fact(n){n=Math.floor(Number(n)); if(n<0||n>170||!isFinite(n)) return NaN; var r=1; for(var i=2;i<=n;i++) r*=i; return r}
+  function sciPress(k){ var ex=state.sExpr||'';
+    function setRes(v){state.sRes=String(v)}
+    try{
+      if(k==='C'){ex='';setRes('0')} else if(k==='⌫'){ex=ex.slice(0,-1)}
+      else if(k==='='){setRes(safeEval(ex||state.sRes))}
+      else if(k==='π'){ex+='π'} else if(k==='e'){ex+='e'} else if(k==='('||k===')'||k==='.'||k==='%'){ex+=k}
+      else if(/^[0-9]$/.test(k)){ex+=k}
+      else if(k==='÷')ex+='÷'; else if(k==='×')ex+='×'; else if(k==='−')ex+='−'; else if(k==='+')ex+='+'
+      else if(k==='±'){ex = ex && ex.charAt(0)==='-'?ex.slice(1):('-'+ex)}
+      else if(k==='√'){ex='sqrt('+ex+')'; setRes(safeEval(ex))}
+      else if(k==='x²'){ex='('+ex+')^2'; setRes(safeEval(ex))}
+      else if(k==='x³'){ex='('+ex+')^3'; setRes(safeEval(ex))}
+      else if(k==='xʸ'){ex+='^'}
+      else if(k==='10ˣ'){ex='10^('+ex+')'; setRes(safeEval(ex))}
+      else if(k==='1/x'){ex='1/('+ex+')'; setRes(safeEval(ex))}
+      else if(k==='|x|'){ex='abs('+ex+')'; setRes(safeEval(ex))}
+      else if(k==='n!'){setRes(fact(safeEval(ex||state.sRes)))}
+      else if(k==='mod'){ex+='%'}
+      else if(['sin','cos','tan','asin','acos','atan','sinh','cosh','tanh'].indexOf(k)>=0){
+        var trig=['sin','cos','tan','asin','acos','atan'].indexOf(k)>=0; var need=trig && state.deg && ['sin','cos','tan'].indexOf(k)>=0; var inv=trig && state.deg && ['asin','acos','atan'].indexOf(k)>=0;
+        ex='Math.'+k+'('+ex+')'; if(need) ex='Math.'+k+'(('+ (state.sExpr||'0') +')*Math.PI/180)';
+        if(inv) ex='(Math.'+k+'('+ (state.sExpr||'0') +')*180/Math.PI)';
+        setRes(safeEval(ex));
+      } else if(k==='ln'){ex='Math.log('+ex+')'; setRes(safeEval(ex))}
+      else if(k==='log'){ex='(Math.log('+ex+')/Math.LN10)'; setRes(safeEval(ex))}
+      else if(k==='exp'){ex='Math.exp('+ex+')'; setRes(safeEval(ex))}
+    }catch(e){ if(k==='=') state.sRes='Error'; }
+    state.sExpr=ex; $('s-expr').textContent=state.sExpr; $('s-res').textContent=state.sRes; $('s-deg').textContent=state.deg?'DEG':'RAD';
+  }
+
+  // PROG
+  function renderProg(){ $('h-prog').textContent=t().hProg;
+    var keys=['D','E','F','AC','A','B','C','⌫','7','8','9','÷','4','5','6','×','1','2','3','−','0','(',')','+']; 
+    $('progKeys').innerHTML=keys.map(function(k){var c='key small'; if('÷×−+'.indexOf(k)>=0)c+=' op'; if(k==='AC')c='key small danger'; return '<div class="'+c+'" data-k="'+k+'">'+k+'</div>'}).join('');
+    bindKeys($('progKeys'),progPress); applyFast();
+    document.querySelectorAll('[data-pop]').forEach(function(b){b.onclick=function(){beep('op'); var op=b.getAttribute('data-pop'); var a=state.pVal|0; if(op==='NOT'){progSet(~a);return} var val=prompt(state.lang==='ar'?'أدخل المعامل الثاني (عدد عشري)':'Enter second operand (decimal)','0'); if(val===null) return; var b2=parseInt(val,10)||0; if(op==='AND')progSet(a&b2); else if(op==='OR')progSet(a|b2); else if(op==='XOR')progSet(a^b2); else if(op==='<<')progSet(a<<b2); else if(op==='>>')progSet(a>>b2); };});
+  }
+  function progSet(n){n=(n|0); state.pVal=n; var u=n>>>0; $('p-dec').value=String(n); $('p-hex').value=u.toString(16).toUpperCase(); $('p-bin').value=u.toString(2); $('p-oct').value=u.toString(8); $('p-res').textContent=String(n); $('p-expr').textContent=(state.lang==='ar'?'عشري ':'DEC ')+n}
+  function progPress(k){ if(k==='AC'){progSet(0);return} if(k==='⌫'){progSet(Math.trunc((state.pVal|0)/10));return} if(/^[0-9A-F]$/.test(k)){ var h=(($('p-hex').value.replace(/^0+/,'')||'0')+k); progSet(parseInt(h,16)|0); return } }
+  ['p-dec','p-hex','p-bin','p-oct'].forEach(function(id){ $(id).addEventListener('input',function(e){ try{var v=(e.target.value||'').trim(); var n=0; if(id==='p-dec')n=parseInt(v||'0',10); if(id==='p-hex')n=parseInt(v||'0',16); if(id==='p-bin')n=parseInt(v||'0',2); if(id==='p-oct')n=parseInt(v||'0',8); if(isNaN(n))n=0; progSet(n);}catch(err){} }); });
+
+  // FINANCE & LIFE
+  var finModes=[];
+  function getFinModes(){ return state.lang==='ar'?[
+    {id:'pct',name:'نسبة مئوية (س% من ص)',fs:[['x','النسبة %','10'],['y','من القيمة','200']]},
+    {id:'pctchg',name:'نسبة زيادة/نقصان',fs:[['o','القيمة الأصلية','100'],['n','القيمة الجديدة','120']]},
+    {id:'disc',name:'خصم',fs:[['p','السعر','100'],['d','الخصم %','15']]},
+    {id:'tax',name:'ضريبة/إضافة',fs:[['p','السعر','100'],['t','الضريبة %','14']]},
+    {id:'tip',name:'إكرامية وتقسيم',fs:[['b','قيمة الفاتورة','50'],['tp','الإكرامية %','10'],['n','عدد الأشخاص','2']]},
+    {id:'sint',name:'فائدة بسيطة',fs:[['p','المبلغ','1000'],['r','الفائدة السنوية %','5'],['y','المدة (سنوات)','2']]},
+    {id:'cint',name:'فائدة مركبة',fs:[['p','المبلغ','1000'],['r','الفائدة السنوية %','5'],['y','المدة (سنوات)','2'],['n','مرات التركيب/سنة','12']]},
+    {id:'loan',name:'قسط قرض شهري',fs:[['p','مبلغ القرض','10000'],['r','الفائدة السنوية %','6'],['y','المدة (سنوات)','3']]},
+    {id:'bmi',name:'مؤشر كتلة الجسم BMI',fs:[['w','الوزن (كغ)','70'],['h','الطول (سم)','170']]},
+    {id:'age',name:'العمر (من تاريخ الميلاد)',fs:[['d','سنة الميلاد','1990'],['m','الشهر','1'],['day','اليوم','1']]}
+  ]:[
+    {id:'pct',name:'Percentage (x% of y)',fs:[['x','Percent %','10'],['y','Of value','200']]},
+    {id:'pctchg',name:'Percent change',fs:[['o','Original','100'],['n','New','120']]},
+    {id:'disc',name:'Discount',fs:[['p','Price','100'],['d','Discount %','15']]},
+    {id:'tax',name:'Tax/Add',fs:[['p','Price','100'],['t','Tax %','14']]},
+    {id:'tip',name:'Tip & Split',fs:[['b','Bill','50'],['tp','Tip %','10'],['n','People','2']]},
+    {id:'sint',name:'Simple interest',fs:[['p','Principal','1000'],['r','Annual rate %','5'],['y','Years','2']]},
+    {id:'cint',name:'Compound interest',fs:[['p','Principal','1000'],['r','Annual rate %','5'],['y','Years','2'],['n','Compounds/year','12']]},
+    {id:'loan',name:'Monthly loan payment',fs:[['p','Loan amount','10000'],['r','Annual rate %','6'],['y','Years','3']]},
+    {id:'bmi',name:'BMI',fs:[['w','Weight (kg)','70'],['h','Height (cm)','170']]},
+    {id:'age',name:'Age (from birth date)',fs:[['d','Birth year','1990'],['m','Month','1'],['day','Day','1']]}
+  ]}
+  function renderFin(){ $('h-fin').textContent=t().hFin; $('h-formula').textContent=t().hFormula; $('l-mode').textContent=t().mode; $('finCalc').textContent=t().calc; $('finCopy').textContent=t().copyOut;
+    finModes=getFinModes(); var sel=$('finMode'); var cur=sel.value||finModes[0].id; sel.innerHTML=''; finModes.forEach(function(m){var o=document.createElement('option');o.value=m.id;o.textContent=m.name; if(m.id===cur)o.selected=true; sel.appendChild(o)}); renderFinForm(); renderFormulas(); }
+  function renderFinForm(){ var id=$('finMode').value; var m=null; for(var i=0;i<finModes.length;i++) if(finModes[i].id===id) m=finModes[i]; if(!m) m=finModes[0]; var h=''; m.fs.forEach(function(f){h+='<div class="field"><label>'+f[1]+'</label><input id="f_'+f[0]+'" inputmode="decimal" value="'+f[2]+'"></div>'}); $('finForm').innerHTML=h }
+  function val(id){ var el=$('f_'+id); return el?parseFloat(el.value):0 }
+  function doFin(){ var id=$('finMode').value; var out='—',note='';
+    try{
+      if(id==='pct'){out=fmt(val('x')/100*val('y'))}
+      else if(id==='pctchg'){var o=val('o'),n=val('n'); var pc=o?((n-o)/o*100):0; out=fmt(pc)+' %'; note=(pc>=0?'+':'')+fmt(n-o)}
+      else if(id==='disc'){var p=val('p'),d=val('d'); out=fmt(p*(1-d/100)); note=state.lang==='ar'?'توفير: '+fmt(p*d/100):'Save: '+fmt(p*d/100)}
+      else if(id==='tax'){var p=val('p'),tx=val('t'); out=fmt(p*(1+tx/100)); note=state.lang==='ar'?'الضريبة: '+fmt(p*tx/100):'Tax: '+fmt(p*tx/100)}
+      else if(id==='tip'){var b=val('b'),tp=val('tp'),n=val('n')||1; var tot=b*(1+tp/100); out=fmt(tot/n)+(state.lang==='ar'?' للشخص':' / person'); note=(state.lang==='ar'?'الإجمالي: ':'Total: ')+fmt(tot)}
+      else if(id==='sint'){var P=val('p'),R=val('r')/100,Y=val('y'); var I=P*R*Y; out=fmt(P+I); note=(state.lang==='ar'?'الفائدة: ':'Interest: ')+fmt(I)}
+      else if(id==='cint'){var P=val('p'),R=val('r')/100,Y=val('y'),N=val('n')||1; var A=P*Math.pow(1+R/N,N*Y); out=fmt(A); note=(state.lang==='ar'?'الفائدة: ':'Interest: ')+fmt(A-P)}
+      else if(id==='loan'){var P=val('p'),r=(val('r')/100)/12, n=val('y')*12; var m=r===0?P/n: P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1); out=fmt(m)+(state.lang==='ar'?' / شهر':' / month'); note=(state.lang==='ar'?'الإجمالي: ':'Total: ')+fmt(m*n)}
+      else if(id==='bmi'){var w=val('w'),h=val('h')/100; var bmi=h? w/(h*h):0; var cat=''; if(bmi<18.5)cat=state.lang==='ar'?'نحافة':'Under'; else if(bmi<25)cat=state.lang==='ar'?'طبيعي':'Normal'; else if(bmi<30)cat=state.lang==='ar'?'زيادة وزن':'Over'; else cat=state.lang==='ar'?'سمنة':'Obese'; out=fmt(bmi); note=cat}
+      else if(id==='age'){var by=val('d'),bm=val('m'),bd=val('day'); var now=new Date(); var years=now.getFullYear()-by; var m=now.getMonth()+1-bm; var d=now.getDate()-bd; if(d<0){m--; } if(m<0){years--; m+=12;} out=years+(state.lang==='ar'?' سنة':' years'); note=(state.lang==='ar'?('تقريبًا '+years+'س و '+(m<0?0:m)+'ش'):('~ '+years+'y '+(m<0?0:m)+'m'))}
+    }catch(e){out='Error'} $('finOut').textContent=out; $('finNote').textContent=note; state.finLast=out+' '+note; }
+  function renderFormulas(){ var list=state.lang==='ar'?[
+    ['π','3.141592653589793'],['e','2.718281828459045'],['φ الذهبي','1.618033988749895'],['c سرعة الضوء','299792458 m/s'],['g الجاذبية','9.80665 m/s²'],['1 inch','2.54 cm'],['1 mile','1.609344 km'],['1 kg','2.20462262 lb']
+  ]:[['π','3.141592653589793'],['e','2.718281828459045'],['φ Golden ratio','1.618033988749895'],['c Speed of light','299792458 m/s'],['g Gravity','9.80665 m/s²'],['1 inch','2.54 cm'],['1 mile','1.609344 km'],['1 kg','2.20462262 lb']];
+    $('formulaList').innerHTML=list.map(function(x){return '<div class="item"><b>'+x[1]+'</b><div class="muted">'+x[0]+'</div></div>'}).join('') }
+
+  // CONVERTERS
+  function renderConv(){ $('h-conv').textContent=t().hConv; $('h-convlist').textContent=t().hConvList; $('l-cat').textContent=t().cat; $('l-from').textContent=t().from; $('l-to').textContent=t().to; $('l-val').textContent=t().val; $('l-out').textContent=t().out; $('convSwap').textContent=t().swap; $('convCopy').textContent=t().copy;
+    var sel=$('convCat'); var cur=sel.value||'length'; sel.innerHTML=''; Object.keys(cats).forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=cats[k][state.lang]||cats[k].en; if(k===cur)o.selected=true; sel.appendChild(o)}); fillUnits(); doConv(); renderConvList(); }
+  function fillUnits(){ var cat=$('convCat').value; var u=cats[cat].u; var arr=Array.isArray(u)?u:Object.keys(u);
+    ['convFrom','convTo'].forEach(function(id,i){var s=$(id); s.innerHTML=''; arr.forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x; s.appendChild(o)}); if(i===1&&arr.length>1) s.selectedIndex=1;}); }
+  function convertVal(cat,from,to,val){ val=parseFloat(val); if(isNaN(val)) return '';
+    if(cat==='temp'){ var c=val; if(from==='F')c=(val-32)*5/9; else if(from==='K')c=val-273.15; var out=c; if(to==='F')out=c*9/5+32; else if(to==='K')out=c+273.15; return out; }
+    if(cat==='fuel' && (from==='l100km' || to==='l100km')){ var kmpl; if(from==='l100km'){kmpl=val>0?100/val:0;} else { var base=val*cats.fuel.u[from]; kmpl=base; } if(to==='l100km') return kmpl>0?100/kmpl:0; return kmpl/cats.fuel.u[to]; }
+    var u=cats[cat].u; return (val*u[from])/u[to]; }
+  function doConv(){ var r=convertVal($('convCat').value,$('convFrom').value,$('convTo').value,$('convVal').value); $('convOut').value=(r===''?'':fmt(r)); }
+  function renderConvList(){ var q=(state.search||'').toLowerCase(); var box=$('convList'); box.innerHTML=''; Object.keys(cats).forEach(function(k){var c=cats[k],name=c[state.lang]||c.en; var arr=Array.isArray(c.u)?c.u.slice():Object.keys(c.u); var units=arr.join(', '); var blob=(name+' '+units+' '+k).toLowerCase(); if(q && blob.indexOf(q)<0) return; if(!state.convUI[k]) state.convUI[k]={val:'1',from:arr[0],to:arr[1]||arr[0]}; var st=state.convUI[k]; if(arr.indexOf(st.from)<0) st.from=arr[0]; if(arr.indexOf(st.to)<0) st.to=arr[1]||arr[0]; var out=convertVal(k,st.from,st.to,st.val); st.out=(out===''?'':fmt(out)); var opts=arr.map(function(u){return '<option value="'+u+'">'+u+'</option>'}).join('');
+      var d=document.createElement('div'); d.className='item';
+      d.innerHTML='<b>'+name+'</b><div class="muted">'+units+'</div>'
+        +'<div class="mini-grid">'
+        +'<div class="field"><label>'+t().val+'</label><input data-ck="'+k+'" data-role="val" inputmode="decimal" value="'+String(st.val).replace(/"/g,'&quot;')+'"></div>'
+        +'<div class="field"><label>'+t().out+'</label><input data-ck="'+k+'" data-role="out" readonly value="'+String(st.out).replace(/"/g,'&quot;')+'"></div>'
+        +'<div class="field"><label>'+t().from+'</label><select data-ck="'+k+'" data-role="from">'+opts+'</select></div>'
+        +'<div class="field"><label>'+t().to+'</label><select data-ck="'+k+'" data-role="to">'+opts+'</select></div>'
+        +'</div>';
+      var selFrom=d.querySelector('select[data-role="from"]'); if(selFrom) selFrom.value=st.from;
+      var selTo=d.querySelector('select[data-role="to"]'); if(selTo) selTo.value=st.to;
+      var vin=d.querySelector('input[data-role="val"]'); var vout=d.querySelector('input[data-role="out"]');
+      function recalc(){ var r=convertVal(k,st.from,st.to,st.val); st.out=(r===''?'':fmt(r)); if(vout) vout.value=st.out; }
+      if(vin) vin.addEventListener('input',function(){st.val=this.value; recalc();});
+      if(selFrom) selFrom.addEventListener('change',function(){st.from=this.value; beep('util'); recalc();});
+      if(selTo) selTo.addEventListener('change',function(){st.to=this.value; beep('util'); recalc();});
+      box.appendChild(d);
+    }); if(!box.children.length) box.innerHTML='<div class="muted">'+t().empty+'</div>'; }
+
+  function renderHist(){ var box=$('histList'); box.innerHTML=''; var q=(state.search||'').toLowerCase(); var items=state.hist.filter(function(it){return !q || String(it.v).toLowerCase().indexOf(q)<0? !q : true}); if(q) items=state.hist.filter(function(it){return String(it.v).toLowerCase().indexOf(q)>=0}); if(!items.length){box.innerHTML='<div class="muted">'+t().empty+'</div>';return} items.slice(0,40).forEach(function(it){var d=document.createElement('div'); d.className='item'; d.innerHTML='<b>'+String(it.v)+'</b><div class="muted">'+new Date(it.t).toLocaleString()+'</div>'; d.onclick=function(){beep('util'); copyText(String(it.v))}; box.appendChild(d)}) }
+  function renderThemes(){ var m=t().themes; var ks=[['sky',m.sky],['wood',m.wood],['wood-dark',m.woodDark],['crystal',m.crystal]]; $('themeChips').innerHTML=ks.map(function(x){return '<div class="chip'+(state.theme===x[0]?' active':'')+'" data-th="'+x[0]+'">'+x[1]+'</div>'}).join(''); $('themeChips').querySelectorAll('[data-th]').forEach(function(c){c.onclick=function(){beep('util'); setTheme(c.getAttribute('data-th'))}}) }
+  function renderAbout(){ $('h-set').textContent=t().hSet; $('h-theme').textContent=t().hTheme; $('h-hist').textContent=t().hHist; $('h-about').textContent=t().hAbout; $('t-sound').textContent=t().tSound; $('t-haptic').textContent=t().tHaptic; $('t-fast').textContent=t().tFast; $('t-vol').textContent=t().tVol; $('pasteAny').textContent=t().paste; $('clearHist').textContent=t().clear; $('aboutBox').innerHTML=t().rights.replace(/\n/g,'<br>'); $('linksBox').innerHTML=t().links.map(function(l){return '<a class="btn" href="'+l[1]+'" target="_blank">'+l[0]+'</a>'}).join(''); $('footer').innerHTML=t().rights+'<br>'+t().links.map(function(l){return '<a href="'+l[1]+'">'+l[0]+'</a>'}).join(' · '); }
+
+  function renderAll(){ $('brand').textContent=t().brand; $('langBtn').textContent=(state.lang==='ar'?'EN':'ع'); $('copyBtn').textContent=t().copy; if($('shareBtn')) $('shareBtn').textContent=t().share; if($('gearBtn')){ $('gearBtn').title=t().hSet; $('gearBtn').setAttribute('aria-label',t().hSet); } $('searchInput').placeholder=t().search; renderNav(); renderBasic(); renderSci(); renderProg(); renderFin(); renderConv(); renderThemes(); renderHist(); renderAbout(); applyHeaderStyle(); applySearch(); }
+  function applySearch(){ state.search=($('searchInput').value||'').toLowerCase(); renderConvList(); renderHist(); }
+
+  // events
+  $('langBtn').onclick=function(){beep('util'); setLang(state.lang==='ar'?'en':'ar')};
+  $('copyBtn').onclick=function(){beep('util'); var r=state.page==='sci'?state.sRes:(state.page==='prog'?$('p-res').textContent:(state.page==='fin'?(state.finLast||$('finOut').textContent):(state.page==='more'?($('convOut').value||''):state.bRes))); copyText(r||'0')};
+  $('shareBtn').onclick=function(){beep('util'); var r=state.page==='sci'?state.sRes:(state.page==='prog'?$('p-res').textContent:(state.page==='fin'?(state.finLast||$('finOut').textContent):(state.page==='more'?($('convOut').value||''):state.bRes))); shareText(r||'0')};
+  $('gearBtn').onclick=function(){beep('util'); navTo('more'); setTimeout(function(){var el=$('h-set'); if(el&&el.scrollIntoView) try{el.scrollIntoView({behavior:'smooth',block:'start'})}catch(e){el.scrollIntoView(true)} },80)};
+  $('searchInput').addEventListener('input',applySearch);
+  $('b-copy').onclick=function(){beep('util'); copyText(state.bRes||'0')};
+  $('b-save').onclick=function(){beep('util'); pushHist((state.bExpr||'')+' = '+(state.bRes||'0'))};
+  $('b-paste').onclick=function(){beep('util'); pasteText(function(v){state.bExpr+=(v||''); $('b-expr').textContent=state.bExpr})};
+  $('b-mc').onclick=function(){beep('util'); state.mem=0}; $('b-mr').onclick=function(){beep('util'); state.bExpr+=String(state.mem); $('b-expr').textContent=state.bExpr}; $('b-mp').onclick=function(){beep('util'); state.mem+=(parseFloat(state.bRes)||0)};
+  $('s-copy').onclick=function(){beep('util'); copyText(state.sRes||'0')};
+  $('s-save').onclick=function(){beep('util'); pushHist((state.sExpr||'')+' = '+(state.sRes||'0'))};
+  $('s-deg').onclick=function(){beep('util'); state.deg=!state.deg; $('s-deg').textContent=state.deg?'DEG':'RAD'};
+  $('finMode').onchange=function(){beep('util'); renderFinForm()}; $('finCalc').onclick=function(){beep('eq'); doFin()}; $('finCopy').onclick=function(){beep('util'); copyText(($('finOut').textContent||'')+' '+($('finNote').textContent||''))};
+  $('convCat').onchange=function(){beep('util'); fillUnits(); doConv()}; $('convFrom').onchange=doConv; $('convTo').onchange=doConv; $('convVal').oninput=doConv;
+  $('convSwap').onclick=function(){beep('util'); var a=$('convFrom').value,b=$('convTo').value; $('convFrom').value=b; $('convTo').value=a; doConv()}; $('convCopy').onclick=function(){beep('util'); copyText($('convOut').value)};
+  $('setSound').checked=settings.sound; $('setHaptic').checked=settings.haptic; $('setFast').checked=settings.fast; $('setVol').value=Math.round(settings.vol*100);
+  $('setSound').onchange=function(){settings.sound=this.checked; localStorage.setItem('ec_sound',settings.sound?'1':'0'); beep('util')};
+  $('setHaptic').onchange=function(){settings.haptic=this.checked; localStorage.setItem('ec_haptic',settings.haptic?'1':'0'); haptic(10)};
+  $('setFast').onchange=function(){settings.fast=this.checked; localStorage.setItem('ec_fast',settings.fast?'1':'0'); applyFast()};
+  $('setVol').oninput=function(){settings.vol=(parseInt(this.value,10)||35)/100; localStorage.setItem('ec_vol',String(parseInt(this.value,10)||35))};
+  $('pasteAny').onclick=function(){beep('util'); pasteText(function(v){if(v){pushHist('Clipboard: '+v); copyText(v)}})};
+  $('clearHist').onclick=function(){beep('util'); state.hist=[]; localStorage.setItem('ec_hist','[]'); renderHist()};
+
+  setTheme(state.theme); setLang(state.lang); progSet(0); navTo('basic');
+})();
+</script>
+</body>
+</html>

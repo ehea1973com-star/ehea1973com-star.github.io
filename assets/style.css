@@ -131,13 +131,18 @@ p {
   background: rgba(7, 12, 24, 0.78);
   backdrop-filter: blur(18px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
-  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.35s ease, opacity 0.35s ease;
 }
 
 .site-header.scrolled {
   background: rgba(5, 9, 20, 0.94);
   border-color: rgba(34, 211, 238, 0.28);
-  transform: translateY(-4px);
+}
+
+.site-header.header-hidden {
+  transform: translateY(calc(-100% - 24px));
+  opacity: 0;
+  pointer-events: none;
 }
 
 .header-actions {
@@ -3177,3 +3182,29 @@ html[data-theme="light"] .pwa-install-button:focus-visible {
   .brand-text small { display: none; }
   .panel-cards { grid-template-columns: 1fr; }
 }
+
+/* Schematic zoom & explain */
+.schematic-card .zoomable-img { cursor: zoom-in; }
+.schematic-explain { margin-top: 10px; border: 1px solid var(--line, rgba(255,255,255,.12)); border-radius: 12px; padding: 8px 10px; background: var(--surface-2, rgba(255,255,255,.03)); }
+.schematic-explain summary { cursor: pointer; font-weight: 700; color: var(--text, #fff); }
+.schematic-explain p { margin: 8px 0 0; color: var(--muted, #a8b3cf); font-size: .92rem; line-height: 1.8; }
+.image-modal-panel { width: min(1100px, 96vw); max-height: 92vh; }
+.image-zoom-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0 10px; }
+.zoom-level { min-width: 56px; text-align: center; font-weight: 700; }
+.image-zoom-wrap { overflow: auto; max-height: 62vh; border: 1px solid var(--line, rgba(255,255,255,.12)); border-radius: 12px; background: rgba(11,18,32,.9); -webkit-overflow-scrolling: touch; touch-action: pan-x pan-y pinch-zoom; }
+.image-zoom-wrap img { display: block; width: 100%; height: auto; max-width: none; transform-origin: 0 0; }
+
+/* Page transitions & FX */
+.page-enter { opacity: 0; transform: translateY(10px) scale(.995); filter: blur(2px); }
+.page-enter.page-enter-active { opacity: 1; transform: none; filter: none; transition: opacity .45s ease, transform .45s ease, filter .45s ease; }
+.page-leave { opacity: 0; transform: translateY(-6px) scale(.99); filter: blur(2px); transition: opacity .22s ease, transform .22s ease, filter .22s ease; }
+
+.fx-layer { position: fixed; inset: 0; pointer-events: none; z-index: 9999; overflow: hidden; }
+.fx-particle { position: fixed; will-change: transform, opacity; animation-name: fx-fall; animation-timing-function: cubic-bezier(.2,.7,.2,1); animation-fill-mode: forwards; text-shadow: 0 0 10px rgba(255,255,255,.35); user-select: none; }
+@keyframes fx-fall {
+  0% { opacity: 0; transform: translate3d(0,0,0) scale(.6) rotate(0deg); }
+  10% { opacity: 1; }
+  100% { opacity: 0; transform: translate3d(var(--dx, 0px), var(--dy, 220px), 0) scale(1.1) rotate(var(--rot, 180deg)); }
+}
+
+img:not(.brand-mark):not(.footer-brand img):not(.logo-fallback) { cursor: zoom-in; }

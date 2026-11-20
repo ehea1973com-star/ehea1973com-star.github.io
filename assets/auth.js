@@ -208,16 +208,27 @@
     }, delay);
   }
 
+  function isFatalRefreshError(error) {
+    var code = String(error && (error.code || error.error || error.message) || "");
+    return /TOKEN_EXPIRED|INVALID_REFRESH_TOKEN|USER_DISABLED|USER_NOT_FOUND|INVALID_ID_TOKEN|INVALID_IDP_RESPONSE|INVALID_GRANT/.test(code);
+  }
+
   function restoreSession() {
     var session = readSession();
-    if (!session || !session.refreshToken) return Promise.resolve(null);
+    if (!session || !session.refreshToken || !session.user) return Promise.resolve(null);
     if (session.expiresAt && session.expiresAt > Date.now() + 60000) {
       scheduleRefresh(session);
       return Promise.resolve(session.user);
     }
-    return refreshSession(session.refreshToken).catch(function () {
-      clearSession();
-      return null;
+    return refreshSession(session.refreshToken).then(function (user) {
+      return user;
+    }).catch(function (error) {
+      if (isFatalRefreshError(error)) {
+        clearSession();
+        return null;
+      }
+      scheduleRefresh(session);
+      return session.user;
     });
   }
 
@@ -522,9 +533,16 @@
     buildModal();
     bindAccountButtons();
     clearLegacyStorage();
+    var cached = readSession();
+    if (cached && cached.user && cached.idToken) {
+      scheduleRefresh(cached);
+    }
     window.addEventListener("storage", function (event) {
       if (event.key === SESSION_KEY) updateUI();
     });
+    if (cached && cached.user) {
+      updateUI();
+    }
     restoreSession().then(function () {
       emit();
     }).catch(function () {

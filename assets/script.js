@@ -311,8 +311,24 @@
   }
 
   var header = document.getElementById("header");
+  var lastScrollY = window.scrollY || 0;
   function onScroll() {
-    if (header) header.classList.toggle("scrolled", window.scrollY > 16);
+    var y = window.scrollY || 0;
+    if (header) {
+      header.classList.toggle("scrolled", y > 16);
+      var hidden = false;
+      if (y <= 40) {
+        hidden = false;
+      } else if (y > lastScrollY + 6 && y > 80) {
+        hidden = true;
+      } else if (y < lastScrollY - 6) {
+        hidden = false;
+      } else {
+        hidden = header.classList.contains("header-hidden");
+      }
+      header.classList.toggle("header-hidden", hidden);
+    }
+    lastScrollY = y;
   }
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -1215,4 +1231,88 @@
       })
       .catch(function () {});
   }
+})();
+
+// Image/schematic zoom modal (any image click)
+(function initImageZoom(){
+  var imageModal = document.getElementById("imageModal");
+  if (!imageModal) return;
+  var imageModalImg = document.getElementById("imageModalImg");
+  var imageModalTitle = document.getElementById("imageModalTitle");
+  var imageModalDesc = document.getElementById("imageModalDesc");
+  var imageZoomWrap = document.getElementById("imageZoomWrap");
+  var zoomLevelEl = document.getElementById("zoomLevel");
+  var zoomInBtn = document.getElementById("zoomInBtn");
+  var zoomOutBtn = document.getElementById("zoomOutBtn");
+  var zoomResetBtn = document.getElementById("zoomResetBtn");
+  var zoomDownloadBtn = document.getElementById("zoomDownloadBtn");
+  var zoomScale = 1;
+
+  function applyZoom(){
+    if (!imageModalImg) return;
+    imageModalImg.style.width = (zoomScale * 100) + "%";
+    if (zoomLevelEl) zoomLevelEl.textContent = Math.round(zoomScale * 100) + "%";
+  }
+  function getFileName(src){
+    try { return (src.split("?")[0].split("#")[0].split("/").pop()) || "image"; } catch(e){ return "image"; }
+  }
+  function openImageModal(src, title, desc){
+    if (!src) return;
+    if (imageModalImg){ imageModalImg.src = src; imageModalImg.alt = title || ""; }
+    if (imageModalTitle) imageModalTitle.textContent = title || "عرض الصورة";
+    if (imageModalDesc) imageModalDesc.textContent = desc || "";
+    if (zoomDownloadBtn){
+      zoomDownloadBtn.href = src;
+      zoomDownloadBtn.setAttribute("download", getFileName(src));
+      zoomDownloadBtn.setAttribute("target", "_blank");
+      zoomDownloadBtn.setAttribute("rel", "noopener");
+    }
+    zoomScale = 1; applyZoom();
+    imageModal.hidden = false;
+    document.body.classList.add("modal-open");
+    if (imageZoomWrap){ try{ imageZoomWrap.scrollTop = 0; imageZoomWrap.scrollLeft = 0; }catch(e){} }
+  }
+  function closeImageModal(){
+    imageModal.hidden = true;
+    if (imageModalImg) imageModalImg.src = "";
+    var anyOpen = false;
+    ["appModal","readerModal","installModal"].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el && !el.hidden) anyOpen = true;
+    });
+    if (!anyOpen) document.body.classList.remove("modal-open");
+  }
+  if (zoomInBtn) zoomInBtn.addEventListener("click", function(){ zoomScale = Math.min(+(zoomScale + 0.25).toFixed(2), 8); applyZoom(); });
+  if (zoomOutBtn) zoomOutBtn.addEventListener("click", function(){ zoomScale = Math.max(+(zoomScale - 0.25).toFixed(2), 0.5); applyZoom(); });
+  if (zoomResetBtn) zoomResetBtn.addEventListener("click", function(){ zoomScale = 1; applyZoom(); if(imageZoomWrap){ try{imageZoomWrap.scrollTop=0; imageZoomWrap.scrollLeft=0;}catch(e){} } });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-image-close]"), function(btn){ btn.addEventListener("click", closeImageModal); });
+  imageModal.addEventListener("click", function(ev){
+    var t = ev.target;
+    if (t && t.getAttribute && t.getAttribute("data-image-close") !== null) closeImageModal();
+  });
+  document.addEventListener("keydown", function(ev){ if (ev.key === "Escape" && !imageModal.hidden) closeImageModal(); });
+
+  document.addEventListener("click", function(ev){
+    var t = ev.target;
+    if (!t || !t.closest) return;
+    // ignore clicks inside image modal controls except image itself? allow
+    if (imageModal && imageModal.contains(t) && !t.closest("#imageModalImg")) return;
+    var trigger = t.closest("[data-zoom-src]");
+    if (trigger){
+      ev.preventDefault(); ev.stopPropagation();
+      openImageModal(trigger.getAttribute("data-zoom-src"), trigger.getAttribute("data-zoom-title") || trigger.getAttribute("alt") || "عرض الصورة", trigger.getAttribute("data-zoom-desc") || "");
+      return;
+    }
+    var img = (t.tagName === "IMG") ? t : t.closest("img");
+    if (!img) return;
+    // skip icons inside buttons/links where click should do action? still allow zoom for content images; but avoid breaking nav icons: allow zoom but not if parent is menu/logo button small
+    var src = img.currentSrc || img.src || img.getAttribute("src");
+    if (!src) return;
+    if (img.hasAttribute("data-no-zoom")) return;
+    if (img.closest(".brand, .nav-toggle, .modal-close, .footer-brand")) return;
+    ev.preventDefault(); ev.stopPropagation();
+    var title = img.getAttribute("data-zoom-title") || img.getAttribute("alt") || "عرض الصورة";
+    var desc = img.getAttribute("data-zoom-desc") || "";
+    openImageModal(src, title, desc);
+  }, true);
 })();
