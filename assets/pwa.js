@@ -88,7 +88,7 @@
         '</button>' +
         '<span class="eyebrow">تثبيت الموقع</span>' +
         '<h2 id="installTitle" style="margin:6px 0 10px">نزّل الموقع وثبّته</h2>' +
-        '<p style="margin:0 0 10px;line-height:1.8">هذا موقع <strong>يحيى الحمزة</strong> — <strong>وريا الرقة</strong>. ادعم صاحب الموقع وثبّت الموقع كتطبيق على هاتفك لتصله بسرعة في أي وقت.</p>' +
+        '<p style="margin:0 0 10px;line-height:1.8">هذا موقع <strong>يحيى الحمزة</strong> — <strong>سوريا، الرقة</strong>. ادعم صاحب الموقع وثبّت الموقع كتطبيق على هاتفك لتصله بسرعة في أي وقت.</p>' +
         '<div id="installHint" style="margin:10px 0;padding:10px 12px;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:12px;background:var(--surface-2,rgba(255,255,255,.04));line-height:1.7"></div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">' +
           '<button class="btn" type="button" id="installGoBtn">تثبيت الآن</button>' +
