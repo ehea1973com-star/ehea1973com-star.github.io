@@ -1,289 +1,289 @@
 {
-  "apps": [
-    {
-      "name": "ناسخ شامل",
-      "package": "com.yahya.universalcopy",
-      "version": "1.0",
-      "description": "ناسخ  شامل رابط مباشر لان حجمه هوا مظقوط 25  وبعد فك الظقط   46",
-      "category": "tools",
-      "filename": "",
-      "size": 25794970,
-      "sha256": "99ccbf1eef787cf9bda876307682eb670d8223b3c770b3ad4f134620dc93b1bf",
-      "updatedAt": "2026-11-21T13:01:51.676Z",
-      "icon": "assets/uploads/com.yahya.universalcopy.jpg",
-      "screenshots": [
-        "assets/uploads/screens/com.yahya.universalcopy-1.jpg",
-        "assets/uploads/screens/com.yahya.universalcopy-2.jpg",
-        "assets/uploads/screens/com.yahya.universalcopy-3.jpg"
-      ],
-      "download": "https://github.com/ehea1973com-star/ehea1973com-star.github.io/actions/runs/44896895592/artifacts/14703758639",
-      "external": true,
-      "type": "APK"
-    },
-    {
-      "category": "tools",
-      "description": "كاميرا",
-      "filename": "com.yahya.app912681-v1.0.apk",
-      "icon": "assets/uploads/com.yahya.app912681.jpg",
-      "name": "كاميرا",
-      "package": "com.yahya.app912681",
-      "screenshots": [
-        "assets/uploads/screens/com.yahya.app912681-1.jpg",
-        "assets/uploads/screens/com.yahya.app912681-2.jpg",
-        "assets/uploads/screens/com.yahya.app912681-3.jpg"
-      ],
-      "sha256": "9421ca822b89fefba1e59dc6ce14089c586ba3f8d72b64c39e8035a807c411a3",
-      "size": 3474329,
-      "updatedAt": "2026-11-21T09:47:40.471Z",
-      "version": "1.0"
-    },
-    {
-      "category": "tools",
-      "description": "آلة حاسبة معتبرة خفيفة جميلة",
-      "filename": "com.yahya.app358657-v1.0.apk",
-      "icon": "assets/uploads/com.yahya.app358657.jpg",
-      "name": "آلة حاسبة",
-      "package": "com.yahya.app358657",
-      "screenshots": [
-        "assets/uploads/screens/com.yahya.app358657-1.jpg",
-        "assets/uploads/screens/com.yahya.app358657-2.jpg",
-        "assets/uploads/screens/com.yahya.app358657-3.jpg"
-      ],
-      "sha256": "b824be9db4fb3bc4997a63c0df51c6af077d55f93fb16051165d08e1838cd9c4",
-      "size": 3457948,
-      "updatedAt": "2026-11-19T20:57:35.254Z",
-      "version": "1.0"
-    },
-    {
-      "category": "tools",
-      "description": "كيبورد  برتقالي👑👑👑👑👑",
-      "filename": "com.yahya.app932375-v1.0.apk",
-      "icon": "assets/uploads/com.yahya.app932375.jpg",
-      "name": "كيبورد برتقالي",
-      "package": "com.yahya.app932375",
-      "screenshots": [
-        "assets/uploads/screens/com.yahya.app932375-1.jpg",
-        "assets/uploads/screens/com.yahya.app932375-2.jpg",
-        "assets/uploads/screens/com.yahya.app932375-3.jpg"
-      ],
-      "sha256": "33ac0634de6716e2490c0c5e632730e91f4edb71d3fdd0a5003854bfe2f7fb2e",
-      "size": 14904120,
-      "updatedAt": "2026-11-18T20:48:16.090Z",
-      "version": "1.0"
-    },
-    {
-      "category": "tools",
-      "description": "متصفح  كروم  2",
-      "filename": "com.yahya.app482165-v1.0.apk",
-      "icon": "assets/uploads/com.yahya.app482165.jpg",
-      "name": "متصفح كروم  2",
-      "package": "com.yahya.app482165",
-      "screenshots": [
-        "assets/uploads/screens/com.yahya.app482165-1.jpg",
-        "assets/uploads/screens/com.yahya.app482165-2.jpg"
-      ],
-      "sha256": "be148c369a42c8432ac441af126505fe34a8df77dc71214d8055031299e3415c",
-      "size": 3457948,
-      "updatedAt": "2026-11-18T20:41:15.996Z",
-      "version": "1.0"
-    },
-    {
-      "category": "tools",
-      "description": "يكشف لك مكان الدوال للتطبيقات",
-      "filename": "com.yahya.app243086-v1.0.apk",
-      "icon": "assets/uploads/com.yahya.app243086.jpg",
-      "name": "كاشف الدوال",
-      "package": "com.yahya.app243086",
-      "screenshots": [
-        "assets/uploads/screens/com.yahya.app243086-1.jpg",
-        "assets/uploads/screens/com.yahya.app243086-2.jpg",
-        "assets/uploads/screens/com.yahya.app243086-3.jpg"
-      ],
-      "sha256": "0e98190ac7be1166457197a3573819d75b2c93c84941646bae7577ed17957026",
-      "size": 25063,
-      "updatedAt": "2026-11-18T20:30:04.016Z",
-      "version": "1.0"
-    },
-    {
-      "category": "tools",
-      "description": "كيبورد يحيى الملكي العالمي تقدر تقير كلشي بيه على كيفك غني بالحركات والميزات 💖💘💋❤️💞💚💛🧡💙🤍🖤👍👉🦾💅",
-      "filename": "com.yahya.royalkeyboard-v6.1.apk",
-      "icon": "assets/uploads/com.yahya.royalkeyboard.png",
-      "name": "كيبورد يحيى الملكي",
-      "package": "com.yahya.royalkeyboard",
-      "screenshots": [
-        "assets/uploads/screens/com.yahya.royalkeyboard-1.jpg",
-        "assets/uploads/screens/com.yahya.royalkeyboard-2.jpg",
-        "assets/uploads/screens/com.yahya.royalkeyboard-3.jpg"
-      ],
-      "sha256": "aa85cf0f5f31ecb6b9c4e2ab4566ba7d7733551105d417194b6873d3c6dcee7e",
-      "size": 14908043,
-      "updatedAt": "2026-11-18T20:05:56.191Z",
-      "version": "6.1"
-    },
-    {
-      "category": "tools",
-      "description": "VIPN  صنعي  لفتح متجر بلاي ولرفع الحظر عن المواقع المحجوبة  لاتنسى نشر التطبيق",
-      "filename": "com.yahya.app324196-v1.0.apk",
-      "icon": "assets/uploads/com.yahya.app324196.png",
-      "name": "vip n ehya",
-      "package": "com.yahya.app324196",
-      "screenshots": [
-        "assets/uploads/screens/com.yahya.app324196-1.jpg",
-        "assets/uploads/screens/com.yahya.app324196-2.jpg",
-        "assets/uploads/screens/com.yahya.app324196-3.jpg"
-      ],
-      "sha256": "4df2451a127aacfba5601eb1dfcc3bc81c6200dd0c150bf1bea67347877bbe58",
-      "size": 15242191,
-      "updatedAt": "2026-11-17T19:05:23.277Z",
-      "version": "1.0"
-    },
-    {
-      "category": "tools",
-      "description": "يعمل لتعديل الصور   عبر الذكاء الاصطناعي  وكمان  يدوي",
-      "filename": "com.yahya.khayal-v0.7.2.apk",
-      "icon": "assets/icons/system.svg",
-      "name": "خيال",
-      "package": "com.yahya.khayal",
-      "screenshots": [
-        "assets/uploads/screens/com.yahya.khayal-1795072816328-1.jpg",
-        "assets/uploads/screens/com.yahya.khayal-1795072816328-2.jpg",
-        "assets/uploads/screens/com.yahya.khayal-1795072816328-3.jpg"
-      ],
-      "sha256": "76b9027967ef193db6c702a2f6f8e22533a71049db92dc7adf206a3f40617608",
-      "size": 22811452,
-      "updatedAt": "2026-11-19T07:20:28.824Z",
-      "version": "0.7.2"
-    },
-    {
-      "category": "tools",
-      "description": "ينسخ ويشارك التطبيقات ويثبت APK",
-      "filename": "com.yahya.app629650-v1.0.apk",
-      "icon": "assets/uploads/com.yahya.app629650.png",
-      "name": "ناسخ التطبيقات",
-      "package": "com.yahya.app629650",
-      "screenshots": [
-        "assets/uploads/screens/com.yahya.app629650-1795012581487-1.jpg",
-        "assets/uploads/screens/com.yahya.app629650-1795012581487-2.jpg",
-        "assets/uploads/screens/com.yahya.app629650-1795012581487-3.jpg"
-      ],
-      "sha256": "c14e8297ebe071277fed32f34c0bfd0a82353735c788e74bfd71d4fbeb3ec454",
-      "size": 156658,
-      "updatedAt": "2026-11-18T14:36:30.964Z",
-      "version": "1.0"
-    },
-    {
-      "category": "islamic",
-      "description": "تطبيق إسلامي للقرآن والأذكار ومواقيت الصلاة، مع تحميل الأذكار والتشغيل المحلي دون إنترنت.",
-      "filename": ".apk",
-      "icon": "assets/icons/noor.svg",
-      "name": "نور الفجر",
-      "package": "نور الفجر",
-      "screenshots": [
-        "assets/uploads/screens/-1795071776331-1.jpg",
-        "assets/uploads/screens/-1795071776331-2.jpg",
-        "assets/uploads/screens/-1795071776331-3.jpg"
-      ],
-      "sha256": "",
-      "size": 0,
-      "updatedAt": "2026-11-19T07:03:08.225Z",
-      "version": "1.3.1"
-    },
-    {
-      "category": "tools",
-      "description": "أدوات إدارة وتشخيص متقدمة للأجهزة، مع واجهة تقنية موجهة للمستخدم المتقدم.",
-      "filename": "yahya-manager-2.apk",
-      "icon": "assets/icons/manager.svg",
-      "name": "Yahya Manager 2",
-      "package": "Yahya Manager 2",
-      "screenshots": [
-        "assets/uploads/screens/yahya-manager-2-1795071957577-1.jpg",
-        "assets/uploads/screens/yahya-manager-2-1795071957577-2.jpg",
-        "assets/uploads/screens/yahya-manager-2-1795071957577-3.jpg"
-      ],
-      "sha256": "",
-      "size": 0,
-      "updatedAt": "2026-11-19T07:06:06.818Z",
-      "version": "2.0.0"
-    },
-    {
-      "category": "tools",
-      "description": "تطبيق إصلاح وبث مباشر مستقل، مع محادثة داخل الفيديو وتحسينات اتصال TURN.",
-      "filename": "yahya-repairlive.apk",
-      "icon": "assets/icons/repair.svg",
-      "name": "Yahya RepairLive",
-      "package": "Yahya RepairLive",
-      "screenshots": [
-        "assets/uploads/screens/yahya-repairlive-1795072156910-1.jpg",
-        "assets/uploads/screens/yahya-repairlive-1795072156910-2.jpg"
-      ],
-      "sha256": "",
-      "size": 0,
-      "updatedAt": "2026-11-19T07:09:29.859Z",
-      "version": "1.6.1"
-    },
-    {
-      "category": "security",
-      "description": "درع حماية شامل: فحص الروابط عبر VirusTotal، موسوعة أعطال أوفلاين، خلفيات، دليل تفاعلي، قفل بصمة، وسبعة أيقونات للشاشة الرئيسية.",
-      "filename": "yahya-shield.apk",
-      "icon": "assets/icons/shield.svg",
-      "name": "Yahya Shield",
-      "package": "Yahya Shield",
-      "screenshots": [
-        "assets/uploads/screens/yahya-shield-1795072462893-1.jpg",
-        "assets/uploads/screens/yahya-shield-1795072462893-2.jpg",
-        "assets/uploads/screens/yahya-shield-1795072462893-3.jpg"
-      ],
-      "sha256": "",
-      "size": 0,
-      "updatedAt": "2026-11-19T07:14:46.369Z",
-      "version": "2.0"
-    },
-    {
-      "category": "security",
-      "description": "دليل استعادة وحماية الحسابات: خطوات استعادة منظمة، قائمة تحقق للمصادقة الثنائية، نصائح أمان، دليل أوفلاين.",
-      "filename": "yahya-account-help.apk",
-      "icon": "assets/icons/account.svg",
-      "name": "Yahya Account Help",
-      "package": "Yahya Account Help",
-      "screenshots": [
-        "assets/uploads/screens/yahya-account-help-1795072643703-1.jpg",
-        "assets/uploads/screens/yahya-account-help-1795072643703-2.jpg",
-        "assets/uploads/screens/yahya-account-help-1795072643703-3.jpg"
-      ],
-      "sha256": "",
-      "size": 0,
-      "updatedAt": "2026-11-19T07:17:40.722Z",
-      "version": "2.0"
-    },
-    {
-      "category": "tools",
-      "description": "خزنة ونسخ احتياطي واسترجاع ومشاركة ملفات APK مع بصمة SHA-256، وجسر تبادل عبر GitHub (inbox/outbox) مع تثبيت بعد الموافقة.",
-      "filename": "com.ehyahmza.apkbridge-v1.0.apk",
-      "icon": "assets/icons/system.svg",
-      "name": "خزنة APK يحيى حمزة",
-      "package": "com.ehyahmza.apkbridge",
-      "sha256": "18105300c352021937f5c3d2b1609658da6d632df8e2d7f30cb788f5095e6b99",
-      "size": 168946,
-      "updatedAt": "2026-11-19T13:35:26.000Z",
-      "version": "1.0"
-    },
-    {
-      "category": "tools",
-      "description": "حاسبة شاملة بخمس واجهات: أساسية، علمية، مبرمج، مالية وحياة، ومحولات لكل الوحدات بتحكم مباشر مع بحث وسجل وثيمات ونغمات لمس وإعدادات وزر مشاركة.",
-      "filename": "com.ehyahmza.supercalc-v1.0.apk",
-      "icon": "assets/uploads/com.ehyahmza.supercalc.png",
-      "name": "حاسبة يحيى برو",
-      "package": "com.ehyahmza.supercalc",
-      "screenshots": [
-        "assets/uploads/screens/com.ehyahmza.supercalc-1795124521120-1.jpg",
-        "assets/uploads/screens/com.ehyahmza.supercalc-1795124521120-2.jpg",
-        "assets/uploads/screens/com.ehyahmza.supercalc-1795124521120-3.jpg"
-      ],
-      "sha256": "79f1cf369427c01be2dcbbafb9a2d95163e3a456ea2dd98c2587991ce231683b",
-      "size": 66079,
-      "updatedAt": "2026-11-20T07:12:54.000Z",
-      "version": "1.0"
-    }
-  ]
+   "apps" : [
+      {
+         "category" : "tools",
+         "description" : "ÙØ§Ø³Ø® Ø´Ø§ÙÙ v1.7: ÙØ³Ø® ÙØµ Ø§ÙÙØ§Ø¬ÙØ© Ø¨Ø§ÙÙØµÙÙÙØ©Ø ÙÙØ·Ø©/OCRØ Ø­Ø§ÙØ¸Ø© ÙØ³Ø¬ÙØ Ø«ÙÙØ§ØªØ Ø¥Ø¹Ø¯Ø§Ø¯ ØµÙØ§Ø­ÙØ§Øª ÙÙØ¬Ù ÙÙÙÙ ØªÙÙØ§Ø¦ÙÙØ§Ø Ø£Ø²Ø±Ø§Ø± Ø³Ø±ÙØ¹Ø© Ø¨Ø§ÙØ¥Ø´Ø¹Ø§Ø±Ø ÙØªÙØ¸ÙÙ/Ø§ØªØ¬Ø§Ù RTL ÙÙÙØµ.",
+         "download" : "https://nightly.link/ehea1973com-star/ehea1973com-star.github.io/actions/runs/44907954479/UniversalCopier-debug-apk.zip",
+         "external" : true,
+         "filename" : "",
+         "icon" : "assets/uploads/com.yahya.universalcopy.jpg",
+         "name" : "ناسخ شامل",
+         "package" : "com.yahya.universalcopy",
+         "screenshots" : [
+            "assets/uploads/screens/com.yahya.universalcopy-1.jpg",
+            "assets/uploads/screens/com.yahya.universalcopy-2.jpg",
+            "assets/uploads/screens/com.yahya.universalcopy-3.jpg"
+         ],
+         "sha256" : "8df2ca58fc766e20004e097a73bc2c8441babfb2a41e52a1db711e56168d762c",
+         "size" : 25794970,
+         "type" : "ZIP",
+         "updatedAt" : "2026-11-21T13:20:00Z",
+         "version" : "1.7"
+      },
+      {
+         "category" : "tools",
+         "description" : "كاميرا",
+         "filename" : "com.yahya.app912681-v1.0.apk",
+         "icon" : "assets/uploads/com.yahya.app912681.jpg",
+         "name" : "كاميرا",
+         "package" : "com.yahya.app912681",
+         "screenshots" : [
+            "assets/uploads/screens/com.yahya.app912681-1.jpg",
+            "assets/uploads/screens/com.yahya.app912681-2.jpg",
+            "assets/uploads/screens/com.yahya.app912681-3.jpg"
+         ],
+         "sha256" : "9421ca822b89fefba1e59dc6ce14089c586ba3f8d72b64c39e8035a807c411a3",
+         "size" : 3474329,
+         "updatedAt" : "2026-11-21T09:47:40.471Z",
+         "version" : "1.0"
+      },
+      {
+         "category" : "tools",
+         "description" : "آلة حاسبة معتبرة خفيفة جميلة",
+         "filename" : "com.yahya.app358657-v1.0.apk",
+         "icon" : "assets/uploads/com.yahya.app358657.jpg",
+         "name" : "آلة حاسبة",
+         "package" : "com.yahya.app358657",
+         "screenshots" : [
+            "assets/uploads/screens/com.yahya.app358657-1.jpg",
+            "assets/uploads/screens/com.yahya.app358657-2.jpg",
+            "assets/uploads/screens/com.yahya.app358657-3.jpg"
+         ],
+         "sha256" : "b824be9db4fb3bc4997a63c0df51c6af077d55f93fb16051165d08e1838cd9c4",
+         "size" : 3457948,
+         "updatedAt" : "2026-11-19T20:57:35.254Z",
+         "version" : "1.0"
+      },
+      {
+         "category" : "tools",
+         "description" : "كيبورد  برتقالي👑👑👑👑👑",
+         "filename" : "com.yahya.app932375-v1.0.apk",
+         "icon" : "assets/uploads/com.yahya.app932375.jpg",
+         "name" : "كيبورد برتقالي",
+         "package" : "com.yahya.app932375",
+         "screenshots" : [
+            "assets/uploads/screens/com.yahya.app932375-1.jpg",
+            "assets/uploads/screens/com.yahya.app932375-2.jpg",
+            "assets/uploads/screens/com.yahya.app932375-3.jpg"
+         ],
+         "sha256" : "33ac0634de6716e2490c0c5e632730e91f4edb71d3fdd0a5003854bfe2f7fb2e",
+         "size" : 14904120,
+         "updatedAt" : "2026-11-18T20:48:16.090Z",
+         "version" : "1.0"
+      },
+      {
+         "category" : "tools",
+         "description" : "متصفح  كروم  2",
+         "filename" : "com.yahya.app482165-v1.0.apk",
+         "icon" : "assets/uploads/com.yahya.app482165.jpg",
+         "name" : "متصفح كروم  2",
+         "package" : "com.yahya.app482165",
+         "screenshots" : [
+            "assets/uploads/screens/com.yahya.app482165-1.jpg",
+            "assets/uploads/screens/com.yahya.app482165-2.jpg"
+         ],
+         "sha256" : "be148c369a42c8432ac441af126505fe34a8df77dc71214d8055031299e3415c",
+         "size" : 3457948,
+         "updatedAt" : "2026-11-18T20:41:15.996Z",
+         "version" : "1.0"
+      },
+      {
+         "category" : "tools",
+         "description" : "يكشف لك مكان الدوال للتطبيقات",
+         "filename" : "com.yahya.app243086-v1.0.apk",
+         "icon" : "assets/uploads/com.yahya.app243086.jpg",
+         "name" : "كاشف الدوال",
+         "package" : "com.yahya.app243086",
+         "screenshots" : [
+            "assets/uploads/screens/com.yahya.app243086-1.jpg",
+            "assets/uploads/screens/com.yahya.app243086-2.jpg",
+            "assets/uploads/screens/com.yahya.app243086-3.jpg"
+         ],
+         "sha256" : "0e98190ac7be1166457197a3573819d75b2c93c84941646bae7577ed17957026",
+         "size" : 25063,
+         "updatedAt" : "2026-11-18T20:30:04.016Z",
+         "version" : "1.0"
+      },
+      {
+         "category" : "tools",
+         "description" : "كيبورد يحيى الملكي العالمي تقدر تقير كلشي بيه على كيفك غني بالحركات والميزات 💖💘💋❤️💞💚💛🧡💙🤍🖤👍👉🦾💅",
+         "filename" : "com.yahya.royalkeyboard-v6.1.apk",
+         "icon" : "assets/uploads/com.yahya.royalkeyboard.png",
+         "name" : "كيبورد يحيى الملكي",
+         "package" : "com.yahya.royalkeyboard",
+         "screenshots" : [
+            "assets/uploads/screens/com.yahya.royalkeyboard-1.jpg",
+            "assets/uploads/screens/com.yahya.royalkeyboard-2.jpg",
+            "assets/uploads/screens/com.yahya.royalkeyboard-3.jpg"
+         ],
+         "sha256" : "aa85cf0f5f31ecb6b9c4e2ab4566ba7d7733551105d417194b6873d3c6dcee7e",
+         "size" : 14908043,
+         "updatedAt" : "2026-11-18T20:05:56.191Z",
+         "version" : "6.1"
+      },
+      {
+         "category" : "tools",
+         "description" : "VIPN  صنعي  لفتح متجر بلاي ولرفع الحظر عن المواقع المحجوبة  لاتنسى نشر التطبيق",
+         "filename" : "com.yahya.app324196-v1.0.apk",
+         "icon" : "assets/uploads/com.yahya.app324196.png",
+         "name" : "vip n ehya",
+         "package" : "com.yahya.app324196",
+         "screenshots" : [
+            "assets/uploads/screens/com.yahya.app324196-1.jpg",
+            "assets/uploads/screens/com.yahya.app324196-2.jpg",
+            "assets/uploads/screens/com.yahya.app324196-3.jpg"
+         ],
+         "sha256" : "4df2451a127aacfba5601eb1dfcc3bc81c6200dd0c150bf1bea67347877bbe58",
+         "size" : 15242191,
+         "updatedAt" : "2026-11-17T19:05:23.277Z",
+         "version" : "1.0"
+      },
+      {
+         "category" : "tools",
+         "description" : "يعمل لتعديل الصور   عبر الذكاء الاصطناعي  وكمان  يدوي",
+         "filename" : "com.yahya.khayal-v0.7.2.apk",
+         "icon" : "assets/icons/system.svg",
+         "name" : "خيال",
+         "package" : "com.yahya.khayal",
+         "screenshots" : [
+            "assets/uploads/screens/com.yahya.khayal-1795072816328-1.jpg",
+            "assets/uploads/screens/com.yahya.khayal-1795072816328-2.jpg",
+            "assets/uploads/screens/com.yahya.khayal-1795072816328-3.jpg"
+         ],
+         "sha256" : "76b9027967ef193db6c702a2f6f8e22533a71049db92dc7adf206a3f40617608",
+         "size" : 22811452,
+         "updatedAt" : "2026-11-19T07:20:28.824Z",
+         "version" : "0.7.2"
+      },
+      {
+         "category" : "tools",
+         "description" : "ينسخ ويشارك التطبيقات ويثبت APK",
+         "filename" : "com.yahya.app629650-v1.0.apk",
+         "icon" : "assets/uploads/com.yahya.app629650.png",
+         "name" : "ناسخ التطبيقات",
+         "package" : "com.yahya.app629650",
+         "screenshots" : [
+            "assets/uploads/screens/com.yahya.app629650-1795012581487-1.jpg",
+            "assets/uploads/screens/com.yahya.app629650-1795012581487-2.jpg",
+            "assets/uploads/screens/com.yahya.app629650-1795012581487-3.jpg"
+         ],
+         "sha256" : "c14e8297ebe071277fed32f34c0bfd0a82353735c788e74bfd71d4fbeb3ec454",
+         "size" : 156658,
+         "updatedAt" : "2026-11-18T14:36:30.964Z",
+         "version" : "1.0"
+      },
+      {
+         "category" : "islamic",
+         "description" : "تطبيق إسلامي للقرآن والأذكار ومواقيت الصلاة، مع تحميل الأذكار والتشغيل المحلي دون إنترنت.",
+         "filename" : ".apk",
+         "icon" : "assets/icons/noor.svg",
+         "name" : "نور الفجر",
+         "package" : "نور الفجر",
+         "screenshots" : [
+            "assets/uploads/screens/-1795071776331-1.jpg",
+            "assets/uploads/screens/-1795071776331-2.jpg",
+            "assets/uploads/screens/-1795071776331-3.jpg"
+         ],
+         "sha256" : "",
+         "size" : 0,
+         "updatedAt" : "2026-11-19T07:03:08.225Z",
+         "version" : "1.3.1"
+      },
+      {
+         "category" : "tools",
+         "description" : "أدوات إدارة وتشخيص متقدمة للأجهزة، مع واجهة تقنية موجهة للمستخدم المتقدم.",
+         "filename" : "yahya-manager-2.apk",
+         "icon" : "assets/icons/manager.svg",
+         "name" : "Yahya Manager 2",
+         "package" : "Yahya Manager 2",
+         "screenshots" : [
+            "assets/uploads/screens/yahya-manager-2-1795071957577-1.jpg",
+            "assets/uploads/screens/yahya-manager-2-1795071957577-2.jpg",
+            "assets/uploads/screens/yahya-manager-2-1795071957577-3.jpg"
+         ],
+         "sha256" : "",
+         "size" : 0,
+         "updatedAt" : "2026-11-19T07:06:06.818Z",
+         "version" : "2.0.0"
+      },
+      {
+         "category" : "tools",
+         "description" : "تطبيق إصلاح وبث مباشر مستقل، مع محادثة داخل الفيديو وتحسينات اتصال TURN.",
+         "filename" : "yahya-repairlive.apk",
+         "icon" : "assets/icons/repair.svg",
+         "name" : "Yahya RepairLive",
+         "package" : "Yahya RepairLive",
+         "screenshots" : [
+            "assets/uploads/screens/yahya-repairlive-1795072156910-1.jpg",
+            "assets/uploads/screens/yahya-repairlive-1795072156910-2.jpg"
+         ],
+         "sha256" : "",
+         "size" : 0,
+         "updatedAt" : "2026-11-19T07:09:29.859Z",
+         "version" : "1.6.1"
+      },
+      {
+         "category" : "security",
+         "description" : "درع حماية شامل: فحص الروابط عبر VirusTotal، موسوعة أعطال أوفلاين، خلفيات، دليل تفاعلي، قفل بصمة، وسبعة أيقونات للشاشة الرئيسية.",
+         "filename" : "yahya-shield.apk",
+         "icon" : "assets/icons/shield.svg",
+         "name" : "Yahya Shield",
+         "package" : "Yahya Shield",
+         "screenshots" : [
+            "assets/uploads/screens/yahya-shield-1795072462893-1.jpg",
+            "assets/uploads/screens/yahya-shield-1795072462893-2.jpg",
+            "assets/uploads/screens/yahya-shield-1795072462893-3.jpg"
+         ],
+         "sha256" : "",
+         "size" : 0,
+         "updatedAt" : "2026-11-19T07:14:46.369Z",
+         "version" : "2.0"
+      },
+      {
+         "category" : "security",
+         "description" : "دليل استعادة وحماية الحسابات: خطوات استعادة منظمة، قائمة تحقق للمصادقة الثنائية، نصائح أمان، دليل أوفلاين.",
+         "filename" : "yahya-account-help.apk",
+         "icon" : "assets/icons/account.svg",
+         "name" : "Yahya Account Help",
+         "package" : "Yahya Account Help",
+         "screenshots" : [
+            "assets/uploads/screens/yahya-account-help-1795072643703-1.jpg",
+            "assets/uploads/screens/yahya-account-help-1795072643703-2.jpg",
+            "assets/uploads/screens/yahya-account-help-1795072643703-3.jpg"
+         ],
+         "sha256" : "",
+         "size" : 0,
+         "updatedAt" : "2026-11-19T07:17:40.722Z",
+         "version" : "2.0"
+      },
+      {
+         "category" : "tools",
+         "description" : "خزنة ونسخ احتياطي واسترجاع ومشاركة ملفات APK مع بصمة SHA-256، وجسر تبادل عبر GitHub (inbox/outbox) مع تثبيت بعد الموافقة.",
+         "filename" : "com.ehyahmza.apkbridge-v1.0.apk",
+         "icon" : "assets/icons/system.svg",
+         "name" : "خزنة APK يحيى حمزة",
+         "package" : "com.ehyahmza.apkbridge",
+         "sha256" : "18105300c352021937f5c3d2b1609658da6d632df8e2d7f30cb788f5095e6b99",
+         "size" : 168946,
+         "updatedAt" : "2026-11-19T13:35:26.000Z",
+         "version" : "1.0"
+      },
+      {
+         "category" : "tools",
+         "description" : "حاسبة شاملة بخمس واجهات: أساسية، علمية، مبرمج، مالية وحياة، ومحولات لكل الوحدات بتحكم مباشر مع بحث وسجل وثيمات ونغمات لمس وإعدادات وزر مشاركة.",
+         "filename" : "com.ehyahmza.supercalc-v1.0.apk",
+         "icon" : "assets/uploads/com.ehyahmza.supercalc.png",
+         "name" : "حاسبة يحيى برو",
+         "package" : "com.ehyahmza.supercalc",
+         "screenshots" : [
+            "assets/uploads/screens/com.ehyahmza.supercalc-1795124521120-1.jpg",
+            "assets/uploads/screens/com.ehyahmza.supercalc-1795124521120-2.jpg",
+            "assets/uploads/screens/com.ehyahmza.supercalc-1795124521120-3.jpg"
+         ],
+         "sha256" : "79f1cf369427c01be2dcbbafb9a2d95163e3a456ea2dd98c2587991ce231683b",
+         "size" : 66079,
+         "updatedAt" : "2026-11-20T07:12:54.000Z",
+         "version" : "1.0"
+      }
+   ]
 }
