@@ -129,18 +129,14 @@ public class SelectionOverlayView extends View {
                 canvas.drawRoundRect(lr, dp(3), dp(3), bg2);
                 labelPaint.setColor(sel ? Color.parseColor("#FF000000") : Color.parseColor("#FF1B5E20"));
                 // preserve direction: RTL items should render RTL
-                try {
-                    if (android.os.Build.VERSION.SDK_INT >= 17) {
-                        canvas.save();
-                        if (it.rtl) {
-                            canvas.setLayoutDirection(LAYOUT_DIRECTION_RTL);
-                        } else {
-                            canvas.setLayoutDirection(LAYOUT_DIRECTION_LTR);
-                        }
-                    }
-                } catch (Exception ignored) {}
-                canvas.drawText(label, tx, ty, labelPaint);
-                try { if (android.os.Build.VERSION.SDK_INT >= 17) canvas.restore(); } catch (Exception ignored) {}
+                float drawX = tx;
+                Paint.Align oldAlign = labelPaint.getTextAlign();
+                if (it.rtl) {
+                    labelPaint.setTextAlign(Paint.Align.RIGHT);
+                    drawX = tmp.right - dp(4);
+                }
+                canvas.drawText(label, drawX, ty, labelPaint);
+                if (it.rtl) labelPaint.setTextAlign(oldAlign);
                 canvas.restore();
             }
         }
