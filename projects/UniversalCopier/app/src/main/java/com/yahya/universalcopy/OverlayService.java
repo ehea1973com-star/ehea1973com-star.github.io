@@ -108,14 +108,14 @@ public class OverlayService extends Service {
                 UniversalCopyAccessibilityService svc = UniversalCopyAccessibilityService.instance;
                 if (svc != null) {
                     svc.copyUiTextsNow();
+                    return;
+                }
+                if (PermissionHelper.isAccessibilityEnabled(OverlayService.this)) {
+                    Toast.makeText(getApplicationContext(), R.string.toast_accessibility_starting, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.toast_accessibility_required, Toast.LENGTH_SHORT).show();
-                    try {
-                        Intent i = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(i);
-                    } catch (Exception ignored) {}
                 }
+                PermissionHelper.openAccessibilitySettings(OverlayService.this);
             });
 
             if (btnSelectUi != null) {
@@ -211,12 +211,13 @@ public class OverlayService extends Service {
     private void startSelectionMode() {
         UniversalCopyAccessibilityService svc = UniversalCopyAccessibilityService.instance;
         if (svc == null) {
-            Toast.makeText(getApplicationContext(), R.string.toast_accessibility_required, Toast.LENGTH_SHORT).show();
-            try {
-                Intent i = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
-            } catch (Exception ignored) {}
+            if (PermissionHelper.isAccessibilityEnabled(this)) {
+                Toast.makeText(getApplicationContext(), R.string.toast_accessibility_starting, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.toast_accessibility_required, Toast.LENGTH_SHORT).show();
+            }
+            PermissionHelper.openAccessibilitySettings(this);
+            if (overlayView != null) overlayView.setVisibility(View.VISIBLE);
             return;
         }
         if (overlayView != null) overlayView.setVisibility(View.GONE);

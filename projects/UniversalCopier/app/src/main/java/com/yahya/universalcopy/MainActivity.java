@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnOverlayPermission = findViewById(R.id.btnOverlayPermission);
         Button btnNotif = findViewById(R.id.btnNotificationSettings);
         Button btnBattery = findViewById(R.id.btnBatterySettings);
+        Button btnSetupAll = findViewById(R.id.btnSetupAll);
         Button btnStartOverlay = findViewById(R.id.btnStartOverlay);
         Button btnStopOverlay = findViewById(R.id.btnStopOverlay);
         Button btnScanScreen = findViewById(R.id.btnScanScreen);
@@ -53,38 +54,24 @@ public class MainActivity extends AppCompatActivity {
         Button btnHistory = findViewById(R.id.btnHistory);
         Button btnSettings = findViewById(R.id.btnSettings);
 
-        btnAccessibility.setOnClickListener(v -> openSystemSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-        btnOverlayPermission.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                openUriSettings(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-            } else {
-                Toast.makeText(this, R.string.status_overlay_on, Toast.LENGTH_SHORT).show();
-            }
-        });
-        btnNotif.setOnClickListener(v -> {
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    Intent i = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-                    i.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
-                    startActivity(i);
-                } else {
-                    openUriSettings(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                }
-            } catch (Exception e) { openUriSettings(Settings.ACTION_APPLICATION_DETAILS_SETTINGS); }
-        });
+        if (btnSetupAll != null) btnSetupAll.setOnClickListener(v -> runSetupFlow());
+        btnAccessibility.setOnClickListener(v -> PermissionHelper.openAccessibilitySettings(this));
+        btnOverlayPermission.setOnClickListener(v -> PermissionHelper.openOverlaySettings(this));
+        btnNotif.setOnClickListener(v -> PermissionHelper.openNotificationSettings(this));
         btnBattery.setOnClickListener(v -> {
             try {
                 Intent i = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
             } catch (Exception e) {
-                openUriSettings(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                PermissionHelper.openAppDetails(this);
             }
         });
 
         btnStartOverlay.setOnClickListener(v -> {
-            if (!canDrawOverlays()) {
+            if (!PermissionHelper.canDrawOverlays(this)) {
                 Toast.makeText(this, R.string.toast_overlay_required, Toast.LENGTH_SHORT).show();
-                openUriSettings(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                PermissionHelper.openOverlaySettings(this);
                 return;
             }
             requestNotifIfNeeded();
@@ -107,11 +94,16 @@ public class MainActivity extends AppCompatActivity {
 
         btnCopyUiNow.setOnClickListener(v -> {
             UniversalCopyAccessibilityService svc = UniversalCopyAccessibilityService.instance;
+            if (svc == null && PermissionHelper.isAccessibilityEnabled(this)) {
+                Toast.makeText(this, R.string.toast_accessibility_starting, Toast.LENGTH_SHORT).show();
+                PermissionHelper.openAccessibilitySettings(this);
+                return;
+            }
             if (svc != null) {
                 svc.copyUiTextsNow();
             } else {
                 Toast.makeText(this, R.string.toast_accessibility_required, Toast.LENGTH_SHORT).show();
-                openSystemSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                PermissionHelper.openAccessibilitySettings(this);
             }
         });
 
@@ -171,34 +163,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateStatus() {
-        boolean acc = isAccessibilityEnabled();
+        boolean acc = PermissionHelper.isAccessibilityEnabled(this);
         statusAccessibility.setText(acc ? R.string.status_accessibility_on : R.string.status_accessibility_off);
-        boolean overlay = canDrawOverlays();
+        boolean overlay = PermissionHelper.canDrawOverlays(this);
         statusOverlay.setText(overlay ? R.string.status_overlay_on : R.string.status_overlay_off);
     }
 
-    private boolean canDrawOverlays() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return Settings.canDrawOverlays(this);
+    private void runSetupFlow() {
+        requestNotifIfNeeded();
+        if (!PermissionHelper.canDrawOverlays(this)) {
+            Toast.makeText(this, R.string.setup_overlay_first, Toast.LENGTH_LONG).show();
+            PermissionHelper.openOverlaySettings(this);
+            return;
         }
-        return true;
-    }
-
-    private boolean isAccessibilityEnabled() {
-        AccessibilityManager am = (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
-        if (am == null) return false;
-        List<AccessibilityServiceInfo> enabled = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK);
-        if (enabled == null) return false;
-        String target = new ComponentName(this, UniversalCopyAccessibilityService.class).flattenToString();
-        String targetShort = getPackageName() + "/.UniversalCopyAccessibilityService";
-        for (AccessibilityServiceInfo info : enabled) {
-            if (info == null || info.getId() == null) continue;
-            String id = info.getId();
-            if (id.equals(target) || id.equals(targetShort) || (id.contains(getPackageName()) && id.contains("UniversalCopyAccessibilityService"))) {
-                return true;
-            }
+        if (!PermissionHelper.isAccessibilityEnabled(this)) {
+            Toast.makeText(this, R.string.setup_accessibility_next, Toast.LENGTH_LONG).show();
+            PermissionHelper.openAccessibilitySettings(this);
+            return;
         }
-        return false;
+        Intent i = new Intent(this, OverlayService.class);
+        i.setAction(OverlayService.ACTION_START);
+        ContextCompat.startForegroundService(this, i);
+        Toast.makeText(this, R.string.setup_done, Toast.LENGTH_LONG).show();
     }
 
     private void requestNotifIfNeeded() {

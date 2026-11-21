@@ -120,22 +120,10 @@ public class UniversalCopyAccessibilityService extends AccessibilityService {
     }
 
     private void traverse(AccessibilityNodeInfo node, Set<String> out, int depth) {
-        if (node == null || depth > 100) return;
+        if (node == null || depth > 120) return;
         try {
             if (shouldSkipNode(node)) return;
-            CharSequence text = node.getText();
-            if (text != null) {
-                String s = text.toString().trim();
-                if (!s.isEmpty()) out.add(s);
-            }
-            CharSequence desc = node.getContentDescription();
-            if (desc != null) {
-                String d = desc.toString().trim();
-                if (!d.isEmpty()) {
-                    String ts = text != null ? text.toString().trim() : "";
-                    if (!d.equals(ts)) out.add(d);
-                }
-            }
+            addNodeText(node, out);
             int count = node.getChildCount();
             for (int i = 0; i < count; i++) {
                 AccessibilityNodeInfo child = node.getChild(i);
@@ -146,6 +134,70 @@ public class UniversalCopyAccessibilityService extends AccessibilityService {
             }
         } catch (Exception ignored) {
         }
+    }
+
+    private void addNodeText(AccessibilityNodeInfo node, Set<String> out) {
+        try {
+            CharSequence text = node.getText();
+            if (text != null) {
+                String s = cleanText(text.toString());
+                if (isUsefulText(s)) out.add(s);
+            }
+            CharSequence desc = node.getContentDescription();
+            if (desc != null) {
+                String d = cleanText(desc.toString());
+                if (isUsefulText(d)) {
+                    String ts = text != null ? cleanText(text.toString()) : "";
+                    if (!d.equals(ts)) out.add(d);
+                }
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                CharSequence hint = node.getHintText();
+                if (hint != null) {
+                    String h = cleanText(hint.toString());
+                    if (isUsefulText(h)) out.add(h);
+                }
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                CharSequence state = node.getStateDescription();
+                if (state != null) {
+                    String st = cleanText(state.toString());
+                    if (isUsefulText(st)) out.add(st);
+                }
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                try {
+                    List<CharSequence> extras = node.getExtras() != null ? node.getExtras().getCharSequenceArrayList("android.view.accessibility.extra.TEXT") : null;
+                    if (extras != null) {
+                        for (CharSequence cs : extras) {
+                            if (cs == null) continue;
+                            String e = cleanText(cs.toString());
+                            if (isUsefulText(e)) out.add(e);
+                        }
+                    }
+                } catch (Exception ignored) {}
+            }
+        } catch (Exception ignored) {}
+    }
+
+    private String cleanText(String s) {
+        if (s == null) return "";
+        String t = s.replace('\u00A0', ' ').replace("\r", "").trim();
+        // keep Arabic/emoji/text as-is except trimming and normal spaces
+        t = t.replaceAll("[\\t ]+", " ");
+        return t;
+    }
+
+    private boolean isUsefulText(String s) {
+        if (s == null) return false;
+        String t = s.trim();
+        if (t.isEmpty()) return false;
+        if (t.length() == 1) {
+            char c = t.charAt(0);
+            if (Character.isLetterOrDigit(c)) return true;
+            return false;
+        }
+        return true;
     }
 
     private void traverseItems(AccessibilityNodeInfo node, List<TextNodeItem> out, Set<String> seen, int depth) {
@@ -161,14 +213,14 @@ public class UniversalCopyAccessibilityService extends AccessibilityService {
             String best = null;
             CharSequence text = node.getText();
             if (text != null) {
-                String s = text.toString().trim();
-                if (!s.isEmpty()) best = s;
+                String s = cleanText(text.toString());
+                if (isUsefulText(s)) best = s;
             }
             if (best == null) {
                 CharSequence desc = node.getContentDescription();
                 if (desc != null) {
-                    String d = desc.toString().trim();
-                    if (!d.isEmpty()) best = d;
+                    String d = cleanText(desc.toString());
+                    if (isUsefulText(d)) best = d;
                 }
             }
 

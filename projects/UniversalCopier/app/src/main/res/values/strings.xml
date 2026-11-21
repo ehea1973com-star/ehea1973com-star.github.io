@@ -124,4 +124,9 @@
     <string name="theme_light">فاتح</string>
     <string name="theme_dark">داكن</string>
     <string name="theme_contrast">تباين عالي</string>
+    <string name="btn_setup_all">إعداد كل الصلاحيات بنقرة واحدة</string>
+    <string name="setup_overlay_first">الخطوة 1: امنح إذن الظهور فوق التطبيقات، ثم ارجع للتطبيق.</string>
+    <string name="setup_accessibility_next">الخطوة 2: فعّل خدمة "ناسخ شامل" في إمكانية الوصول، ثم ارجع للتطبيق.</string>
+    <string name="setup_done">تم تفعيل المتطلبات. يمكنك تشغيل الزر العائم الآن.</string>
+    <string name="toast_accessibility_starting">خدمة إمكانية الوصول مفعّلة بالنظام لكنها لم تتصل بعد. افتح إعدادها ثم ارجع، أو أعد تشغيلها.</string>
 </resources>
