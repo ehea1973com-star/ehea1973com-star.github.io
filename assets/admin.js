@@ -196,6 +196,91 @@
     return response.json();
   }
 
+  async function getRef(token) {
+    var url = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/git/ref/heads/" + encodeURIComponent(BRANCH);
+    var res = await fetch(url, { method: "GET", headers: headers(token, false), cache: "no-store" });
+    if (!res.ok) throw await apiError(res);
+    return res.json();
+  }
+
+  async function getCommit(token, sha) {
+    var url = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/git/commits/" + encodeURIComponent(sha);
+    var res = await fetch(url, { method: "GET", headers: headers(token, false), cache: "no-store" });
+    if (!res.ok) throw await apiError(res);
+    return res.json();
+  }
+
+  async function createBlob(token, base64) {
+    var url = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/git/blobs";
+    var res = await fetch(url, {
+      method: "POST",
+      headers: headers(token, true),
+      body: JSON.stringify({ content: base64, encoding: "base64" })
+    });
+    if (!res.ok) throw await apiError(res);
+    return res.json();
+  }
+
+  async function createTree(token, baseTree, entries) {
+    var url = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/git/trees";
+    var res = await fetch(url, {
+      method: "POST",
+      headers: headers(token, true),
+      body: JSON.stringify({ base_tree: baseTree, tree: entries })
+    });
+    if (!res.ok) throw await apiError(res);
+    return res.json();
+  }
+
+  async function createCommit(token, message, treeSha, parentSha) {
+    var url = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/git/commits";
+    var res = await fetch(url, {
+      method: "POST",
+      headers: headers(token, true),
+      body: JSON.stringify({ message: message, tree: treeSha, parents: [parentSha] })
+    });
+    if (!res.ok) throw await apiError(res);
+    return res.json();
+  }
+
+  async function updateRef(token, commitSha) {
+    var url = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/git/refs/heads/" + encodeURIComponent(BRANCH);
+    var res = await fetch(url, {
+      method: "PATCH",
+      headers: headers(token, true),
+      body: JSON.stringify({ sha: commitSha, force: false })
+    });
+    if (!res.ok) throw await apiError(res);
+    return res.json();
+  }
+
+  async function commitFiles(token, message, files, onProgress) {
+    // files: [{path, base64}]
+    if (!files || !files.length) throw new Error("لا توجد ملفات للرفع");
+    if (onProgress) onProgress("جارٍ تجهيز الرفع...");
+    var ref = await getRef(token);
+    var headSha = ref && ref.object ? ref.object.sha : null;
+    if (!headSha) throw new Error("تعذر تحديد آخر commit للفرع");
+    var headCommit = await getCommit(token, headSha);
+    var baseTree = headCommit && headCommit.tree ? headCommit.tree.sha : null;
+    if (!baseTree) throw new Error("تعذر تحديد tree");
+
+    var treeEntries = [];
+    for (var i = 0; i < files.length; i++) {
+      var f = files[i];
+      if (onProgress) onProgress("جارٍ رفع " + (i + 1) + "/" + files.length + ": " + f.path);
+      var blob = await createBlob(token, f.base64);
+      if (!blob || !blob.sha) throw new Error("فشل إنشاء blob: " + f.path);
+      treeEntries.push({ path: f.path, mode: "100644", type: "blob", sha: blob.sha });
+    }
+    if (onProgress) onProgress("جارٍ إنشاء commit...");
+    var tree = await createTree(token, baseTree, treeEntries);
+    var commit = await createCommit(token, message, tree.sha, headSha);
+    if (onProgress) onProgress("جارٍ تحديث الفرع...");
+    await updateRef(token, commit.sha);
+    return commit;
+  }
+
   function bytesToBase64(bytes) {
     var binary = "";
     var chunk = 0x8000;
@@ -371,8 +456,9 @@
     if (!slug(packageName)) return setStatus("اسم الحزمة يحتوي رموزًا غير صالحة.", "error");
     if (!version) return setStatus("أدخل إصدار التطبيق.", "error");
     if (!slug(version)) return setStatus("الإصدار يحتوي رموزًا غير صالحة.", "error");
-    if (!file) return setStatus("اختر ملف APK.", "error");
-    if (!/\.apk$/i.test(file.name)) return setStatus("الملف يجب أن يكون بصيغة APK.", "error");
+    if (!file) return setStatus("اختر ملف التطبيق أو الملف المضغوط.", "error");
+    var fileExt = (file.name.split(".").pop() || "").toLowerCase();
+    if (!/^(apk|zip|apks|xapk|aab|7z|rar)$/.test(fileExt)) return setStatus("نوع الملف غير مدعوم. استخدم APK أو ZIP/APKS/XAPK/AAB/7Z/RAR.", "error");
     if (file.size > MAX_SIZE) {
       return setStatus("حجم الملف أكبر من 100 MB. استخدم GitHub Releases لهذا الملف.", "error");
     }
@@ -400,23 +486,12 @@
     uploadButton.textContent = "جارٍ الرفع...";
 
     try {
-      var filename = slug(packageName) + "-v" + slug(version) + ".apk";
+      var filename = slug(packageName) + "-v" + slug(version) + "." + fileExt;
       setStatus("جارٍ قراءة الملف وحساب SHA-256...");
       var buffer = await readFile(file);
       var hash = await sha256(buffer);
       var base64 = bytesToBase64(new Uint8Array(buffer));
 
-      setStatus("جارٍ رفع APK إلى GitHub...");
-      var existingApk = await getFile("apps/" + filename, token);
-      await putFile(
-        "apps/" + filename,
-        base64,
-        "Upload " + filename,
-        existingApk ? existingApk.sha : null,
-        token
-      );
-
-      setStatus("جارٍ قراءة قائمة التطبيقات الحالية...");
       var manifest = await loadManifest(token);
       var existingEntry = manifest.apps.filter(function (app) {
         return app && (app.package === packageName || app.filename === filename);
@@ -426,21 +501,14 @@
         (existingEntry.icon || "").indexOf("..") === -1
         ? existingEntry.icon
         : "assets/icons/system.svg";
+      var iconUpload = null;
       if (iconFile) {
-        setStatus("جارٍ رفع أيقونة التطبيق...");
+        setStatus("جارٍ تجهيز أيقونة التطبيق...");
         var iconExtension = iconFile.name.split(".").pop().toLowerCase();
         var iconName = slug(packageName) + "." + iconExtension;
         iconPath = "assets/uploads/" + iconName;
         var iconBuffer = await readFile(iconFile);
-        var iconBase64 = bytesToBase64(new Uint8Array(iconBuffer));
-        var existingIcon = await getFile(iconPath, token);
-        await putFile(
-          iconPath,
-          iconBase64,
-          "Upload icon for " + name,
-          existingIcon ? existingIcon.sha : null,
-          token
-        );
+        iconUpload = { path: iconPath, base64: bytesToBase64(new Uint8Array(iconBuffer)) };
       }
 
       var screenshots = existingEntry && Array.isArray(existingEntry.screenshots)
@@ -448,6 +516,7 @@
           return /^assets\/[A-Za-z0-9._\/-]+$/.test(path) && path.indexOf("..") === -1;
         })
         : [];
+      var screenshotUploads = [];
       if (screenshotFiles.length) {
         screenshots = [];
         for (var shotFileIndex = 0; shotFileIndex < screenshotFiles.length; shotFileIndex += 1) {
@@ -456,15 +525,7 @@
           var processedShot = await resizeScreenshotTo720x1648(shotFile);
           var shotName = slug(packageName) + "-" + (shotFileIndex + 1) + "." + (processedShot.ext || "jpg");
           var shotPath = "assets/uploads/screens/" + shotName;
-          setStatus("جارٍ رفع لقطة الشاشة " + (shotFileIndex + 1) + " من " + screenshotFiles.length + "...");
-          var existingShot = await getFile(shotPath, token);
-          await putFile(
-            shotPath,
-            processedShot.base64,
-            "Upload screenshot " + (shotFileIndex + 1) + " for " + name,
-            existingShot ? existingShot.sha : null,
-            token
-          );
+          screenshotUploads.push({ path: shotPath, base64: processedShot.base64 });
           screenshots.push(shotPath);
         }
       }
@@ -488,16 +549,29 @@
       });
       manifest.apps.unshift(entry);
       var manifestText = JSON.stringify({ apps: manifest.apps }, null, 2) + "\n";
-      await putFile(
-        "apps/manifest.json",
-        encodeText(manifestText),
-        "Add " + name + " v" + version,
-        manifest.file ? manifest.file.sha : null,
-        token
-      );
 
-      setStatus("جارٍ تحديث بصمات SHA-256...");
-      await updateChecksums(filename, hash, token);
+      var checksumsFile = await getFile("apps/SHA256SUMS.txt", token);
+      var checksumLines = [];
+      if (checksumsFile && checksumsFile.content) {
+        checksumLines = decodeContent(checksumsFile).split(/\r?\n/).filter(function (line) {
+          return line.trim() && line.indexOf(filename) === -1;
+        });
+      }
+      checksumLines.push(hash + "  " + filename);
+      checksumLines.sort();
+      var checksumsText = checksumLines.join("\n") + "\n";
+
+      var commitFilesList = [];
+      commitFilesList.push({ path: "apps/" + filename, base64: base64 });
+      if (iconUpload) commitFilesList.push(iconUpload);
+      for (var su = 0; su < screenshotUploads.length; su++) commitFilesList.push(screenshotUploads[su]);
+      commitFilesList.push({ path: "apps/manifest.json", base64: encodeText(manifestText) });
+      commitFilesList.push({ path: "apps/SHA256SUMS.txt", base64: encodeText(checksumsText) });
+
+      setStatus("جارٍ رفع الملفات إلى GitHub (قد يستغرق دقائق للملفات الكبيرة)...");
+      await commitFiles(token, "Add " + name + " v" + version, commitFilesList, function (msg) {
+        setStatus(msg);
+      });
 
       if (saveToken && saveToken.checked) window.localStorage.setItem(TOKEN_KEY, token);
       else window.localStorage.removeItem(TOKEN_KEY);

@@ -671,7 +671,7 @@
 
   function makePhoneAppCard(app, index) {
     if (!app || !app.name || !app.filename) return null;
-    if (!/^[A-Za-z0-9._-]+\.apk$/.test(app.filename)) return null;
+    if (!isAppFileName(app.filename)) return null;
     var shareKey = app.package || app.name;
     if (cardExists(shareKey)) return null;
     var colors = ["icon-cyan", "icon-gold", "icon-violet", "icon-rose", "icon-green", "icon-blue"];
@@ -698,13 +698,13 @@
     body.appendChild(titleRow);
     if (app.description) body.appendChild(appElement("p", "", app.description));
     var meta = appElement("div", "meta");
-    meta.appendChild(appElement("span", "", "APK"));
+    meta.appendChild(appElement("span", "", fileTypeLabel(app.filename)));
     meta.appendChild(appElement("span", "", formatFileSize(app.size)));
     meta.appendChild(appElement("span", "", categoryLabel(category)));
     meta.appendChild(appElement("span", "", "مضاف من الهاتف"));
     body.appendChild(meta);
     var actions = appElement("div", "card-actions");
-    var download = appElement("a", "btn btn-small", "صفحة التحميل");
+    var download = appElement("a", "btn btn-small", "صفحة الAPK");
     download.href = "download.html?app=" + encodeURIComponent(app.package);
     actions.appendChild(download);
     var checksum = appElement("a", "mini-link", "SHA-256");
@@ -913,7 +913,7 @@
         if (!entry) {
           var href = data.downloadHref || "";
           var filename = "";
-          var match = /([^\/?#]+\.apk)(?:[?#]|$)/i.exec(href);
+          var match = /([^\/?#]+\.(apk|zip|apks|xapk|aab|7z|rar))(?:[?#]|$)/i.exec(href);
           if (match) filename = match[1];
           if (!filename && data.package) filename = slugify(data.package) + "-v" + String(data.version || "1.0").replace(/^v/i, "") + ".apk";
           if (!filename) filename = slugify(data.package || data.shareKey || data.name || "app") + ".apk";
@@ -1005,8 +1005,8 @@
     }
     if (modalDownload) {
       modalDownload.href = data.downloadHref || "#";
-      modalDownload.textContent = data.downloadLabel || "تحميل";
-      if (/\.apk($|\?)/i.test(data.downloadHref || "")) modalDownload.setAttribute("download", "");
+      modalDownload.textContent = data.downloadLabel || "APK";
+      if (/\.(apk|zip|apks|xapk|aab|7z|rar)($|\?)/i.test(data.downloadHref || "")) modalDownload.setAttribute("download", "");
       else modalDownload.removeAttribute("download");
     }
     if (modalChecksum) modalChecksum.href = "apps/SHA256SUMS.txt";
