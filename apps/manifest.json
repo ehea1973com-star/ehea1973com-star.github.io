@@ -1,6 +1,23 @@
 {
   "apps": [
     {
+      "name": "ناسخ شامل",
+      "package": "com.yahya.universalcopy",
+      "version": "1.2",
+      "description": "ناسخ شامل جديد",
+      "category": "tools",
+      "filename": "com.yahya.universalcopy-v1.2.zip",
+      "size": 25800665,
+      "sha256": "9fd242d3b1000e9b2df29f44b757826ba673fd3348b4d045ed7bf0482a183b3f",
+      "updatedAt": "2026-11-21T09:24:58.681Z",
+      "icon": "assets/uploads/com.yahya.universalcopy.jpg",
+      "screenshots": [
+        "assets/uploads/screens/com.yahya.universalcopy-1.jpg",
+        "assets/uploads/screens/com.yahya.universalcopy-2.jpg",
+        "assets/uploads/screens/com.yahya.universalcopy-3.jpg"
+      ]
+    },
+    {
       "name": "آلة حاسبة",
       "package": "com.yahya.app358657",
       "version": "1.0",
