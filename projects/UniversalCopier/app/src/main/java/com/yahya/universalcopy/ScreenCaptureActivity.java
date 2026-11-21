@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.projection.MediaProjectionManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -18,23 +19,25 @@ public class ScreenCaptureActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // if mode is UI (no OCR), default to latin OCR for screen scan convenience
+        try { overridePendingTransition(0, 0); } catch (Exception ignored) {}
+        try { moveTaskToBack(true); } catch (Exception ignored) {}
+
+        // OCR scan needs an OCR mode (UI mode means accessibility text copy)
         String mode = AppPrefs.getCurrentMode(this);
         if (AppPrefs.MODE_UI.equals(mode)) {
-            // keep UI mode for UI copy, but OCR scan needs an OCR mode - use default
             AppPrefs.setCurrentMode(this, AppPrefs.getDefaultMode(this));
         }
         try {
             MediaProjectionManager mpm = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
             if (mpm == null) {
                 Toast.makeText(this, R.string.toast_capture_failed, Toast.LENGTH_SHORT).show();
-                finish();
+                finishCaptureUi(false);
                 return;
             }
             startActivityForResult(mpm.createScreenCaptureIntent(), REQ_CAPTURE);
         } catch (Exception e) {
             Toast.makeText(this, R.string.toast_capture_failed, Toast.LENGTH_SHORT).show();
-            finish();
+            finishCaptureUi(false);
         }
     }
 
@@ -52,10 +55,35 @@ public class ScreenCaptureActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Toast.makeText(this, R.string.toast_capture_failed, Toast.LENGTH_SHORT).show();
                 }
+                finishCaptureUi(true);
+                return;
             } else {
                 Toast.makeText(this, R.string.toast_capture_failed, Toast.LENGTH_SHORT).show();
             }
         }
-        finish();
+        finishCaptureUi(false);
+    }
+
+    private void finishCaptureUi(boolean started) {
+        try {
+            // Keep our transient task out of the way so target app stays in front for capture
+            moveTaskToBack(true);
+        } catch (Exception ignored) {}
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                finishAndRemoveTask();
+            } else {
+                finish();
+            }
+        } catch (Exception e) {
+            try { finish(); } catch (Exception ignored) {}
+        }
+        try { overridePendingTransition(0, 0); } catch (Exception ignored) {}
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        try { overridePendingTransition(0, 0); } catch (Exception ignored) {}
     }
 }

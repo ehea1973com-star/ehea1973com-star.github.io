@@ -127,12 +127,17 @@ public class OverlayService extends Service {
 
             btnOcr.setOnClickListener(v -> {
                 hideMenu(menu);
+                if (overlayView != null) overlayView.setVisibility(View.INVISIBLE);
                 try {
                     Intent i = new Intent(OverlayService.this, ScreenCaptureActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(i);
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), R.string.toast_capture_failed, Toast.LENGTH_SHORT).show();
+                } finally {
+                    handler.postDelayed(() -> {
+                        try { if (overlayView != null) overlayView.setVisibility(View.VISIBLE); } catch (Exception ignored) {}
+                    }, 4000);
                 }
             });
 

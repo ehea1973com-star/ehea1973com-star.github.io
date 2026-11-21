@@ -118,7 +118,8 @@ public class ScreenCaptureService extends Service {
 
             ClipboardUtils.toast(this, getString(R.string.toast_ocr_running));
 
-            try { Thread.sleep(400); } catch (InterruptedException ignored) {}
+            // give time to leave permission dialog/capture UI and return to target app
+            try { Thread.sleep(1200); } catch (InterruptedException ignored) {}
             Image image = null;
             for (int i = 0; i < 10 && image == null; i++) {
                 try { image = fReader.acquireLatestImage(); } catch (Exception ignored) { image = null; }

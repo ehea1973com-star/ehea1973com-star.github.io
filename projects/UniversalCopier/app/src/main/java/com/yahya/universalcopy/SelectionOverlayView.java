@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -26,6 +28,8 @@ public class SelectionOverlayView extends View {
     private final Paint dimPaint = new Paint();
     private final Paint boxPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint boxStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint selBoxPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint selBoxStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint labelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint hintBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint hintTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -35,6 +39,9 @@ public class SelectionOverlayView extends View {
     private final RectF cancelRect = new RectF();
     private final String hint;
     private final String cancelLabel;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private TextNodeItem selectedItem = null;
+    private boolean handled = false;
 
     public SelectionOverlayView(Context context, List<TextNodeItem> items, Listener listener) {
         super(context);
@@ -51,6 +58,13 @@ public class SelectionOverlayView extends View {
         boxStroke.setStyle(Paint.Style.STROKE);
         boxStroke.setColor(Color.parseColor("#FF2196F3"));
         boxStroke.setStrokeWidth(dp(1.5f));
+
+        selBoxPaint.setStyle(Paint.Style.FILL);
+        selBoxPaint.setColor(Color.parseColor("#6634C759"));
+
+        selBoxStroke.setStyle(Paint.Style.STROKE);
+        selBoxStroke.setColor(Color.parseColor("#FF34C759"));
+        selBoxStroke.setStrokeWidth(dp(3f));
 
         labelPaint.setColor(Color.WHITE);
         labelPaint.setTextSize(sp(11f));
@@ -86,10 +100,12 @@ public class SelectionOverlayView extends View {
             if (it == null || it.text == null) continue;
             tmp.set(it.left, it.top, it.right, it.bottom);
             if (tmp.width() <= 0 || tmp.height() <= 0) continue;
-            canvas.drawRoundRect(tmp, dp(4), dp(4), boxPaint);
-            canvas.drawRoundRect(tmp, dp(4), dp(4), boxStroke);
+            boolean sel = (it == selectedItem);
+            canvas.drawRoundRect(tmp, dp(4), dp(4), sel ? selBoxPaint : boxPaint);
+            canvas.drawRoundRect(tmp, dp(4), dp(4), sel ? selBoxStroke : boxStroke);
             String label = it.text.replace('\n', ' ').trim();
             if (label.length() > 40) label = label.substring(0, 40) + "…";
+            if (sel) label = "✓ " + label;
             if (!label.isEmpty()) {
                 float tx = tmp.left + dp(4);
                 float ty = tmp.centerY() - (labelPaint.ascent() + labelPaint.descent()) / 2f;
@@ -127,13 +143,15 @@ public class SelectionOverlayView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() != MotionEvent.ACTION_UP) return true;
+        if (handled) return true;
         float x = event.getX();
         float y = event.getY();
         if (cancelRect.contains(x, y)) {
+            handled = true;
             if (listener != null) listener.onCancel();
             return true;
         }
-        // find topmost/smallest containing item? iterate reverse to prefer later drawn? order arbitrary; prefer smallest area containing point
+        // prefer smallest area containing point
         TextNodeItem hit = null;
         int bestArea = Integer.MAX_VALUE;
         for (TextNodeItem it : items) {
@@ -147,7 +165,13 @@ public class SelectionOverlayView extends View {
             }
         }
         if (hit != null) {
-            if (listener != null) listener.onCopy(hit.text);
+            handled = true;
+            selectedItem = hit;
+            invalidate();
+            final String text = hit.text;
+            handler.postDelayed(() -> {
+                if (listener != null) listener.onCopy(text);
+            }, 300);
         }
         return true;
     }
