@@ -101,4 +101,20 @@
     <string name="source_ui">واجهة</string>
     <string name="source_ocr">OCR</string>
     <string name="source_manual">يدوي</string>
+
+    <string name="action_select_text">تحديد نص من الشاشة</string>
+    <string name="selection_hint">اضغط على المربع لنسخ النص</string>
+    <string name="selection_cancel">إلغاء</string>
+
+    <string name="btn_open_clipboard">الحافظة السريعة</string>
+    <string name="btn_copy_selection">نسخ المحدد</string>
+    <string name="ocr_segments_title">نصوص مكتشفة (اضغط لنسخ)</string>
+
+    <string name="about_title">عن المطور والحقوق</string>
+    <string name="about_developer">المطور: يحيى الحمزة (Yahya Tech)</string>
+    <string name="about_rights">جميع الحقوق محفوظة © يحيى الحمزة</string>
+    <string name="about_site">الموقع: https://ehea1973com-star.github.io/</string>
+    <string name="about_youtube">يوتيوب: https://youtube.com/channel/UCmChpVHGV74adiyqncSyocg</string>
+    <string name="about_telegram">تيليجرام: https://t.me/ehea1973hmza</string>
+    <string name="about_desc">ناسخ شامل لنسخ نصوص واجهة التطبيقات وقراءة النص من الصور (OCR) مع حافظة سريعة وسجل.</string>
 </resources>

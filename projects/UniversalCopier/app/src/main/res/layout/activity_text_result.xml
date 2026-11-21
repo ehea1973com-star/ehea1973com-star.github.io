@@ -18,44 +18,77 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/textResult"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            android:textSize="15sp"
-            android:lineSpacingExtra="3dp"
-            android:text="@string/no_text_found" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="true"
+                android:textSize="15sp"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/no_text_found" />
+
+            <TextView
+                android:id="@+id/segmentsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ocr_segments_title"
+                android:textStyle="bold"
+                android:paddingTop="12dp"
+                android:paddingBottom="4dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/segmentsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone" />
+        </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:fillViewport="true"
         android:paddingTop="8dp">
 
-        <Button
-            android:id="@+id/btnCopyAll"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/btn_copy_all"
-            android:layout_marginEnd="6dp" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnShare"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/btn_share"
-            android:layout_marginEnd="6dp" />
+            <Button
+                android:id="@+id/btnCopyAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_copy_all"
+                android:layout_marginEnd="6dp" />
 
-        <Button
-            android:id="@+id/btnSaveMemory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/btn_save_memory" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/btnShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_share"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/btnSaveMemory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_save_memory"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/btnOpenClipboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_open_clipboard" />
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </LinearLayout>

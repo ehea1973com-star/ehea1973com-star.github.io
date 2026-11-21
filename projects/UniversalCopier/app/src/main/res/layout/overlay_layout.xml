@@ -34,6 +34,16 @@
             android:layout_marginBottom="4dp" />
 
         <Button
+            android:id="@+id/btnSelectUi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_select_text"
+            android:textSize="12sp"
+            android:minHeight="0dp"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp" />
+
+        <Button
             android:id="@+id/btnOcr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

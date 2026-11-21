@@ -118,7 +118,6 @@ public class ScreenCaptureService extends Service {
 
             ClipboardUtils.toast(this, getString(R.string.toast_ocr_running));
 
-            // wait a bit for a frame
             try { Thread.sleep(400); } catch (InterruptedException ignored) {}
             Image image = null;
             for (int i = 0; i < 10 && image == null; i++) {
@@ -143,9 +142,32 @@ public class ScreenCaptureService extends Service {
             final String sourceLabel = getString(R.string.source_ocr) + ":" + mode;
             OcrHelper.recognize(bitmap, mode, new OcrHelper.Callback() {
                 @Override
-                public void onSuccess(String text) {
+                public void onSuccess(OcrHelper.Result result) {
                     try { bitmap.recycle(); } catch (Exception ignored) {}
-                    CopyActions.handleTextResult(getApplicationContext(), text, sourceLabel);
+                    String text = result != null ? result.fullText : "";
+                    OcrMemory.set(text, sourceLabel, result != null ? result.segments : null);
+                    if (text == null || text.trim().isEmpty()) {
+                        ClipboardUtils.toast(getApplicationContext(), getString(R.string.toast_no_text));
+                        stopSelf();
+                        return;
+                    }
+                    if (AppPrefs.isAutoCopy(getApplicationContext())) {
+                        ClipboardUtils.copy(getApplicationContext(), text.trim());
+                    }
+                    if (AppPrefs.isAutoSave(getApplicationContext())) {
+                        HistoryStore.add(getApplicationContext(), text.trim(), sourceLabel);
+                    }
+                    ClipboardUtils.toast(getApplicationContext(), getString(R.string.toast_copied));
+                    if (AppPrefs.isOpenResult(getApplicationContext())) {
+                        try {
+                            Intent i = new Intent(getApplicationContext(), TextResultActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            i.putExtra(TextResultActivity.EXTRA_TEXT, text);
+                            i.putExtra(TextResultActivity.EXTRA_SOURCE, sourceLabel);
+                            i.putExtra(TextResultActivity.EXTRA_FROM_OCR, true);
+                            getApplicationContext().startActivity(i);
+                        } catch (Exception ignored) {}
+                    }
                     stopSelf();
                 }
 

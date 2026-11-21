@@ -8,7 +8,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,6 +25,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import java.util.List;
+
 public class OverlayService extends Service {
 
     public static final String ACTION_START = "com.yahya.universalcopy.action.START_OVERLAY";
@@ -35,6 +39,9 @@ public class OverlayService extends Service {
     private WindowManager.LayoutParams params;
     private boolean menuVisible = false;
 
+    private View selectionView;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -46,6 +53,7 @@ public class OverlayService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = intent != null ? intent.getAction() : null;
         if (ACTION_STOP.equals(action)) {
+            removeSelectionOverlay();
             removeOverlay();
             stopForeground(true);
             stopSelf();
@@ -84,6 +92,7 @@ public class OverlayService extends Service {
             ImageButton fab = overlayView.findViewById(R.id.fabMain);
             LinearLayout menu = overlayView.findViewById(R.id.menuPanel);
             Button btnCopyUi = overlayView.findViewById(R.id.btnCopyUi);
+            Button btnSelectUi = overlayView.findViewById(R.id.btnSelectUi);
             Button btnOcr = overlayView.findViewById(R.id.btnOcr);
             Button btnQuick = overlayView.findViewById(R.id.btnQuickClip);
             Button btnHistory = overlayView.findViewById(R.id.btnHistory);
@@ -108,6 +117,13 @@ public class OverlayService extends Service {
                     } catch (Exception ignored) {}
                 }
             });
+
+            if (btnSelectUi != null) {
+                btnSelectUi.setOnClickListener(v -> {
+                    hideMenu(menu);
+                    startSelectionMode();
+                });
+            }
 
             btnOcr.setOnClickListener(v -> {
                 hideMenu(menu);
@@ -187,6 +203,81 @@ public class OverlayService extends Service {
         }
     }
 
+    private void startSelectionMode() {
+        UniversalCopyAccessibilityService svc = UniversalCopyAccessibilityService.instance;
+        if (svc == null) {
+            Toast.makeText(getApplicationContext(), R.string.toast_accessibility_required, Toast.LENGTH_SHORT).show();
+            try {
+                Intent i = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            } catch (Exception ignored) {}
+            return;
+        }
+        if (overlayView != null) overlayView.setVisibility(View.GONE);
+        handler.postDelayed(() -> {
+            try {
+                List<TextNodeItem> nodes = svc.collectTextNodes();
+                handler.post(() -> showSelectionOverlay(nodes));
+            } catch (Exception e) {
+                handler.post(() -> {
+                    if (overlayView != null) overlayView.setVisibility(View.VISIBLE);
+                    Toast.makeText(getApplicationContext(), R.string.toast_no_text, Toast.LENGTH_SHORT).show();
+                });
+            }
+        }, 220);
+    }
+
+    private void showSelectionOverlay(List<TextNodeItem> nodes) {
+        removeSelectionOverlay();
+        if (nodes == null || nodes.isEmpty()) {
+            if (overlayView != null) overlayView.setVisibility(View.VISIBLE);
+            Toast.makeText(getApplicationContext(), R.string.toast_no_text, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            selectionView = new SelectionOverlayView(this, nodes, new SelectionOverlayView.Listener() {
+                @Override
+                public void onCopy(String text) {
+                    CopyActions.handleTextResult(getApplicationContext(), text, getString(R.string.source_ui));
+                    removeSelectionOverlay();
+                    if (overlayView != null) overlayView.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onCancel() {
+                    removeSelectionOverlay();
+                    if (overlayView != null) overlayView.setVisibility(View.VISIBLE);
+                }
+            });
+            int type = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                    ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                    : WindowManager.LayoutParams.TYPE_PHONE;
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    type,
+                    WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                            | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                            | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    PixelFormat.TRANSLUCENT);
+            lp.gravity = Gravity.TOP | Gravity.START;
+            windowManager.addView(selectionView, lp);
+        } catch (Exception e) {
+            if (overlayView != null) overlayView.setVisibility(View.VISIBLE);
+            Toast.makeText(getApplicationContext(), R.string.toast_overlay_required, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void removeSelectionOverlay() {
+        try {
+            if (selectionView != null && windowManager != null) {
+                windowManager.removeView(selectionView);
+            }
+        } catch (Exception ignored) {}
+        selectionView = null;
+    }
+
     private void hideMenu(View menu) {
         menuVisible = false;
         if (menu != null) menu.setVisibility(View.GONE);
@@ -203,6 +294,7 @@ public class OverlayService extends Service {
 
     @Override
     public void onDestroy() {
+        removeSelectionOverlay();
         removeOverlay();
         super.onDestroy();
     }

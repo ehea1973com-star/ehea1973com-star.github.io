@@ -1,6 +1,7 @@
 package com.yahya.universalcopy;
 
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
@@ -12,10 +13,22 @@ import com.google.mlkit.vision.text.japanese.JapaneseTextRecognizerOptions;
 import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OcrHelper {
 
+    public static class Result {
+        public String fullText;
+        public List<OcrSegment> segments;
+        public Result(String fullText, List<OcrSegment> segments) {
+            this.fullText = fullText != null ? fullText : "";
+            this.segments = segments != null ? segments : new ArrayList<>();
+        }
+    }
+
     public interface Callback {
-        void onSuccess(String text);
+        void onSuccess(Result result);
         void onError(Exception e);
     }
 
@@ -55,9 +68,40 @@ public class OcrHelper {
         }
     }
 
-    private static String extract(Text result) {
-        if (result == null) return "";
-        String t = result.getText();
-        return t != null ? t.trim() : "";
+    private static Result extract(Text result) {
+        List<OcrSegment> segs = new ArrayList<>();
+        if (result != null) {
+            try {
+                for (Text.TextBlock block : result.getTextBlocks()) {
+                    if (block == null) continue;
+                    for (Text.Line line : block.getLines()) {
+                        if (line == null) continue;
+                        String lt = line.getText();
+                        Rect r = line.getBoundingBox();
+                        if (lt != null) lt = lt.trim();
+                        if (lt != null && !lt.isEmpty() && r != null) {
+                            segs.add(new OcrSegment(lt, r.left, r.top, r.right, r.bottom));
+                        } else {
+                            // fallback to elements if line text missing bounds oddly
+                            for (Text.Element el : line.getElements()) {
+                                if (el == null) continue;
+                                String et = el.getText();
+                                Rect er = el.getBoundingBox();
+                                if (et != null) et = et.trim();
+                                if (et != null && !et.isEmpty() && er != null) {
+                                    segs.add(new OcrSegment(et, er.left, er.top, er.right, er.bottom));
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+        String full = result != null && result.getText() != null ? result.getText().trim() : "";
+        if (segs.isEmpty() && !full.isEmpty()) {
+            // no boxes but have text
+            segs.add(new OcrSegment(full, 0, 0, 0, 0));
+        }
+        return new Result(full, segs);
     }
 }

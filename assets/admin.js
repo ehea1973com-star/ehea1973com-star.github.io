@@ -4,7 +4,7 @@
   var BRANCH = "main";
   var API = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/contents/";
   var TOKEN_KEY = "yahya_site_upload_token";
-  var MAX_SIZE = 25 * 1024 * 1024;
+  var MAX_SIZE = 100 * 1024 * 1024;
   var MAX_SCREENSHOTS = 3;
   var MAX_SCREENSHOT_SIZE = 1024 * 1024;
   var CATEGORY_NAMES = {
@@ -374,7 +374,7 @@
     if (!file) return setStatus("اختر ملف APK.", "error");
     if (!/\.apk$/i.test(file.name)) return setStatus("الملف يجب أن يكون بصيغة APK.", "error");
     if (file.size > MAX_SIZE) {
-      return setStatus("حجم الملف أكبر من 25 MB. استخدم GitHub Releases لهذا الملف.", "error");
+      return setStatus("حجم الملف أكبر من 100 MB. استخدم GitHub Releases لهذا الملف.", "error");
     }
     if (iconFile) {
       var iconExtension = iconFile.name.split(".").pop().toLowerCase();
