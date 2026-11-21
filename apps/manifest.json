@@ -1,6 +1,23 @@
 {
   "apps": [
     {
+      "name": "كاميرا",
+      "package": "com.yahya.app912681",
+      "version": "1.0",
+      "description": "كاميرا",
+      "category": "tools",
+      "filename": "com.yahya.app912681-v1.0.apk",
+      "size": 3474329,
+      "sha256": "9421ca822b89fefba1e59dc6ce14089c586ba3f8d72b64c39e8035a807c411a3",
+      "updatedAt": "2026-11-21T09:47:40.471Z",
+      "icon": "assets/uploads/com.yahya.app912681.jpg",
+      "screenshots": [
+        "assets/uploads/screens/com.yahya.app912681-1.jpg",
+        "assets/uploads/screens/com.yahya.app912681-2.jpg",
+        "assets/uploads/screens/com.yahya.app912681-3.jpg"
+      ]
+    },
+    {
       "name": "ناسخ شامل",
       "package": "com.yahya.universalcopy",
       "version": "1.2",
