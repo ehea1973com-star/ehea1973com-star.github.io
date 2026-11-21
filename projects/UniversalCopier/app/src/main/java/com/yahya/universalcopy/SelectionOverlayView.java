@@ -39,6 +39,7 @@ public class SelectionOverlayView extends View {
     private final RectF cancelRect = new RectF();
     private final String hint;
     private final String cancelLabel;
+    private final ThemeHelper.T themeT;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private TextNodeItem selectedItem = null;
     private boolean handled = false;
@@ -49,36 +50,39 @@ public class SelectionOverlayView extends View {
         this.listener = listener;
         this.hint = context.getString(R.string.selection_hint);
         this.cancelLabel = context.getString(R.string.selection_cancel);
+        String themeName = AppPrefs.getTheme(context);
+        this.themeT = ThemeHelper.get(themeName);
 
-        dimPaint.setColor(Color.parseColor("#66000000"));
+        // light dim so target content remains visible; selection uses high contrast/inversion-like colors
+        dimPaint.setColor(Color.parseColor("#22000000"));
 
         boxPaint.setStyle(Paint.Style.FILL);
-        boxPaint.setColor(Color.parseColor("#332196F3"));
+        boxPaint.setColor(Color.parseColor("#1A1B5E20")); // subtle green
 
         boxStroke.setStyle(Paint.Style.STROKE);
-        boxStroke.setColor(Color.parseColor("#FF2196F3"));
+        boxStroke.setColor(themeT.accent);
         boxStroke.setStrokeWidth(dp(1.5f));
 
         selBoxPaint.setStyle(Paint.Style.FILL);
-        selBoxPaint.setColor(Color.parseColor("#6634C759"));
+        selBoxPaint.setColor(Color.parseColor("#CCFFEB3B")); // bright yellow inverse-like highlight
 
         selBoxStroke.setStyle(Paint.Style.STROKE);
-        selBoxStroke.setColor(Color.parseColor("#FF34C759"));
+        selBoxStroke.setColor(Color.parseColor("#FF000000"));
         selBoxStroke.setStrokeWidth(dp(3f));
 
-        labelPaint.setColor(Color.WHITE);
-        labelPaint.setTextSize(sp(11f));
+        labelPaint.setColor(themeT.text);
+        labelPaint.setTextSize(sp(12f));
         labelPaint.setTypeface(Typeface.DEFAULT_BOLD);
-        labelPaint.setShadowLayer(dp(2f), 0, 0, Color.parseColor("#AA000000"));
+        labelPaint.setShadowLayer(dp(1.5f), 0, 0, Color.parseColor("#88FFFFFF"));
 
-        hintBgPaint.setColor(Color.parseColor("#CC1565C0"));
-        hintTextPaint.setColor(Color.WHITE);
+        hintBgPaint.setColor(themeT.card); // themed
+        hintTextPaint.setColor(themeT.text2);
         hintTextPaint.setTextSize(sp(14f));
         hintTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
         hintTextPaint.setTextAlign(Paint.Align.CENTER);
 
-        cancelBgPaint.setColor(Color.parseColor("#E0D32F2F"));
-        cancelTextPaint.setColor(Color.WHITE);
+        cancelBgPaint.setColor(themeT.text);
+        cancelTextPaint.setColor(themeT.bg);
         cancelTextPaint.setTextSize(sp(14f));
         cancelTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
         cancelTextPaint.setTextAlign(Paint.Align.CENTER);
@@ -109,14 +113,34 @@ public class SelectionOverlayView extends View {
             if (!label.isEmpty()) {
                 float tx = tmp.left + dp(4);
                 float ty = tmp.centerY() - (labelPaint.ascent() + labelPaint.descent()) / 2f;
-                // keep label inside box vertically
                 float maxTy = tmp.bottom - dp(2);
                 float minTy = tmp.top - labelPaint.ascent() + dp(2);
                 if (ty > maxTy) ty = maxTy;
                 if (ty < minTy) ty = minTy;
                 canvas.save();
                 canvas.clipRect(tmp);
+                // draw small label backdrop for readability
+                float tw = labelPaint.measureText(label);
+                Paint bg = sel ? selBoxPaint : boxPaint;
+                Paint bg2 = new Paint(Paint.ANTI_ALIAS_FLAG);
+                bg2.setStyle(Paint.Style.FILL);
+                bg2.setColor(sel ? Color.parseColor("#F2FFEB3B") : Color.parseColor("#E6FFF8EE"));
+                RectF lr = new RectF(tx - dp(2), ty + labelPaint.ascent() - dp(2), tx + tw + dp(2), ty + labelPaint.descent() + dp(2));
+                canvas.drawRoundRect(lr, dp(3), dp(3), bg2);
+                labelPaint.setColor(sel ? Color.parseColor("#FF000000") : Color.parseColor("#FF1B5E20"));
+                // preserve direction: RTL items should render RTL
+                try {
+                    if (android.os.Build.VERSION.SDK_INT >= 17) {
+                        canvas.save();
+                        if (it.rtl) {
+                            canvas.setLayoutDirection(LAYOUT_DIRECTION_RTL);
+                        } else {
+                            canvas.setLayoutDirection(LAYOUT_DIRECTION_LTR);
+                        }
+                    }
+                } catch (Exception ignored) {}
                 canvas.drawText(label, tx, ty, labelPaint);
+                try { if (android.os.Build.VERSION.SDK_INT >= 17) canvas.restore(); } catch (Exception ignored) {}
                 canvas.restore();
             }
         }

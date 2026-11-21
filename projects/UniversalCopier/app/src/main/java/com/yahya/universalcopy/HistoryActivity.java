@@ -34,6 +34,7 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        ThemeHelper.apply(this);
 
         search = findViewById(R.id.searchHistory);
         empty = findViewById(R.id.emptyHistory);

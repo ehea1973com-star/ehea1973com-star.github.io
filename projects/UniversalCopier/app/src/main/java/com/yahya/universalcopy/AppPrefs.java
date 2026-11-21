@@ -57,4 +57,7 @@ public class AppPrefs {
     public static String[] allOcrModes() {
         return new String[]{MODE_LATIN, MODE_CHINESE, MODE_KOREAN, MODE_JAPANESE, MODE_DEVANAGARI};
     }
+
+    public static String getTheme(Context c) { return sp(c).getString("app_theme", ThemeHelper.THEME_WOOD); }
+    public static void setTheme(Context c, String v) { sp(c).edit().putString("app_theme", v).apply(); }
 }

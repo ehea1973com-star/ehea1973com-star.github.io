@@ -17,11 +17,36 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SettingsActivity extends AppCompatActivity {
 
     private Spinner defaultModeSpinner;
+    private Spinner themeSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        ThemeHelper.apply(this);
+
+                themeSpinner = findViewById(R.id.themeSpinner);
+        String[] themes = new String[]{ThemeHelper.THEME_WOOD, ThemeHelper.THEME_LIGHT, ThemeHelper.THEME_DARK, ThemeHelper.THEME_CONTRAST};
+        String[] tlabels = new String[]{getString(R.string.theme_wood), getString(R.string.theme_light), getString(R.string.theme_dark), getString(R.string.theme_contrast)};
+        ArrayAdapter<String> tad = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tlabels);
+        tad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        themeSpinner.setAdapter(tad);
+        String curTheme = AppPrefs.getTheme(this);
+        int tsel = 0;
+        for (int i = 0; i < themes.length; i++) if (themes[i].equals(curTheme)) { tsel = i; break; }
+        themeSpinner.setSelection(tsel);
+        themeSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            boolean init = false;
+            @Override public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
+                if (!init) { init = true; return; }
+                if (position >= 0 && position < themes.length) {
+                    AppPrefs.setTheme(SettingsActivity.this, themes[position]);
+                    ThemeHelper.apply(SettingsActivity.this);
+                }
+            }
+            @Override public void onNothingSelected(android.widget.AdapterView<?> parent) {}
+        });
+
 
         defaultModeSpinner = findViewById(R.id.defaultModeSpinner);
         CheckBox cbAutoCopy = findViewById(R.id.cbAutoCopy);

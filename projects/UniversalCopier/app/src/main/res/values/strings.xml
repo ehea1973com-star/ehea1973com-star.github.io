@@ -117,4 +117,11 @@
     <string name="about_youtube">يوتيوب: https://youtube.com/channel/UCmChpVHGV74adiyqncSyocg</string>
     <string name="about_telegram">تيليجرام: https://t.me/ehea1973hmza</string>
     <string name="about_desc">ناسخ شامل لنسخ نصوص واجهة التطبيقات وقراءة النص من الصور (OCR) مع حافظة سريعة وسجل.</string>
+
+    <string name="settings_section_theme">المظهر (ثيمات)</string>
+    <string name="settings_theme">اختر الثيم</string>
+    <string name="theme_wood">خشبي ناصع</string>
+    <string name="theme_light">فاتح</string>
+    <string name="theme_dark">داكن</string>
+    <string name="theme_contrast">تباين عالي</string>
 </resources>

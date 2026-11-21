@@ -26,6 +26,7 @@ public class QuickClipboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_clipboard);
+        ThemeHelper.apply(this);
 
         currentClip = findViewById(R.id.currentClipboardText);
         Button btnCopyCurrent = findViewById(R.id.btnCopyCurrent);

@@ -24,6 +24,7 @@ public class TextResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text_result);
+        ThemeHelper.apply(this);
 
         TextView textView = findViewById(R.id.textResult);
         Button btnCopy = findViewById(R.id.btnCopyAll);

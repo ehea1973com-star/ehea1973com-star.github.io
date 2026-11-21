@@ -181,7 +181,18 @@ public class UniversalCopyAccessibilityService extends AccessibilityService {
                         String key = best + "|" + r.left + "," + r.top + "," + r.right + "," + r.bottom;
                         if (!seen.contains(key)) {
                             seen.add(key);
-                            out.add(new TextNodeItem(best, r.left, r.top, r.right, r.bottom));
+                            boolean rtl = false;
+                            try {
+                                CharSequence nt = node.getText();
+                                if (nt != null && nt.length() > 0) {
+                                    int dir = Character.getDirectionality(nt.charAt(0));
+                                    rtl = (dir == Character.DIRECTIONALITY_RIGHT_TO_LEFT
+                                            || dir == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC
+                                            || dir == Character.DIRECTIONALITY_RIGHT_TO_LEFT_EMBEDDING
+                                            || dir == Character.DIRECTIONALITY_RIGHT_TO_LEFT_OVERRIDE);
+                                }
+                            } catch (Exception ignored) {}
+                            out.add(new TextNodeItem(best, r.left, r.top, r.right, r.bottom, rtl));
                         }
                     }
                 }
