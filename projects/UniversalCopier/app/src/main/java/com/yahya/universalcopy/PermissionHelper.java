@@ -57,12 +57,26 @@ public class PermissionHelper {
 
     public static void openAccessibilitySettings(Context c) {
         if (c == null) return;
+        // Try opening specific accessibility service details (Android 8+ / some OEMs)
         try {
+            ComponentName cn = new ComponentName(c, UniversalCopyAccessibilityService.class);
+            Intent intent = new Intent("android.settings.ACCESSIBILITY_DETAILS_SETTINGS");
+            if (Build.VERSION.SDK_INT >= 29) {
+                intent.putExtra(Intent.EXTRA_COMPONENT_NAME, cn.flattenToString());
+            }
+            intent.setData(Uri.parse("package:" + c.getPackageName()));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            c.startActivity(intent);
+            return;
+        } catch (Exception ignored) {}
+        try {
+            ComponentName cn = new ComponentName(c, UniversalCopyAccessibilityService.class);
             Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            // Some devices support opening specific service; try extra
-            ComponentName cn = new ComponentName(c, UniversalCopyAccessibilityService.class);
+            Bundle b = new Bundle();
+            b.putString(":settings:fragment_args_key", cn.flattenToString());
             intent.putExtra(":settings:fragment_args_key", cn.flattenToString());
+            intent.putExtra(":settings:show_fragment_args", b);
             c.startActivity(intent);
         } catch (Exception e) {
             try {
