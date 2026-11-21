@@ -24,10 +24,42 @@ jobs:
           java-version: '17'
 
       - name: Install Android SDK components
+        shell: bash
         run: |
-          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
-          yes | sdkmanager --licenses || true
-          sdkmanager --install "platforms;android-34" "build-tools;34.0.0" "platform-tools"
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          if [ -z "$SDK_ROOT" ] || [ ! -d "$SDK_ROOT" ]; then
+            for d in /usr/local/lib/android/sdk /usr/local/share/android-sdk "$HOME/android-sdk" "$HOME/Android/Sdk"; do
+              if [ -d "$d" ]; then SDK_ROOT="$d"; break; fi
+            done
+          fi
+          if [ -z "$SDK_ROOT" ] || [ ! -d "$SDK_ROOT" ]; then
+            echo "Android SDK root not found" >&2
+            exit 1
+          fi
+          echo "Using ANDROID_HOME=$SDK_ROOT"
+          echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$SDK_ROOT" >> "$GITHUB_ENV"
+          export ANDROID_HOME="$SDK_ROOT"
+          export ANDROID_SDK_ROOT="$SDK_ROOT"
+          SDKMANAGER=""
+          if [ -d "$SDK_ROOT/cmdline-tools" ]; then
+            SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -path '*/bin/sdkmanager' -type f 2>/dev/null | sort | tail -n 1 || true)"
+          fi
+          if [ -z "$SDKMANAGER" ]; then
+            SDKMANAGER="$(command -v sdkmanager 2>/dev/null || true)"
+          fi
+          if [ -z "$SDKMANAGER" ] || [ ! -f "$SDKMANAGER" ]; then
+            echo "sdkmanager not found under $SDK_ROOT" >&2
+            find "$SDK_ROOT" -maxdepth 4 -type f -name 'sdkmanager*' || true
+            exit 1
+          fi
+          chmod +x "$SDKMANAGER" || true
+          echo "Using sdkmanager: $SDKMANAGER"
+          set +o pipefail
+          yes | "$SDKMANAGER" --sdk_root="$SDK_ROOT" --licenses >/dev/null 2>&1 || true
+          set -o pipefail
+          "$SDKMANAGER" --sdk_root="$SDK_ROOT" "platforms;android-34" "build-tools;34.0.0" "platform-tools"
 
       - name: Cache Gradle
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
