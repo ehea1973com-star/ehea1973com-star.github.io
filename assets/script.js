@@ -670,8 +670,11 @@
   }
 
   function makePhoneAppCard(app, index) {
-    if (!app || !app.name || !app.filename) return null;
-    if (!isAppFileName(app.filename)) return null;
+    if (!app || !app.name) return null;
+    var filename = String(app.filename || "");
+    var downloadUrl = String(app.download || app.downloadUrl || app.url || "");
+    var isExternal = /^https?:\/\//i.test(downloadUrl) || /^https?:\/\//i.test(filename) || !!app.external;
+    if (!isExternal && !isAppFileName(filename)) return null;
     var shareKey = app.package || app.name;
     if (cardExists(shareKey)) return null;
     var colors = ["icon-cyan", "icon-gold", "icon-violet", "icon-rose", "icon-green", "icon-blue"];
@@ -698,8 +701,8 @@
     body.appendChild(titleRow);
     if (app.description) body.appendChild(appElement("p", "", app.description));
     var meta = appElement("div", "meta");
-    meta.appendChild(appElement("span", "", fileTypeLabel(app.filename)));
-    meta.appendChild(appElement("span", "", formatFileSize(app.size)));
+    meta.appendChild(appElement("span", "", isExternal ? (app.type || "رابط خارجي") : fileTypeLabel(app.filename)));
+    meta.appendChild(appElement("span", "", app.size ? formatFileSize(app.size) : (app.sizeLabel || "خارجي")));
     meta.appendChild(appElement("span", "", categoryLabel(category)));
     meta.appendChild(appElement("span", "", "مضاف من الهاتف"));
     body.appendChild(meta);

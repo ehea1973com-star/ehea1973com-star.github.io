@@ -42,24 +42,38 @@
     return key ? tr(key, CAT_FB[category] || category) : (CAT_FB[category] || tr("filter.tools","أدوات"));
   }
 
+  function isHttpUrl(u) { return /^https?:\/\//i.test(String(u || "").trim()); }
   function normalizeManifestApp(app) {
+    var dl = String(app.download || app.downloadUrl || app.url || "").trim();
+    var filename = String(app.filename || "").trim();
+    var external = !!app.external || isHttpUrl(dl) || isHttpUrl(filename);
+    if (!dl) {
+      if (isHttpUrl(filename)) dl = filename;
+      else if (filename) dl = "apps/" + filename;
+      else dl = "#";
+    }
+    var type = String(app.type || "").trim();
+    if (!type) {
+      var ext = (filename || dl).split("?")[0].split(".").pop().toUpperCase();
+      type = /^[A-Z0-9]{2,5}$/.test(ext) ? ext : "APK";
+    }
     return {
       id: app.package || app.name,
       package: app.package || "",
       name: app.name || "تطبيق",
       version: "v" + String(app.version || "1.0").replace(/^v/i, ""),
-      size: formatFileSize(app.size),
-      platform: "Android",
-      languages: "AR/EN",
+      size: app.size ? formatFileSize(app.size) : (app.sizeLabel || ""),
+      platform: app.platform || "Android",
+      languages: app.languages || "AR/EN",
       category: app.category || "tools",
       icon: app.icon || "assets/icons/system.svg",
-      iconClass: "icon-cyan",
+      iconClass: app.iconClass || "icon-cyan",
       description: app.description || "",
-      download: "apps/" + app.filename,
+      download: dl,
       screenshots: app.screenshots || [],
       sha256: app.sha256 || "",
-      external: "",
-      type: "APK"
+      external: external ? dl : "",
+      type: type
     };
   }
 

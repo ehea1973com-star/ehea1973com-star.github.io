@@ -444,6 +444,8 @@
     var category = categoryInput ? categoryInput.value : "tools";
     var apkInput = document.getElementById("apkFile");
     var file = apkInput.files && apkInput.files[0];
+    var externalUrlInput = document.getElementById("externalUrl");
+    var externalUrl = externalUrlInput ? String(externalUrlInput.value || "").trim() : "";
     var iconInput = document.getElementById("iconFile");
     var iconFile = iconInput && iconInput.files ? iconInput.files[0] : null;
     var screenshotFiles = screenshotInput && screenshotInput.files
@@ -456,11 +458,18 @@
     if (!slug(packageName)) return setStatus("اسم الحزمة يحتوي رموزًا غير صالحة.", "error");
     if (!version) return setStatus("أدخل إصدار التطبيق.", "error");
     if (!slug(version)) return setStatus("الإصدار يحتوي رموزًا غير صالحة.", "error");
-    if (!file) return setStatus("اختر ملف التطبيق أو الملف المضغوط.", "error");
-    var fileExt = (file.name.split(".").pop() || "").toLowerCase();
-    if (!/^(apk|zip|apks|xapk|aab|7z|rar)$/.test(fileExt)) return setStatus("نوع الملف غير مدعوم. استخدم APK أو ZIP/APKS/XAPK/AAB/7Z/RAR.", "error");
-    if (file.size > MAX_SIZE) {
-      return setStatus("حجم الملف أكبر من 100 MB. استخدم GitHub Releases لهذا الملف.", "error");
+    var hasExternal = /^https?:\/\//i.test(externalUrl);
+    if (!file && !hasExternal) return setStatus("اختر ملف التطبيق أو أدخل رابط تحميل خارجي (GitHub Release/رابط مباشر).", "error");
+    var fileExt = "";
+    if (file) {
+      fileExt = (file.name.split(".").pop() || "").toLowerCase();
+      if (!/^(apk|zip|apks|xapk|aab|7z|rar)$/.test(fileExt)) return setStatus("نوع الملف غير مدعوم. استخدم APK أو ZIP/APKS/XAPK/AAB/7Z/RAR.", "error");
+      if (file.size > MAX_SIZE) {
+        return setStatus("حجم الملف أكبر من 100 MB. استخدم رابط خارجي/GitHub Releases لهذا الملف.", "error");
+      }
+    } else {
+      var mext = /[.](apk|zip|apks|xapk|aab|7z|rar)(?:[?#]|$)/i.exec(externalUrl);
+      fileExt = mext ? mext[1].toLowerCase() : "apk";
     }
     if (iconFile) {
       var iconExtension = iconFile.name.split(".").pop().toLowerCase();
@@ -487,10 +496,16 @@
 
     try {
       var filename = slug(packageName) + "-v" + slug(version) + "." + fileExt;
-      setStatus("جارٍ قراءة الملف وحساب SHA-256...");
-      var buffer = await readFile(file);
-      var hash = await sha256(buffer);
-      var base64 = bytesToBase64(new Uint8Array(buffer));
+      var buffer = null, hash = "", base64 = "";
+      var hasExternal = /^https?:\/\//i.test(externalUrl);
+      if (file) {
+        setStatus("جارٍ قراءة الملف وحساب SHA-256...");
+        buffer = await readFile(file);
+        hash = await sha256(buffer);
+        base64 = bytesToBase64(new Uint8Array(buffer));
+      } else {
+        setStatus("سيتم نشر رابط خارجي بدون رفع الملف...");
+      }
 
       var manifest = await loadManifest(token);
       var existingEntry = manifest.apps.filter(function (app) {
@@ -537,15 +552,23 @@
         version: version,
         description: description,
         category: category,
-        filename: filename,
-        size: file.size,
-        sha256: hash,
+        filename: hasExternal ? "" : filename,
+        size: file ? file.size : (existingEntry && existingEntry.size ? existingEntry.size : 0),
+        sha256: hash || (existingEntry && existingEntry.sha256 ? existingEntry.sha256 : ""),
         updatedAt: new Date().toISOString(),
         icon: iconPath,
         screenshots: screenshots
       };
+      if (hasExternal) {
+        entry.download = externalUrl;
+        entry.external = true;
+        entry.type = fileExt.toUpperCase();
+      } else {
+        entry.download = "apps/" + filename;
+        entry.external = false;
+      }
       manifest.apps = manifest.apps.filter(function (app) {
-        return app && app.package !== packageName && app.filename !== filename;
+        return app && app.package !== packageName && app.filename !== filename && !(hasExternal && app.package === packageName);
       });
       manifest.apps.unshift(entry);
       var manifestText = JSON.stringify({ apps: manifest.apps }, null, 2) + "\n";
@@ -557,16 +580,18 @@
           return line.trim() && line.indexOf(filename) === -1;
         });
       }
-      checksumLines.push(hash + "  " + filename);
-      checksumLines.sort();
-      var checksumsText = checksumLines.join("\n") + "\n";
+      if (hash) {
+        checksumLines.push(hash + "  " + filename);
+        checksumLines.sort();
+      }
+      var checksumsText = checksumLines.join("\n") + (checksumLines.length ? "\n" : "");
 
       var commitFilesList = [];
-      commitFilesList.push({ path: "apps/" + filename, base64: base64 });
+      if (file) commitFilesList.push({ path: "apps/" + filename, base64: base64 });
       if (iconUpload) commitFilesList.push(iconUpload);
       for (var su = 0; su < screenshotUploads.length; su++) commitFilesList.push(screenshotUploads[su]);
       commitFilesList.push({ path: "apps/manifest.json", base64: encodeText(manifestText) });
-      commitFilesList.push({ path: "apps/SHA256SUMS.txt", base64: encodeText(checksumsText) });
+      if (hash) commitFilesList.push({ path: "apps/SHA256SUMS.txt", base64: encodeText(checksumsText) });
 
       setStatus("جارٍ رفع الملفات إلى GitHub (قد يستغرق دقائق للملفات الكبيرة)...");
       await commitFiles(token, "Add " + name + " v" + version, commitFilesList, function (msg) {
@@ -577,11 +602,11 @@
       else window.localStorage.removeItem(TOKEN_KEY);
 
       setStatus(
-        "تم رفع " + name + " " + version + " بنجاح.\n" +
+        "تم نشر " + name + " " + version + " بنجاح.\n" +
         "القسم: " + (CATEGORY_NAMES[category] || category) + "\n" +
-        "الحجم: " + formatSize(file.size) + "\n" +
+        (file ? ("الحجم: " + formatSize(file.size) + "\n") : "النشر: رابط خارجي\n") +
         "لقطات الشاشة: " + screenshots.length + "\n" +
-        "SHA-256: " + hash + "\n" +
+        (hash ? ("SHA-256: " + hash + "\n") : "") +
         "انتظر دقيقة تقريبًا ثم افتح الصفحة الرئيسية.",
         "ok"
       );
