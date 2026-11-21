@@ -2,8 +2,8 @@
    "apps" : [
       {
          "category" : "tools",
-         "description" : "ÙØ§Ø³Ø® Ø´Ø§ÙÙ v1.7: ÙØ³Ø® ÙØµ Ø§ÙÙØ§Ø¬ÙØ© Ø¨Ø§ÙÙØµÙÙÙØ©Ø ÙÙØ·Ø©/OCRØ Ø­Ø§ÙØ¸Ø© ÙØ³Ø¬ÙØ Ø«ÙÙØ§ØªØ Ø¥Ø¹Ø¯Ø§Ø¯ ØµÙØ§Ø­ÙØ§Øª ÙÙØ¬Ù ÙÙÙÙ ØªÙÙØ§Ø¦ÙÙØ§Ø Ø£Ø²Ø±Ø§Ø± Ø³Ø±ÙØ¹Ø© Ø¨Ø§ÙØ¥Ø´Ø¹Ø§Ø±Ø ÙØªÙØ¸ÙÙ/Ø§ØªØ¬Ø§Ù RTL ÙÙÙØµ.",
-         "download" : "https://nightly.link/ehea1973com-star/ehea1973com-star.github.io/actions/runs/44907954479/UniversalCopier-debug-apk.zip",
+         "description" : "ÙØ§Ø³Ø® Ø´Ø§ÙÙ v1.8: ÙØ³Ø® ÙØµ Ø§ÙÙØ§Ø¬ÙØ©/ÙÙØ·Ø© OCR/Ø­Ø§ÙØ¸Ø© ÙØ³Ø¬ÙØ Ø¥Ø¹Ø¯Ø§Ø¯ ØµÙØ§Ø­ÙØ§Øª ÙÙØ¬ÙØ Ø£Ø²Ø±Ø§Ø± Ø¥Ø´Ø¹Ø§Ø± Ø³Ø±ÙØ¹Ø©Ø ØªÙØ¸ÙÙ RTLØ ÙÙØ³Ø® Ø¨Ø¯ÙÙ Ø¨Ø¯ÙÙ Accessibility Ø¹Ø¨Ø± ØªØ­Ø¯ÙØ¯/ÙØ´Ø§Ø±ÙØ© Ø§ÙÙØµ.",
+         "download" : "https://nightly.link/ehea1973com-star/ehea1973com-star.github.io/actions/runs/44921094875/UniversalCopier-debug-apk.zip",
          "external" : true,
          "filename" : "",
          "icon" : "assets/uploads/com.yahya.universalcopy.jpg",
@@ -14,11 +14,11 @@
             "assets/uploads/screens/com.yahya.universalcopy-2.jpg",
             "assets/uploads/screens/com.yahya.universalcopy-3.jpg"
          ],
-         "sha256" : "8df2ca58fc766e20004e097a73bc2c8441babfb2a41e52a1db711e56168d762c",
+         "sha256" : "31289495ecc370f9e3d5da3f6c4dc489428939ed0706e7a8871dec73de650b26",
          "size" : 25794970,
          "type" : "ZIP",
-         "updatedAt" : "2026-11-21T13:20:00Z",
-         "version" : "1.7"
+         "updatedAt" : "2026-11-21T16:15:00Z",
+         "version" : "1.8"
       },
       {
          "category" : "tools",
