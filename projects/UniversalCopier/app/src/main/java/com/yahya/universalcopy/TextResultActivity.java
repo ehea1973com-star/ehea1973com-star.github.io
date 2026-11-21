@@ -35,9 +35,24 @@ public class TextResultActivity extends AppCompatActivity {
         TextView segmentsTitle = findViewById(R.id.segmentsTitle);
         LinearLayout segmentsContainer = findViewById(R.id.segmentsContainer);
 
-        String text = getIntent().getStringExtra(EXTRA_TEXT);
-        String source = getIntent().getStringExtra(EXTRA_SOURCE);
-        boolean fromOcr = getIntent().getBooleanExtra(EXTRA_FROM_OCR, false);
+        Intent in = getIntent();
+        String text = in != null ? in.getStringExtra(EXTRA_TEXT) : null;
+        String source = in != null ? in.getStringExtra(EXTRA_SOURCE) : null;
+        boolean fromOcr = in != null && in.getBooleanExtra(EXTRA_FROM_OCR, false);
+        if ((text == null || text.trim().isEmpty()) && in != null) {
+            CharSequence pt = in.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT);
+            if (pt != null && pt.toString().trim().length() > 0) {
+                text = pt.toString();
+                if (source == null) source = getString(R.string.source_selected_text);
+            }
+        }
+        if ((text == null || text.trim().isEmpty()) && in != null && Intent.ACTION_SEND.equals(in.getAction())) {
+            CharSequence st = in.getCharSequenceExtra(Intent.EXTRA_TEXT);
+            if (st != null && st.toString().trim().length() > 0) {
+                text = st.toString();
+                if (source == null) source = getString(R.string.source_shared_text);
+            }
+        }
         if (source == null) source = getString(R.string.source_manual);
         if (text == null || text.trim().isEmpty()) {
             text = getString(R.string.no_text_found);

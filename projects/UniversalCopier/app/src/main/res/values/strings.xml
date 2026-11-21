@@ -134,4 +134,6 @@
     <string name="notif_action_clipboard">الحافظة</string>
     <string name="btn_clean_text">تنظيف النص</string>
     <string name="toast_text_cleaned">تم تنظيف النص</string>
+    <string name="source_selected_text">النص المحدد</string>
+    <string name="source_shared_text">نص مشارك</string>
 </resources>
