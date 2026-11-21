@@ -31,6 +31,7 @@ public class TextResultActivity extends AppCompatActivity {
         Button btnShare = findViewById(R.id.btnShare);
         Button btnSave = findViewById(R.id.btnSaveMemory);
         Button btnOpenClipboard = findViewById(R.id.btnOpenClipboard);
+        Button btnClean = findViewById(R.id.btnCleanText);
         TextView segmentsTitle = findViewById(R.id.segmentsTitle);
         LinearLayout segmentsContainer = findViewById(R.id.segmentsContainer);
 
@@ -44,6 +45,21 @@ public class TextResultActivity extends AppCompatActivity {
         final String finalText = text;
         final String finalSource = source;
         textView.setText(finalText);
+        applyTextDirection(textView, finalText);
+
+        if (btnClean != null) {
+            btnClean.setOnClickListener(v -> {
+                String cur = textView.getText() != null ? textView.getText().toString() : "";
+                String cleaned = cleanText(cur);
+                if (cleaned.isEmpty()) {
+                    Toast.makeText(this, R.string.toast_no_text, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                textView.setText(cleaned);
+                applyTextDirection(textView, cleaned);
+                Toast.makeText(this, R.string.toast_text_cleaned, Toast.LENGTH_SHORT).show();
+            });
+        }
 
         btnCopy.setOnClickListener(v -> {
             ClipboardUtils.copy(this, finalText);
@@ -52,9 +68,10 @@ public class TextResultActivity extends AppCompatActivity {
 
         btnShare.setOnClickListener(v -> {
             try {
+                String shareText = textView.getText() != null ? textView.getText().toString() : finalText;
                 Intent send = new Intent(Intent.ACTION_SEND);
                 send.setType("text/plain");
-                send.putExtra(Intent.EXTRA_TEXT, finalText);
+                send.putExtra(Intent.EXTRA_TEXT, shareText);
                 startActivity(Intent.createChooser(send, getString(R.string.btn_share)));
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -119,6 +136,35 @@ public class TextResultActivity extends AppCompatActivity {
                 }
             } catch (Exception ignored) {}
         }
+    }
+
+    private void applyTextDirection(TextView tv, String text) {
+        if (tv == null) return;
+        boolean rtl = isMostlyRtl(text);
+        tv.setTextDirection(rtl ? View.TEXT_DIRECTION_RTL : View.TEXT_DIRECTION_LTR);
+        tv.setGravity(rtl ? (android.view.Gravity.TOP | android.view.Gravity.RIGHT) : (android.view.Gravity.TOP | android.view.Gravity.LEFT));
+    }
+
+    private boolean isMostlyRtl(String text) {
+        if (text == null) return false;
+        int rtl = 0, ltr = 0;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            byte dir = Character.getDirectionality(c);
+            if (dir == Character.DIRECTIONALITY_RIGHT_TO_LEFT || dir == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC
+                    || dir == Character.DIRECTIONALITY_RIGHT_TO_LEFT_EMBEDDING || dir == Character.DIRECTIONALITY_RIGHT_TO_LEFT_OVERRIDE) rtl++;
+            else if (dir == Character.DIRECTIONALITY_LEFT_TO_RIGHT) ltr++;
+        }
+        return rtl > ltr;
+    }
+
+    private String cleanText(String s) {
+        if (s == null) return "";
+        String t = s.replace("\r\n", "\n").replace('\r', '\n').replace('\u00A0', ' ');
+        t = t.replaceAll("[\\t ]+", " ");
+        t = t.replaceAll(" *\\n *", "\n");
+        t = t.replaceAll("\\n{3,}", "\n\n");
+        return t.trim();
     }
 
     private int dp(int v) {

@@ -125,8 +125,13 @@
     <string name="theme_dark">داكن</string>
     <string name="theme_contrast">تباين عالي</string>
     <string name="btn_setup_all">إعداد كل الصلاحيات بنقرة واحدة</string>
-    <string name="setup_overlay_first">الخطوة 1: امنح إذن الظهور فوق التطبيقات، ثم ارجع للتطبيق.</string>
-    <string name="setup_accessibility_next">الخطوة 2: فعّل خدمة "ناسخ شامل" في إمكانية الوصول، ثم ارجع للتطبيق.</string>
-    <string name="setup_done">تم تفعيل المتطلبات. يمكنك تشغيل الزر العائم الآن.</string>
+    <string name="setup_overlay_first">الخطوة 1/2: امنح إذن "الظهور فوق التطبيقات" لناسخ شامل، ثم اضغط رجوع. سيتابع التطبيق تلقائيًا للخطوة التالية.</string>
+    <string name="setup_accessibility_next">الخطوة 2/2: فعّل "ناسخ شامل" في إمكانية الوصول، ثم اضغط رجوع. سيتابع التطبيق تلقائيًا ويشغّل الزر العائم.</string>
+    <string name="setup_done">تم تفعيل المتطلبات. الزر العائم يعمل الآن.</string>
     <string name="toast_accessibility_starting">خدمة إمكانية الوصول مفعّلة بالنظام لكنها لم تتصل بعد. افتح إعدادها ثم ارجع، أو أعد تشغيلها.</string>
+    <string name="notif_action_copy_ui">نسخ الواجهة</string>
+    <string name="notif_action_ocr">لقطة OCR</string>
+    <string name="notif_action_clipboard">الحافظة</string>
+    <string name="btn_clean_text">تنظيف النص</string>
+    <string name="toast_text_cleaned">تم تنظيف النص</string>
 </resources>

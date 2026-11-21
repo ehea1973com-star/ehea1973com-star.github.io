@@ -31,6 +31,9 @@ public class OverlayService extends Service {
 
     public static final String ACTION_START = "com.yahya.universalcopy.action.START_OVERLAY";
     public static final String ACTION_STOP = "com.yahya.universalcopy.action.STOP_OVERLAY";
+    public static final String ACTION_COPY_UI = "com.yahya.universalcopy.action.COPY_UI";
+    public static final String ACTION_OCR = "com.yahya.universalcopy.action.OCR";
+    public static final String ACTION_QUICK_CLIP = "com.yahya.universalcopy.action.QUICK_CLIP";
     private static final String CHANNEL_ID = "universal_copy_overlay";
     private static final int NOTIF_ID = 1001;
 
@@ -59,11 +62,63 @@ public class OverlayService extends Service {
             stopSelf();
             return START_NOT_STICKY;
         }
+        if (ACTION_COPY_UI.equals(action)) {
+            handleCopyUiAction();
+            if (overlayView == null && canDraw()) { startForeground(NOTIF_ID, buildNotification()); showOverlay(); }
+            return START_STICKY;
+        }
+        if (ACTION_OCR.equals(action)) {
+            handleOcrAction();
+            if (overlayView == null && canDraw()) { startForeground(NOTIF_ID, buildNotification()); showOverlay(); }
+            return START_STICKY;
+        }
+        if (ACTION_QUICK_CLIP.equals(action)) {
+            handleQuickClipAction();
+            if (overlayView == null && canDraw()) { startForeground(NOTIF_ID, buildNotification()); showOverlay(); }
+            return START_STICKY;
+        }
         startForeground(NOTIF_ID, buildNotification());
         if (overlayView == null && canDraw()) {
             showOverlay();
         }
         return START_STICKY;
+    }
+
+    private void handleCopyUiAction() {
+        UniversalCopyAccessibilityService svc = UniversalCopyAccessibilityService.instance;
+        if (svc != null) {
+            svc.copyUiTextsNow();
+            return;
+        }
+        if (PermissionHelper.isAccessibilityEnabled(this)) {
+            Toast.makeText(getApplicationContext(), R.string.toast_accessibility_starting, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.toast_accessibility_required, Toast.LENGTH_SHORT).show();
+        }
+        PermissionHelper.openAccessibilitySettings(this);
+    }
+
+    private void handleOcrAction() {
+        if (overlayView != null) overlayView.setVisibility(View.INVISIBLE);
+        try {
+            Intent i = new Intent(OverlayService.this, ScreenCaptureActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(i);
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), R.string.toast_capture_failed, Toast.LENGTH_SHORT).show();
+        } finally {
+            handler.postDelayed(() -> {
+                try { if (overlayView != null) overlayView.setVisibility(View.VISIBLE); } catch (Exception ignored) {}
+            }, 4000);
+        }
+    }
+
+    private void handleQuickClipAction() {
+        try {
+            Intent i = new Intent(OverlayService.this, QuickClipboardActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+        } catch (Exception ignored) {}
     }
 
     private boolean canDraw() {
@@ -322,6 +377,16 @@ public class OverlayService extends Service {
         }
     }
 
+    private PendingIntent serviceAction(String action, int req) {
+        Intent i = new Intent(this, OverlayService.class);
+        i.setAction(action);
+        int flags = PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return PendingIntent.getForegroundService(this, req, i, flags);
+        }
+        return PendingIntent.getService(this, req, i, flags);
+    }
+
     private Notification buildNotification() {
         Intent openIntent = new Intent(this, MainActivity.class);
         PendingIntent pi = PendingIntent.getActivity(this, 0, openIntent,
@@ -331,6 +396,9 @@ public class OverlayService extends Service {
                 .setContentText(getString(R.string.notif_overlay_text))
                 .setSmallIcon(android.R.drawable.ic_menu_edit)
                 .setContentIntent(pi)
+                .addAction(android.R.drawable.ic_menu_edit, getString(R.string.notif_action_copy_ui), serviceAction(ACTION_COPY_UI, 11))
+                .addAction(android.R.drawable.ic_menu_camera, getString(R.string.notif_action_ocr), serviceAction(ACTION_OCR, 12))
+                .addAction(android.R.drawable.ic_menu_agenda, getString(R.string.notif_action_clipboard), serviceAction(ACTION_QUICK_CLIP, 13))
                 .setOngoing(true)
                 .build();
     }

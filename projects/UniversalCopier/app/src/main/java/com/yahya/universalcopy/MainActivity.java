@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView statusOverlay;
     private Spinner modeSpinner;
     private boolean spinnerInit = false;
+    private boolean setupInProgress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +150,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateStatus();
+        if (setupInProgress) {
+            statusOverlay.postDelayed(this::continueSetupFlow, 500);
+        }
         // sync spinner if changed elsewhere
         try {
             String current = AppPrefs.getCurrentMode(this);
@@ -170,7 +174,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void runSetupFlow() {
+        setupInProgress = true;
         requestNotifIfNeeded();
+        continueSetupFlow();
+    }
+
+    private void continueSetupFlow() {
+        if (!setupInProgress) return;
+        updateStatus();
         if (!PermissionHelper.canDrawOverlays(this)) {
             Toast.makeText(this, R.string.setup_overlay_first, Toast.LENGTH_LONG).show();
             PermissionHelper.openOverlaySettings(this);
@@ -181,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
             PermissionHelper.openAccessibilitySettings(this);
             return;
         }
+        setupInProgress = false;
         Intent i = new Intent(this, OverlayService.class);
         i.setAction(OverlayService.ACTION_START);
         ContextCompat.startForegroundService(this, i);
