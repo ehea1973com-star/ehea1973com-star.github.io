@@ -33,28 +33,39 @@ cp "$SRC" "$SITE_DIR/apps/$APK_NAME"
 HASH="$(sha256sum "$SRC" | awk '{print $1}')"
 SIZE="$(stat -c '%s' "$SRC")"
 NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+SW="$(date -u +%Y%m%d-%H%M)"
+
+perl -0pi -e "s/var SW_VERSION = \"[^\"]+\";/var SW_VERSION = \"$SW\";/" "$SITE_DIR/sw.js"
 
 perl -ni -e 'print unless /  com\.yahya\.studio-v[0-9.]+\.apk$/' "$SITE_DIR/apps/SHA256SUMS.txt"
 printf '%s  %s\n' "$HASH" "$APK_NAME" >> "$SITE_DIR/apps/SHA256SUMS.txt"
 
 VER="$VER" HASH="$HASH" SIZE="$SIZE" APK_NAME="$APK_NAME" NOW="$NOW" perl -0pi -e '
 my $s = $_;
-my $p = index($s, "\"package\" : \"com.yahya.studio\"");
+my $p = index($s, "com.yahya.studio");
 die "manifest entry not found\n" if $p < 0;
 my $start = rindex($s, "{", $p);
 my $end = index($s, "}", $p);
 die "manifest entry bounds not found\n" if $start < 0 || $end < 0;
-my $obj = "       {\n";
-$obj .= "          \"category\" : \"tools\",\n";
-$obj .= "          \"description\" : \"استوديو يحيى: محرر فيديو وصور وصوت، قوالب جاهزة، ضاغط فيديو، ثيمات خشبية وبلورية، وحفظ مباشر في المعرض.\",\n";
-$obj .= "          \"filename\" : \"$ENV{APK_NAME}\",\n";
-$obj .= "          \"name\" : \"استوديو يحيى\",\n";
-$obj .= "          \"package\" : \"com.yahya.studio\",\n";
-$obj .= "          \"sha256\" : \"$ENV{HASH}\",\n";
-$obj .= "          \"size\" : $ENV{SIZE},\n";
-$obj .= "          \"updatedAt\" : \"$ENV{NOW}\",\n";
-$obj .= "          \"version\" : \"$ENV{VER}\"\n";
-$obj .= "       }";
+my $line_start = rindex($s, "\n", $start) + 1;
+my $indent = substr($s, $line_start, $start - $line_start);
+my $ki = $indent . "  ";
+my $sep = index($s, "\"package\":") >= 0 ? ": " : " : ";
+my $kv = sub {
+  my ($k, $v, $q) = @_;
+  return $ki . "\"" . $k . "\"" . $sep . ($q ? "\"" . $v . "\"" : $v);
+};
+my $obj = $indent . "{\n";
+$obj .= $kv->("category", "tools", 1) . ",\n";
+$obj .= $kv->("description", "استوديو يحيى: محرر فيديو وصور وصوت، قوالب جاهزة، ضاغط فيديو، ثيمات خشبية وبلورية، وحفظ مباشر في المعرض.", 1) . ",\n";
+$obj .= $kv->("filename", $ENV{APK_NAME}, 1) . ",\n";
+$obj .= $kv->("name", "استوديو يحيى", 1) . ",\n";
+$obj .= $kv->("package", "com.yahya.studio", 1) . ",\n";
+$obj .= $kv->("sha256", $ENV{HASH}, 1) . ",\n";
+$obj .= $kv->("size", $ENV{SIZE}, 0) . ",\n";
+$obj .= $kv->("updatedAt", $ENV{NOW}, 1) . ",\n";
+$obj .= $kv->("version", $ENV{VER}, 1) . "\n";
+$obj .= $indent . "}";
 substr($s, $start, $end - $start + 1, $obj);
 $_ = $s;
 ' "$SITE_DIR/apps/manifest.json"
@@ -63,7 +74,7 @@ perl -MJSON::PP -0777 -e 'decode_json(<>); print "manifest OK\n";' "$SITE_DIR/ap
 (cd "$SITE_DIR/apps" && sha256sum -c SHA256SUMS.txt 2>&1 | grep "$APK_NAME: OK")
 
 if [[ "$DO_COMMIT" == "1" ]]; then
-  git -C "$SITE_DIR" add "apps/$APK_NAME" apps/manifest.json apps/SHA256SUMS.txt
+  git -C "$SITE_DIR" add "apps/$APK_NAME" apps/manifest.json apps/SHA256SUMS.txt sw.js
   git -C "$SITE_DIR" commit -m "Publish Yahya Studio v$VER"
 fi
 
