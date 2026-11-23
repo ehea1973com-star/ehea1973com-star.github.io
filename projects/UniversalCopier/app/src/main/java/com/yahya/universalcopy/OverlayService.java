@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
@@ -27,7 +28,7 @@ import androidx.core.app.NotificationCompat;
 
 import java.util.List;
 
-public class OverlayService extends Service {
+public class OverlayService extends Service implements CaptureUi.Host {
 
     public static final String ACTION_START = "com.yahya.universalcopy.action.START_OVERLAY";
     public static final String ACTION_STOP = "com.yahya.universalcopy.action.STOP_OVERLAY";
@@ -43,6 +44,10 @@ public class OverlayService extends Service {
     private boolean menuVisible = false;
 
     private View selectionView;
+    private View captureBarView;
+    private String capturedText = "";
+    private String capturedSource = "";
+    private String capturedAppLabel = "";
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
@@ -50,6 +55,7 @@ public class OverlayService extends Service {
         super.onCreate();
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         createNotificationChannel();
+        CaptureUi.setHost(this);
     }
 
     @Override
@@ -57,6 +63,7 @@ public class OverlayService extends Service {
         String action = intent != null ? intent.getAction() : null;
         if (ACTION_STOP.equals(action)) {
             removeSelectionOverlay();
+            dismissCaptureBar();
             removeOverlay();
             stopForeground(true);
             stopSelf();
@@ -99,18 +106,34 @@ public class OverlayService extends Service {
     }
 
     private void handleOcrAction() {
-        if (overlayView != null) overlayView.setVisibility(View.INVISIBLE);
+        rememberTarget();
+        hideFloatingControls();
         try {
             Intent i = new Intent(OverlayService.this, ScreenCaptureActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(i);
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), R.string.toast_capture_failed, Toast.LENGTH_SHORT).show();
-        } finally {
-            handler.postDelayed(() -> {
-                try { if (overlayView != null) overlayView.setVisibility(View.VISIBLE); } catch (Exception ignored) {}
-            }, 4000);
+            restoreFloatingControls();
         }
+        handler.postDelayed(() -> {
+            if (captureBarView == null && selectionView == null) restoreFloatingControls();
+        }, 6000);
+    }
+
+    private void rememberTarget() {
+        UniversalCopyAccessibilityService svc = UniversalCopyAccessibilityService.instance;
+        if (svc == null) return;
+        try { OcrMemory.setTarget(svc.getTargetPackage(), svc.getTargetBounds()); } catch (Exception ignored) {}
+    }
+
+    private void hideFloatingControls() {
+        if (captureBarView != null) dismissCaptureBar();
+        if (overlayView != null) overlayView.setVisibility(View.INVISIBLE);
+    }
+
+    private void restoreFloatingControls() {
+        if (selectionView == null && overlayView != null) overlayView.setVisibility(View.VISIBLE);
     }
 
     private void handleQuickClipAction() {
@@ -182,18 +205,7 @@ public class OverlayService extends Service {
 
             btnOcr.setOnClickListener(v -> {
                 hideMenu(menu);
-                if (overlayView != null) overlayView.setVisibility(View.INVISIBLE);
-                try {
-                    Intent i = new Intent(OverlayService.this, ScreenCaptureActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(i);
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), R.string.toast_capture_failed, Toast.LENGTH_SHORT).show();
-                } finally {
-                    handler.postDelayed(() -> {
-                        try { if (overlayView != null) overlayView.setVisibility(View.VISIBLE); } catch (Exception ignored) {}
-                    }, 4000);
-                }
+                handleOcrAction();
             });
 
             btnQuick.setOnClickListener(v -> {
@@ -234,7 +246,7 @@ public class OverlayService extends Service {
                             initialTouchX = event.getRawX();
                             initialTouchY = event.getRawY();
                             moved = false;
-                            return false; // allow click
+                            return false;
                         case MotionEvent.ACTION_MOVE:
                             int dx = (int) (event.getRawX() - initialTouchX);
                             int dy = (int) (event.getRawY() - initialTouchY);
@@ -263,6 +275,91 @@ public class OverlayService extends Service {
         }
     }
 
+    @Override
+    public boolean showCaptureBar(String text, String source, String appLabel) {
+        if (!canDraw() || windowManager == null) return false;
+        dismissCaptureBar();
+        capturedText = text == null ? "" : text;
+        capturedSource = source == null ? getString(R.string.source_ui) : source;
+        capturedAppLabel = appLabel == null ? getString(R.string.app_name) : appLabel;
+        try {
+            captureBarView = new CaptureActionBarView(this, capturedText, capturedSource, capturedAppLabel,
+                    new CaptureActionBarView.Listener() {
+                        @Override public void onCopyAll() {
+                            ClipboardUtils.copy(OverlayService.this, capturedText);
+                            Toast.makeText(getApplicationContext(), R.string.toast_copied, Toast.LENGTH_SHORT).show();
+                        }
+                        @Override public void onManualSelect() {
+                            dismissCaptureBar();
+                            startSelectionMode();
+                        }
+                        @Override public void onSearch() {
+                            openUrl("https://www.google.com/search?q=" + Uri.encode(capturedText));
+                        }
+                        @Override public void onTranslate() {
+                            openUrl("https://translate.google.com/?sl=auto&tl=ar&text=" + Uri.encode(capturedText));
+                        }
+                        @Override public void onClear() {
+                            OcrMemory.clear();
+                            capturedText = "";
+                            capturedSource = "";
+                            capturedAppLabel = "";
+                            try { ClipboardUtils.copy(OverlayService.this, ""); } catch (Exception ignored) {}
+                            dismissCaptureBar();
+                            Toast.makeText(getApplicationContext(), R.string.toast_cleared, Toast.LENGTH_SHORT).show();
+                        }
+                        @Override public void onClose() {
+                            dismissCaptureBar();
+                        }
+                    });
+            int type = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                    ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                    : WindowManager.LayoutParams.TYPE_PHONE;
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    type,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                            | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                            | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                            | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    PixelFormat.TRANSLUCENT);
+            lp.gravity = Gravity.BOTTOM | Gravity.START;
+            lp.y = dp(8);
+            windowManager.addView(captureBarView, lp);
+            if (overlayView != null) overlayView.setVisibility(View.INVISIBLE);
+            return true;
+        } catch (Exception e) {
+            dismissCaptureBar();
+            return false;
+        }
+    }
+
+    @Override
+    public void dismissCaptureBar() {
+        try {
+            if (captureBarView != null && windowManager != null) windowManager.removeView(captureBarView);
+        } catch (Exception ignored) {}
+        captureBarView = null;
+        restoreFloatingControls();
+    }
+
+    @Override
+    public void startManualSelection() {
+        dismissCaptureBar();
+        startSelectionMode();
+    }
+
+    private void openUrl(String url) {
+        try {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), R.string.toast_no_browser, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void startSelectionMode() {
         UniversalCopyAccessibilityService svc = UniversalCopyAccessibilityService.instance;
         if (svc == null) {
@@ -272,9 +369,10 @@ public class OverlayService extends Service {
                 Toast.makeText(getApplicationContext(), R.string.toast_accessibility_required, Toast.LENGTH_SHORT).show();
             }
             PermissionHelper.openAccessibilitySettings(this);
-            if (overlayView != null) overlayView.setVisibility(View.VISIBLE);
+            restoreFloatingControls();
             return;
         }
+        rememberTarget();
         if (overlayView != null) overlayView.setVisibility(View.GONE);
         handler.postDelayed(() -> {
             try {
@@ -282,7 +380,7 @@ public class OverlayService extends Service {
                 handler.post(() -> showSelectionOverlay(nodes));
             } catch (Exception e) {
                 handler.post(() -> {
-                    if (overlayView != null) overlayView.setVisibility(View.VISIBLE);
+                    restoreFloatingControls();
                     Toast.makeText(getApplicationContext(), R.string.toast_no_text, Toast.LENGTH_SHORT).show();
                 });
             }
@@ -292,7 +390,7 @@ public class OverlayService extends Service {
     private void showSelectionOverlay(List<TextNodeItem> nodes) {
         removeSelectionOverlay();
         if (nodes == null || nodes.isEmpty()) {
-            if (overlayView != null) overlayView.setVisibility(View.VISIBLE);
+            restoreFloatingControls();
             Toast.makeText(getApplicationContext(), R.string.toast_no_text, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -300,15 +398,18 @@ public class OverlayService extends Service {
             selectionView = new SelectionOverlayView(this, nodes, new SelectionOverlayView.Listener() {
                 @Override
                 public void onCopy(String text) {
-                    CopyActions.handleTextResult(getApplicationContext(), text, getString(R.string.source_ui));
                     removeSelectionOverlay();
-                    if (overlayView != null) overlayView.setVisibility(View.VISIBLE);
+                    CopyActions.handleTextResult(getApplicationContext(), text, getString(R.string.source_ui));
                 }
 
                 @Override
                 public void onCancel() {
                     removeSelectionOverlay();
-                    if (overlayView != null) overlayView.setVisibility(View.VISIBLE);
+                    if (capturedText != null && !capturedText.trim().isEmpty()) {
+                        showCaptureBar(capturedText, capturedSource, capturedAppLabel);
+                    } else {
+                        restoreFloatingControls();
+                    }
                 }
             });
             int type = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
@@ -325,7 +426,7 @@ public class OverlayService extends Service {
             lp.gravity = Gravity.TOP | Gravity.START;
             windowManager.addView(selectionView, lp);
         } catch (Exception e) {
-            if (overlayView != null) overlayView.setVisibility(View.VISIBLE);
+            restoreFloatingControls();
             Toast.makeText(getApplicationContext(), R.string.toast_overlay_required, Toast.LENGTH_SHORT).show();
         }
     }
@@ -353,9 +454,15 @@ public class OverlayService extends Service {
         overlayView = null;
     }
 
+    private int dp(int v) {
+        return Math.round(v * getResources().getDisplayMetrics().density);
+    }
+
     @Override
     public void onDestroy() {
+        CaptureUi.clearHost(this);
         removeSelectionOverlay();
+        dismissCaptureBar();
         removeOverlay();
         super.onDestroy();
     }

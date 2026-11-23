@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.Image;
@@ -84,7 +85,7 @@ public class ScreenCaptureService extends Service {
             DisplayMetrics metrics = new DisplayMetrics();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 try {
-                    android.graphics.Rect b = wm.getCurrentWindowMetrics().getBounds();
+                    Rect b = wm.getCurrentWindowMetrics().getBounds();
                     metrics.widthPixels = b.width();
                     metrics.heightPixels = b.height();
                     metrics.densityDpi = getResources().getDisplayMetrics().densityDpi;
@@ -118,7 +119,6 @@ public class ScreenCaptureService extends Service {
 
             ClipboardUtils.toast(this, getString(R.string.toast_ocr_running));
 
-            // give time to leave permission dialog/capture UI and return to target app
             try { Thread.sleep(1200); } catch (InterruptedException ignored) {}
             Image image = null;
             for (int i = 0; i < 10 && image == null; i++) {
@@ -131,50 +131,61 @@ public class ScreenCaptureService extends Service {
                 ClipboardUtils.toast(this, getString(R.string.toast_capture_failed));
                 return;
             }
-            Bitmap bitmap = imageToBitmap(image, width, height);
+            Bitmap raw = imageToBitmap(image, width, height);
             try { image.close(); } catch (Exception ignored) {}
 
-            if (bitmap == null) {
+            if (raw == null) {
                 ClipboardUtils.toast(this, getString(R.string.toast_capture_failed));
                 return;
             }
 
+            Rect targetBounds = OcrMemory.getTargetBounds();
+            String targetPkg = OcrMemory.getTargetPackage();
+            UniversalCopyAccessibilityService targetSvc = UniversalCopyAccessibilityService.instance;
+            if (targetSvc != null) {
+                try {
+                    String freshPkg = targetSvc.getTargetPackage();
+                    if (freshPkg != null && !freshPkg.trim().isEmpty()) {
+                        targetPkg = freshPkg;
+                        targetBounds = targetSvc.getTargetBounds();
+                        OcrMemory.setTarget(targetPkg, targetBounds);
+                    }
+                } catch (Exception ignored) {}
+            }
+            final Rect finalTargetBounds = targetBounds;
+            final String finalTargetPkg = targetPkg == null ? "" : targetPkg;
+            Bitmap cropped = cropToTarget(raw, finalTargetBounds);
+            if (cropped != raw) {
+                try { raw.recycle(); } catch (Exception ignored) {}
+            }
+            final Bitmap ocrBitmap = cropped;
+
+            String uiText = "";
+            UniversalCopyAccessibilityService svc = UniversalCopyAccessibilityService.instance;
+            if (svc != null && !finalTargetPkg.trim().isEmpty()) {
+                try { uiText = svc.collectAllTextForPackage(finalTargetPkg); } catch (Exception ignored) {}
+            }
+            if (uiText == null) uiText = "";
+            final String finalUiText = uiText;
             final String mode = AppPrefs.getCurrentMode(getApplicationContext());
-            final String sourceLabel = getString(R.string.source_ocr) + ":" + mode;
-            OcrHelper.recognize(bitmap, mode, new OcrHelper.Callback() {
+            final String sourceLabel = getString(R.string.source_ocr) + ":" + mode
+                    + (finalUiText.trim().isEmpty() ? "" : " + " + getString(R.string.source_ui));
+
+            OcrHelper.recognize(ocrBitmap, mode, new OcrHelper.Callback() {
                 @Override
                 public void onSuccess(OcrHelper.Result result) {
-                    try { bitmap.recycle(); } catch (Exception ignored) {}
-                    String text = result != null ? result.fullText : "";
-                    OcrMemory.set(text, sourceLabel, result != null ? result.segments : null);
-                    if (text == null || text.trim().isEmpty()) {
-                        ClipboardUtils.toast(getApplicationContext(), getString(R.string.toast_no_text));
-                        stopSelf();
-                        return;
-                    }
-                    if (AppPrefs.isAutoCopy(getApplicationContext())) {
-                        ClipboardUtils.copy(getApplicationContext(), text.trim());
-                    }
-                    if (AppPrefs.isAutoSave(getApplicationContext())) {
-                        HistoryStore.add(getApplicationContext(), text.trim(), sourceLabel);
-                    }
-                    ClipboardUtils.toast(getApplicationContext(), getString(R.string.toast_copied));
-                    if (AppPrefs.isOpenResult(getApplicationContext())) {
-                        try {
-                            Intent i = new Intent(getApplicationContext(), TextResultActivity.class);
-                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            i.putExtra(TextResultActivity.EXTRA_TEXT, text);
-                            i.putExtra(TextResultActivity.EXTRA_SOURCE, sourceLabel);
-                            i.putExtra(TextResultActivity.EXTRA_FROM_OCR, true);
-                            getApplicationContext().startActivity(i);
-                        } catch (Exception ignored) {}
-                    }
+                    try { ocrBitmap.recycle(); } catch (Exception ignored) {}
+                    String ocrText = result != null ? result.fullText : "";
+                    String merged = TextMerger.merge(finalUiText, ocrText);
+                    OcrMemory.set(merged, sourceLabel, result != null ? result.segments : null, finalTargetPkg, finalTargetBounds);
+                    captured = true;
+                    CopyActions.handleTextResult(getApplicationContext(), merged, sourceLabel);
                     stopSelf();
                 }
 
                 @Override
                 public void onError(Exception e) {
-                    try { bitmap.recycle(); } catch (Exception ignored) {}
+                    try { ocrBitmap.recycle(); } catch (Exception ignored) {}
                     ClipboardUtils.toast(getApplicationContext(), getString(R.string.toast_ocr_failed));
                     stopSelf();
                 }
@@ -190,6 +201,35 @@ public class ScreenCaptureService extends Service {
                 stopSelf();
             }
         }
+    }
+
+    private Bitmap cropToTarget(Bitmap src, Rect bounds) {
+        try {
+            int w = src.getWidth();
+            int h = src.getHeight();
+            Rect r = null;
+            if (bounds != null) {
+                r = new Rect(bounds);
+                r.left = Math.max(0, r.left);
+                r.top = Math.max(0, r.top);
+                r.right = Math.min(w, r.right);
+                r.bottom = Math.min(h, r.bottom);
+                if (r.width() < 120 || r.height() < 120) r = null;
+            }
+            if (r == null) {
+                int top = dp(28);
+                int bottom = dp(48);
+                r = new Rect(0, top, w, Math.max(top + 120, h - bottom));
+            }
+            Bitmap out = Bitmap.createBitmap(src, r.left, r.top, r.width(), r.height());
+            return out == src ? src : out;
+        } catch (Exception e) {
+            return src;
+        }
+    }
+
+    private int dp(int v) {
+        return Math.round(v * getResources().getDisplayMetrics().density);
     }
 
     private Bitmap imageToBitmap(Image image, int width, int height) {

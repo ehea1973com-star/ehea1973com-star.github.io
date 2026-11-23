@@ -36,7 +36,7 @@ public class AppPrefs {
     public static boolean isAutoSave(Context c) { return sp(c).getBoolean("auto_save", true); }
     public static void setAutoSave(Context c, boolean v) { sp(c).edit().putBoolean("auto_save", v).apply(); }
 
-    public static boolean isOpenResult(Context c) { return sp(c).getBoolean("open_result", true); }
+    public static boolean isOpenResult(Context c) { return sp(c).getBoolean("open_result", false); }
     public static void setOpenResult(Context c, boolean v) { sp(c).edit().putBoolean("open_result", v).apply(); }
 
     public static int getHistoryLimit(Context c) { return sp(c).getInt("history_limit", 200); }

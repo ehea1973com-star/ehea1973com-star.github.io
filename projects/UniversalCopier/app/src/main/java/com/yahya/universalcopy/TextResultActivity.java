@@ -59,6 +59,9 @@ public class TextResultActivity extends AppCompatActivity {
         }
         final String finalText = text;
         final String finalSource = source;
+        ThemeHelper.T theme = ThemeHelper.get(AppPrefs.getTheme(this));
+        textView.setTextColor(theme.text);
+        segmentsTitle.setTextColor(theme.text);
         textView.setText(finalText);
         applyTextDirection(textView, finalText);
 
@@ -129,7 +132,8 @@ public class TextResultActivity extends AppCompatActivity {
                         tv.setTextIsSelectable(true);
                         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                         tv.setPadding(padH, padV, padH, padV);
-                        tv.setBackgroundColor(Color.parseColor("#1A2196F3"));
+                        tv.setTextColor(theme.text);
+                        tv.setBackgroundColor(Color.parseColor("#332196F3"));
                         tv.setClickable(true);
                         tv.setFocusable(true);
                         tv.setOnClickListener(v -> {

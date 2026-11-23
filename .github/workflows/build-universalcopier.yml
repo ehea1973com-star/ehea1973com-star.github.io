@@ -7,6 +7,9 @@ on:
       - 'projects/UniversalCopier/**'
       - '.github/workflows/build-universalcopier.yml'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -122,3 +125,72 @@ jobs:
           path: ${{ env.APK_PATH_GLOB }}
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish APK to site
+        env:
+          APK_PATH: ${{ steps.apk.outputs.path }}
+          APK_NAME: com.yahya.universalcopy-v1.9.apk
+        run: |
+          set -euo pipefail
+          cp "$APK_PATH" "$GITHUB_WORKSPACE/apps/$APK_NAME"
+          SHA256=$(sha256sum "$GITHUB_WORKSPACE/apps/$APK_NAME" | awk '{print $1}')
+          cd "$GITHUB_WORKSPACE"
+          python3 - "$APK_NAME" "$SHA256" <<'PY'
+import json
+import pathlib
+import re
+import sys
+from datetime import datetime, timezone
+
+filename = sys.argv[1]
+sha256 = sys.argv[2]
+manifest_path = pathlib.Path("apps/manifest.json")
+data = json.loads(manifest_path.read_text(encoding="utf-8"))
+apps = data["apps"] if isinstance(data, dict) and "apps" in data else data
+old = next((a for a in apps if a.get("package") == "com.yahya.universalcopy"), {})
+apps = [a for a in apps if a.get("package") != "com.yahya.universalcopy" and a.get("filename") != filename]
+entry = {
+    "name": "ناسخ شامل",
+    "package": "com.yahya.universalcopy",
+    "version": "v1.9",
+    "description": "تحسينات العربية وتحديد التطبيق المستهدف وشريط إجراءات سفلي داخل التطبيق",
+    "category": "tools",
+    "filename": filename,
+    "size": pathlib.Path("apps", filename).stat().st_size,
+    "sha256": sha256,
+    "updatedAt": datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z"),
+    "icon": old.get("icon", "assets/uploads/com.yahya.universalcopy.jpg"),
+    "screenshots": old.get("screenshots", [
+        "assets/uploads/screens/com.yahya.universalcopy-1.jpg",
+        "assets/uploads/screens/com.yahya.universalcopy-2.jpg",
+        "assets/uploads/screens/com.yahya.universalcopy-3.jpg",
+    ]),
+    "type": "APK",
+}
+apps.insert(0, entry)
+if isinstance(data, dict):
+    data["apps"] = apps
+    out = data
+else:
+    out = apps
+manifest_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+sums_path = pathlib.Path("apps/SHA256SUMS.txt")
+lines = [line for line in sums_path.read_text(encoding="utf-8").splitlines()
+         if filename not in line and "com.yahya.universalcopy-v" not in line]
+lines.append(f"{sha256}  {filename}")
+sums_path.write_text("\n".join(sorted(lines)) + "\n", encoding="utf-8")
+
+sw_path = pathlib.Path("sw.js")
+sw = sw_path.read_text(encoding="utf-8")
+stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+sw = re.sub(r'var SW_VERSION = "[^"]+";', f'var SW_VERSION = "uc-{stamp}";', sw, count=1)
+sw_path.write_text(sw, encoding="utf-8")
+PY
+          git config user.name "Yahya Website Bot"
+          git config user.email "41614146+ehea1973com-star@users.noreply.github.com"
+          git add "apps/$APK_NAME" apps/manifest.json apps/SHA256SUMS.txt sw.js
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish UniversalCopier v1.9 [skip ci]"
+            git push origin HEAD:main
+          fi

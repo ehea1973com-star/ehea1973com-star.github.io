@@ -2,6 +2,7 @@ package com.yahya.universalcopy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 
 public class CopyActions {
     public static String handleTextResult(Context c, String text, String sourceLabel) {
@@ -18,6 +19,7 @@ public class CopyActions {
             HistoryStore.add(c, t, sourceLabel);
         }
         ClipboardUtils.toast(c, c.getString(R.string.toast_copied));
+        if (CaptureUi.show(t, sourceLabel, appLabel(c))) return t;
         if (AppPrefs.isOpenResult(c)) {
             try {
                 Intent i = new Intent(c, TextResultActivity.class);
@@ -28,5 +30,20 @@ public class CopyActions {
             } catch (Exception ignored) {}
         }
         return t;
+    }
+
+    private static String appLabel(Context c) {
+        String pkg = OcrMemory.getTargetPackage();
+        if (pkg != null && !pkg.trim().isEmpty()) {
+            try {
+                PackageManager pm = c.getPackageManager();
+                return pm.getApplicationLabel(pm.getApplicationInfo(pkg, 0)).toString();
+            } catch (Exception ignored) {}
+        }
+        UniversalCopyAccessibilityService svc = UniversalCopyAccessibilityService.instance;
+        if (svc != null) {
+            try { return svc.getTargetLabel(c); } catch (Exception ignored) {}
+        }
+        return c.getString(R.string.app_name);
     }
 }
