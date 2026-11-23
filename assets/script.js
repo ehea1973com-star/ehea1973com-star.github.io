@@ -1038,6 +1038,14 @@
     if (lastFocused && lastFocused.focus) lastFocused.focus();
   }
 
+  function cardDownloadId(card) {
+    var link = card.querySelector(".card-actions a.btn[href]");
+    var href = link ? (link.getAttribute("href") || "") : "";
+    var match = /(?:^|\/)download\.html\?app=([^&#]+)/i.exec(href);
+    if (!match) return card.getAttribute("data-package") || card.getAttribute("data-share-key") || "";
+    try { return decodeURIComponent(match[1]); } catch (error) { return match[1]; }
+  }
+
   function openDeepLink() {
     if (deepLinkOpened || !window.URLSearchParams) return;
     var key = new URLSearchParams(window.location.search).get("app");
@@ -1048,8 +1056,13 @@
     var cards = getCards();
     for (var index = 0; index < cards.length; index += 1) {
       if (cards[index].getAttribute("data-share-key") === key) {
-        openModal(cards[index]);
+        var id = cards[index].getAttribute("data-download-id") || cardDownloadId(cards[index]);
         deepLinkOpened = true;
+        if (id) {
+          window.location.replace("download.html?app=" + encodeURIComponent(id));
+        } else {
+          openModal(cards[index]);
+        }
         return;
       }
     }
@@ -1116,10 +1129,14 @@
     appsGrid.addEventListener("click", function (event) {
       var card = event.target.closest ? event.target.closest(".app-card") : null;
       if (!card) return;
-      var interactive = event.target.closest("a,button");
-      if (interactive && !interactive.hasAttribute("data-app-details")) return;
+      if (event.target.closest && event.target.closest("a,button")) return;
+      var id = card.getAttribute("data-download-id") || cardDownloadId(card);
+      if (!id) return;
       event.preventDefault();
-      openModal(card);
+      if (window.YahyaAnalytics && window.YahyaAnalytics.trackAppClick) {
+        window.YahyaAnalytics.trackAppClick(id);
+      }
+      window.location.href = "download.html?app=" + encodeURIComponent(id);
     });
   }
 
@@ -1237,6 +1254,7 @@
   function isExcludedImg(img){
     if (!img) return true;
     if (img.hasAttribute("data-no-zoom")) return true;
+    if (img.closest && img.closest(".apps-grid .app-card")) return true;
     if (img.closest && img.closest(".brand, .nav-toggle, .modal-close, .footer-brand, .modal-actions")) return true;
     return false;
   }
