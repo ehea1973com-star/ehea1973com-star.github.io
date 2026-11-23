@@ -112,11 +112,31 @@ jobs:
       - name: Locate APK
         id: apk
         run: |
-          APK=$(ls "$APK_DIR"/*.apk | head -n 1)
+          set -euo pipefail
+          if [ "$HAS_RELEASE_KEYSTORE" = "true" ]; then
+            APK="$APK_DIR/app-release.apk"
+            if [ ! -f "$APK" ]; then
+              APK=$(find "$APK_DIR" -maxdepth 1 -name '*.apk' ! -name '*-unsigned.apk' | head -n 1)
+            fi
+          else
+            APK="$APK_DIR/app-debug.apk"
+            if [ ! -f "$APK" ]; then
+              APK=$(find "$APK_DIR" -maxdepth 1 -name '*.apk' | head -n 1)
+            fi
+          fi
+          if [ -z "$APK" ] || [ ! -f "$APK" ]; then
+            echo "No publishable APK found in $APK_DIR" >&2
+            exit 1
+          fi
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner 2>/dev/null | sort -V | tail -n 1)
+          if [ -n "$APKSIGNER" ]; then
+            chmod +x "$APKSIGNER"
+            "$APKSIGNER" verify --verbose "$APK"
+          fi
           echo "path=$APK" >> "$GITHUB_OUTPUT"
           echo "name=$(basename "$APK")" >> "$GITHUB_OUTPUT"
           echo "Built: $APK"
-          sha256sum "$APK" || true
+          sha256sum "$APK"
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -129,7 +149,7 @@ jobs:
       - name: Publish APK to site
         env:
           APK_PATH: ${{ steps.apk.outputs.path }}
-          APK_NAME: com.yahya.universalcopy-v1.9.apk
+          APK_NAME: com.yahya.universalcopy-v1.9.1.apk
         run: |
           set -euo pipefail
           cp "$APK_PATH" "$GITHUB_WORKSPACE/apps/$APK_NAME"
@@ -152,8 +172,8 @@ jobs:
           entry = {
               "name": "ناسخ شامل",
               "package": "com.yahya.universalcopy",
-              "version": "v1.9",
-              "description": "تحسينات العربية وتحديد التطبيق المستهدف وشريط إجراءات سفلي داخل التطبيق",
+              "version": "v1.9.1",
+              "description": "نسخة موقعة وخفيفة: نسخ عربي داخل التطبيق المستهدف وشريط إجراءات سفلي",
               "category": "tools",
               "filename": filename,
               "size": pathlib.Path("apps", filename).stat().st_size,
@@ -187,10 +207,13 @@ jobs:
           sw = re.sub(r'var SW_VERSION = "[^"]+";', f'var SW_VERSION = "uc-{stamp}";', sw, count=1)
           sw_path.write_text(sw, encoding="utf-8")
           PY
+          if [ -f apps/com.yahya.universalcopy-v1.9.apk ]; then
+            git rm -f apps/com.yahya.universalcopy-v1.9.apk
+          fi
           git config user.name "Yahya Website Bot"
           git config user.email "41614146+ehea1973com-star@users.noreply.github.com"
           git add "apps/$APK_NAME" apps/manifest.json apps/SHA256SUMS.txt sw.js
           if ! git diff --cached --quiet; then
-            git commit -m "Publish UniversalCopier v1.9 [skip ci]"
+            git commit -m "Publish UniversalCopier v1.9.1 [skip ci]"
             git push origin HEAD:main
           fi

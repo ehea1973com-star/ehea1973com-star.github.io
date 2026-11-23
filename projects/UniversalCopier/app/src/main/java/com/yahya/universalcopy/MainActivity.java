@@ -116,14 +116,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupModeSpinner() {
-        String[] modes = new String[]{
-                AppPrefs.MODE_UI,
-                AppPrefs.MODE_LATIN,
-                AppPrefs.MODE_CHINESE,
-                AppPrefs.MODE_KOREAN,
-                AppPrefs.MODE_JAPANESE,
-                AppPrefs.MODE_DEVANAGARI
-        };
+        String[] ocrModes = AppPrefs.allOcrModes();
+        String[] modes = new String[ocrModes.length + 1];
+        modes[0] = AppPrefs.MODE_UI;
+        System.arraycopy(ocrModes, 0, modes, 1, ocrModes.length);
         String[] labels = new String[modes.length];
         for (int i = 0; i < modes.length; i++) labels[i] = AppPrefs.modeLabel(this, modes[i]);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, labels);
