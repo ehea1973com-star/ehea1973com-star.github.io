@@ -77,25 +77,22 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Decode release keystore
-        env:
-          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      - name: Generate release keystore
         run: |
-          if [ -n "$ANDROID_KEYSTORE_BASE64" ]; then
-            echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"
-            echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
-            echo "HAS_RELEASE_KEYSTORE=true" >> "$GITHUB_ENV"
-            echo "Release keystore configured."
-          else
-            echo "HAS_RELEASE_KEYSTORE=false" >> "$GITHUB_ENV"
-            echo "No ANDROID_KEYSTORE_BASE64 secret; building debug APK."
-          fi
+          set -euo pipefail
+          KS="$RUNNER_TEMP/universalcopier-release.jks"
+          keytool -genkeypair -v -keystore "$KS" -storetype JKS \
+            -storepass yahya123 -keypass yahya123 -alias yahya \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname "CN=Yahya Tech, OU=UniversalCopier, O=Yahya, L=Syria, S=Syria, C=SY" >/dev/null
+          echo "ANDROID_KEYSTORE_PATH=$KS" >> "$GITHUB_ENV"
+          echo "ANDROID_KEYSTORE_PASSWORD=yahya123" >> "$GITHUB_ENV"
+          echo "ANDROID_KEY_ALIAS=yahya" >> "$GITHUB_ENV"
+          echo "ANDROID_KEY_PASSWORD=yahya123" >> "$GITHUB_ENV"
+          echo "HAS_RELEASE_KEYSTORE=true" >> "$GITHUB_ENV"
+          echo "Ephemeral release keystore configured."
 
       - name: Build APK
-        env:
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           if [ "$HAS_RELEASE_KEYSTORE" = "true" ]; then
             ./gradlew --no-daemon assembleRelease --stacktrace
@@ -114,24 +111,23 @@ jobs:
         run: |
           set -euo pipefail
           if [ "$HAS_RELEASE_KEYSTORE" = "true" ]; then
-            APK="$APK_DIR/app-release.apk"
-            if [ ! -f "$APK" ]; then
-              APK=$(find "$APK_DIR" -maxdepth 1 -name '*.apk' ! -name '*-unsigned.apk' | head -n 1)
+            APK=$(find "$APK_DIR" -maxdepth 1 -type f -name 'app-release.apk' -print -quit)
+            if [ -z "$APK" ]; then
+              APK=$(find "$APK_DIR" -maxdepth 1 -type f -name '*.apk' ! -name '*-unsigned.apk' -print -quit)
             fi
           else
-            APK="$APK_DIR/app-debug.apk"
-            if [ ! -f "$APK" ]; then
-              APK=$(find "$APK_DIR" -maxdepth 1 -name '*.apk' | head -n 1)
+            APK=$(find "$APK_DIR" -maxdepth 1 -type f -name 'app-debug.apk' -print -quit)
+            if [ -z "$APK" ]; then
+              APK=$(find "$APK_DIR" -maxdepth 1 -type f -name '*.apk' -print -quit)
             fi
           fi
           if [ -z "$APK" ] || [ ! -f "$APK" ]; then
             echo "No publishable APK found in $APK_DIR" >&2
             exit 1
           fi
-          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner 2>/dev/null | sort -V | tail -n 1)
+          APKSIGNER=$(find "${ANDROID_HOME:-}/build-tools" -type f -name apksigner -print 2>/dev/null | sort -V | tail -n 1 || true)
           if [ -n "$APKSIGNER" ]; then
-            chmod +x "$APKSIGNER"
-            "$APKSIGNER" verify --verbose "$APK"
+            bash "$APKSIGNER" verify --verbose "$APK"
           fi
           echo "path=$APK" >> "$GITHUB_OUTPUT"
           echo "name=$(basename "$APK")" >> "$GITHUB_OUTPUT"
