@@ -20,8 +20,8 @@
     },
     {
       "category": "tools",
-      "description": "كاميرا",
-      "filename": "com.yahya.app912681-v1.0.apk",
+      "description": "كاميرا بأزرار أيقونية، تصوير وتسجيل فيديو، دوران، شبكة، مؤقت، تعريض، تركيز باللمس، فلاتر ومحرر صور وفيديو.",
+      "filename": "com.yahya.app912681-v1.1.apk",
       "icon": "assets/uploads/com.yahya.app912681.jpg",
       "name": "كاميرا",
       "package": "com.yahya.app912681",
@@ -30,10 +30,10 @@
         "assets/uploads/screens/com.yahya.app912681-2.jpg",
         "assets/uploads/screens/com.yahya.app912681-3.jpg"
       ],
-      "sha256": "9421ca822b89fefba1e59dc6ce14089c586ba3f8d72b64c39e8035a807c411a3",
-      "size": 3474329,
-      "updatedAt": "2026-11-21T09:47:40.471Z",
-      "version": "1.0"
+      "sha256": "c95b8cc1022298fbf608eebb55d5a9b5c3a6591f6e8305e039d28bc8ae7236ae",
+      "size": 49629,
+      "updatedAt": "2026-11-23T23:04:52.000Z",
+      "version": "1.1"
     },
     {
       "category": "tools",
