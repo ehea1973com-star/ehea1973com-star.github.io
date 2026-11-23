@@ -4,17 +4,35 @@ set -euo pipefail
 ANDROID_DIR="/storage/internal_new/project/YahyaStudio"
 SITE_DIR="/storage/internal_new/project/YahyaSystemBuilder/live-site"
 DOWNLOAD_DIR="/host-rootfs/storage/emulated/0/Download"
+SITE_REMOTE="ssh://git@ssh.github.com:443/ehea1973com-star/ehea1973com-star.github.io.git"
+SSH_KEY="/data/user/0/com.m4coding.ide/cache/opencode/yahya_publish_ed25519"
+GIT_SSH="ssh -i $SSH_KEY -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 VER="${1:-}"
+if [[ $# -gt 0 ]]; then shift; fi
 DO_COMMIT=0
-if [[ "${2:-}" == "--commit" ]]; then DO_COMMIT=1; fi
+DO_PUSH=0
+for arg in "$@"; do
+  case "$arg" in
+    --commit) DO_COMMIT=1 ;;
+    --push) DO_PUSH=1 ;;
+    *) echo "Unknown option: $arg"; exit 1 ;;
+  esac
+done
 if [[ -z "$VER" ]]; then
-  echo "Usage: $0 <version> [--commit]"
+  echo "Usage: $0 <version> [--commit] [--push]"
+  exit 1
+fi
+if [[ "$DO_PUSH" == "1" && "$DO_COMMIT" == "0" ]]; then
+  echo "--push needs --commit"
   exit 1
 fi
 
 CODE="${VER##*.}"
 APK_NAME="com.yahya.studio-v${VER}.apk"
+
+GIT_SSH_COMMAND="$GIT_SSH" git -C "$SITE_DIR" fetch "$SITE_REMOTE" main
+git -C "$SITE_DIR" rebase FETCH_HEAD
 
 perl -0pi -e "s/versionCode\\s+\\d+/versionCode $CODE/; s/versionName\\s+\"[^\"]+\"/versionName \"$VER\"/" "$ANDROID_DIR/app/build.gradle"
 
@@ -76,6 +94,11 @@ perl -MJSON::PP -0777 -e 'decode_json(<>); print "manifest OK\n";' "$SITE_DIR/ap
 if [[ "$DO_COMMIT" == "1" ]]; then
   git -C "$SITE_DIR" add "apps/$APK_NAME" apps/manifest.json apps/SHA256SUMS.txt sw.js
   git -C "$SITE_DIR" commit -m "Publish Yahya Studio v$VER"
+fi
+
+if [[ "$DO_PUSH" == "1" ]]; then
+  GIT_SSH_COMMAND="$GIT_SSH" git -C "$SITE_DIR" push "$SITE_REMOTE" main
+  git -C "$SITE_DIR" update-ref refs/remotes/origin/main HEAD
 fi
 
 echo "Ready: $DOWNLOAD_DIR/YahyaStudio-v${VER}-publish.apk"

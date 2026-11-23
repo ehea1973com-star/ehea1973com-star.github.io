@@ -398,8 +398,9 @@
         var parsed = JSON.parse(decodeContent(file));
         if (Array.isArray(parsed)) apps = parsed;
         else if (parsed && Array.isArray(parsed.apps)) apps = parsed.apps;
+        else throw new Error("صيغة manifest غير متوقعة");
       } catch (error) {
-        apps = [];
+        throw new Error("تعذرت قراءة apps/manifest.json؛ لم يتم تعديل القائمة حفاظاً على التطبيقات الموجودة.");
       }
     }
     return { file: file, apps: apps };
