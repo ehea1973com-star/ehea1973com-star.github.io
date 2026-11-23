@@ -422,6 +422,15 @@
     return /^assets\/[A-Za-z0-9._\/-]+$/.test(path) && path.indexOf("..") === -1;
   }
 
+  function isAppFileName(name) {
+    return /\.(apk|zip|apks|xapk|aab|7z|rar)$/i.test(String(name || "").split("?")[0].trim());
+  }
+
+  function fileTypeLabel(name) {
+    var ext = String(name || "").split("?")[0].split(".").pop().toUpperCase();
+    return /^[A-Z0-9]{2,5}$/.test(ext) ? ext : "APK";
+  }
+
   function slugify(value) {
     return String(value).trim().replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").toLowerCase();
   }
