@@ -7,10 +7,6 @@ import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
-import com.google.mlkit.vision.text.chinese.ChineseTextRecognizerOptions;
-import com.google.mlkit.vision.text.devanagari.DevanagariTextRecognizerOptions;
-import com.google.mlkit.vision.text.japanese.JapaneseTextRecognizerOptions;
-import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 import java.util.ArrayList;
@@ -55,17 +51,7 @@ public class OcrHelper {
     }
 
     private static TextRecognizer getRecognizer(String mode) {
-        if (AppPrefs.MODE_CHINESE.equals(mode)) {
-            return TextRecognition.getClient(new ChineseTextRecognizerOptions.Builder().build());
-        } else if (AppPrefs.MODE_KOREAN.equals(mode)) {
-            return TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build());
-        } else if (AppPrefs.MODE_JAPANESE.equals(mode)) {
-            return TextRecognition.getClient(new JapaneseTextRecognizerOptions.Builder().build());
-        } else if (AppPrefs.MODE_DEVANAGARI.equals(mode)) {
-            return TextRecognition.getClient(new DevanagariTextRecognizerOptions.Builder().build());
-        } else {
-            return TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
-        }
+        return TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
     }
 
     private static Result extract(Text result) {
