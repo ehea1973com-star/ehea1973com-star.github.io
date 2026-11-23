@@ -131,15 +131,16 @@
 
   function setDownloadLink(button, app) {
     var href = app.download || "#";
-    button.href = href;
+    var key = app.package || app.id || app.name;
+    button.removeAttribute("target");
+    button.removeAttribute("rel");
+    button.removeAttribute("download");
     if (/^https?:/i.test(href)) {
+      button.href = href;
       button.target = "_blank";
       button.rel = "noopener noreferrer";
-      button.removeAttribute("download");
     } else {
-      button.removeAttribute("target");
-      button.removeAttribute("rel");
-      button.setAttribute("download", href.split("/").pop());
+      button.href = "d.html?app=" + encodeURIComponent(key);
     }
   }
 

@@ -2396,6 +2396,89 @@ html[data-theme="light"] .reader-content {
   color: var(--muted);
 }
 
+.quick-download-section {
+  min-height: 70vh;
+  display: grid;
+  place-items: center;
+  padding-top: 36px;
+}
+
+.quick-download-card {
+  width: min(640px, 100%);
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.quick-download-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.quick-download-head .app-icon {
+  width: 72px;
+  height: 72px;
+  flex-basis: 72px;
+  border-radius: 18px;
+}
+
+.quick-download-head .app-icon img {
+  width: 44px;
+  height: 44px;
+}
+
+.quick-download-copy h1 {
+  margin: 4px 0 8px;
+  font-size: clamp(26px, 5vw, 38px);
+}
+
+.quick-download-note {
+  margin: 20px 0 10px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.quick-download-status {
+  min-height: 24px;
+  margin: 0 0 14px;
+  color: var(--gold);
+  font-size: 14px;
+}
+
+.quick-download-actions,
+.quick-download-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.quick-download-links {
+  margin-top: 18px;
+}
+
+.quick-download-sha {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 11px;
+  word-break: break-all;
+  direction: ltr;
+  text-align: right;
+}
+
+@media (max-width: 600px) {
+  .quick-download-card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .quick-download-actions .btn {
+    width: 100%;
+  }
+}
+
 .auth-modal[hidden] {
   display: none;
 }
