@@ -3,21 +3,19 @@
     {
       "name": "ناسخ شامل",
       "package": "com.yahya.universalcopy",
-      "version": "v1.8",
-      "description": "آخر تحديث لتطبيق ناسخ شامل",
+      "version": "v1.9",
+      "description": "تحسينات العربية وتحديد التطبيق المستهدف وشريط إجراءات سفلي داخل التطبيق",
       "category": "tools",
-      "filename": "",
-      "size": 25794970,
-      "sha256": "31289495ecc370f9e3d5da3f6c4dc489428939ed0706e7a8871dec73de650b26",
-      "updatedAt": "2026-11-21T16:52:42.270Z",
+      "filename": "com.yahya.universalcopy-v1.9.apk",
+      "size": 49217254,
+      "sha256": "6ed6ad43160329b534c7064f1eaba9b04c5387b6d8a50d0ed56ae93157d4000a",
+      "updatedAt": "2026-11-23T19:57:09.695Z",
       "icon": "assets/uploads/com.yahya.universalcopy.jpg",
       "screenshots": [
         "assets/uploads/screens/com.yahya.universalcopy-1.jpg",
         "assets/uploads/screens/com.yahya.universalcopy-2.jpg",
         "assets/uploads/screens/com.yahya.universalcopy-3.jpg"
       ],
-      "download": "https://github.com/ehea1973com-star/ehea1973com-star.github.io/actions/runs/44921094875/artifacts/14714616087",
-      "external": true,
       "type": "APK"
     },
     {
