@@ -291,8 +291,13 @@
       "package": "com.yahya.studio",
       "sha256": "5dc2139f697f900ff0cd361ae1b2d81958c8b96f1aa610b2b4bdbffa45b111ec",
       "size": 1310898,
-      "updatedAt": "2026-11-23T14:00:00Z",
-      "version": "1.0.66"
+      "updatedAt": "2026-11-23T21:50:10.268Z",
+      "version": "1.0.66",
+      "screenshots": [
+        "assets/uploads/screens/com.yahya.studio-1795470600425-1.jpg",
+        "assets/uploads/screens/com.yahya.studio-1795470600425-2.jpg",
+        "assets/uploads/screens/com.yahya.studio-1795470600425-3.jpg"
+      ]
     }
   ]
 }
