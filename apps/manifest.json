@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح شاشة التطبيقات المثبتة، ضغط أي ملف داخل APK يفتح المحرر مباشرة مع دعم HEX للملفات الثنائية، إزالة زر اللغة من الهيدر، أيقونة أندرويد بمفك وكمامة و10 أيقونات صغيرة.",
-      "filename": "com.yahya.apkeditor.pro-v5.3.apk",
+      "description": "شاشة ترحيب متحركة فيها تعريف بيحيى الحمزة ابومحمد وتصاميمه، مع تحرير أي ملف داخل APK وHEX ودعم التطبيقات المثبتة وإزالة زر اللغة من الهيدر.",
+      "filename": "com.yahya.apkeditor.pro-v5.4.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "6b1b99809058a04c310011214150d5eb11396fa8759c9f4b2494db53bdf072f4",
-      "size": 230392,
-      "updatedAt": "2026-11-24T22:06:00.000Z",
-      "version": "5.3",
+      "sha256": "1a5011ea10d92d6e9491eae828b9d09f02411f34db7001dfdc786c07044bf879",
+      "size": 234488,
+      "updatedAt": "2026-11-24T22:13:00.000Z",
+      "version": "5.4",
       "type": "APK"
     },
     {
