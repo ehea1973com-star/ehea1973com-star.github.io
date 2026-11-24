@@ -2479,6 +2479,62 @@ html[data-theme="light"] .reader-content {
   }
 }
 
+body.smart-download-open {
+  overflow: hidden;
+}
+
+.smart-download-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(3, 7, 16, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.smart-download-card {
+  width: min(600px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.smart-download-card h1 {
+  margin: 4px 0 8px;
+  font-size: clamp(26px, 5vw, 36px);
+}
+
+.smart-download-note {
+  margin: 20px 0 10px;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.smart-download-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+@media (max-width: 600px) {
+  .smart-download-card {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .smart-download-actions .btn {
+    width: 100%;
+  }
+}
+
 .auth-modal[hidden] {
   display: none;
 }

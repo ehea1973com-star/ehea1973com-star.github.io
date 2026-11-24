@@ -1059,7 +1059,8 @@
         var id = cards[index].getAttribute("data-download-id") || cardDownloadId(cards[index]);
         deepLinkOpened = true;
         if (id) {
-          window.location.replace("download.html?app=" + encodeURIComponent(id));
+          if (window.YahyaSmartDownload && window.YahyaSmartDownload.open) window.YahyaSmartDownload.open(id);
+          else window.location.href = "download.html?app=" + encodeURIComponent(id);
         } else {
           openModal(cards[index]);
         }
@@ -1136,7 +1137,8 @@
       if (window.YahyaAnalytics && window.YahyaAnalytics.trackAppClick) {
         window.YahyaAnalytics.trackAppClick(id);
       }
-      window.location.href = "download.html?app=" + encodeURIComponent(id);
+      if (window.YahyaSmartDownload && window.YahyaSmartDownload.open) window.YahyaSmartDownload.open(id);
+      else window.location.href = "download.html?app=" + encodeURIComponent(id);
     });
   }
 

@@ -4,10 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Yahya Tech</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg?v=20261124-02">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/app-192.png?v=20261124-02">
   <script>
     (function () {
-      var q = window.location.search || "";
-      var target = /[?&]app=/.test(q) ? "d.html" + q : "index.html#apps";
+      var params = new URLSearchParams(window.location.search || "");
+      var key = params.get("open") || params.get("app") || "";
+      var target = key ? "index.html?open=" + encodeURIComponent(key) + "#apps" : "index.html#apps";
       window.location.replace(target);
     })();
   </script>

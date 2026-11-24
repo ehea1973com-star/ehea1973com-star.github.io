@@ -3,24 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>تثبيت سريع | Yahya Tech</title>
-  <meta name="description" content="صفحة تثبيت سريعة مع خيارات تثبيت أو تنزيل أو إلغاء والعودة إلى الموقع.">
+  <title>تحميل مباشر | Yahya Tech</title>
+  <meta name="description" content="صفحة تحويل إلى نافذة التحميل الذكية مع بقاء الموقع مفتوحًا والعودة إليه بالرجوع.">
   <meta name="theme-color" content="#050914">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
-  <link rel="stylesheet" href="assets/style.css?v=20261123-01">
-  <script src="assets/theme.js?v=20261123-01"></script>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg?v=20261124-02">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/app-192.png?v=20261124-02">
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search || "");
+      var key = params.get("open") || params.get("app") || "";
+      var target = key ? "index.html?open=" + encodeURIComponent(key) + "#apps" : "index.html#apps";
+      window.location.replace(target);
+    })();
+  </script>
 </head>
 <body>
-  <div class="page-glow" aria-hidden="true"></div>
-  <main class="section quick-download-section">
-    <div class="quick-download-card" id="quickDownload">
-      <p class="muted">جارٍ تجهيز رابط التثبيت...</p>
-    </div>
-  </main>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="assets/analytics.js?v=20261123-01" defer></script>
-  <script src="assets/catalog.js?v=20261123-01" defer></script>
-  <script src="assets/quick-download.js?v=20261123-01" defer></script>
+  <a href="index.html#apps">Yahya Tech</a>
 </body>
 </html>

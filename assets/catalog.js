@@ -22,16 +22,16 @@ window.YAHYA_APP_CATALOG = [
   {
     id: "noor-al-fajr",
     name: "نور الفجر",
-    version: "v1.3.2",
+    version: "v1.3.3",
     size: "11.2 MB",
     platform: "Android 5.0+",
     languages: "عربي",
     category: "islamic",
     icon: "assets/icons/noor.svg",
     iconClass: "icon-gold",
-    description: "تطبيق إسلامي للقرآن والأذكار ومواقيت الصلاة، مع شاشة أذان مرئية متزامنة مع الصوت وحركات عرض متعددة.",
-    download: "apps/NoorAlFajr-v1.3.2.apk",
-    external: "https://github.com/ehea1973com-star/Yahya-Editor-Android-2/releases/tag/v1.3.2",
+    description: "تطبيق إسلامي للقرآن والأذكار ومواقيت الصلاة، مع شاشة أذان مرئية متزامنة مع الصوت والكلمات الصحيحة بترتيبها.",
+    download: "apps/NoorAlFajr-v1.3.3.apk",
+    external: "https://ehea1973com-star.github.io/apps/NoorAlFajr-v1.3.3.apk",
     type: "APK"
   },
   {

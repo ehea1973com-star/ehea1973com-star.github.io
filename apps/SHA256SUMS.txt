@@ -8,6 +8,7 @@
 5dc2139f697f900ff0cd361ae1b2d81958c8b96f1aa610b2b4bdbffa45b111ec  com.yahya.studio-v1.0.66.apk
 702d048bfb939d103c0054d651afdf84b0bdcd54ff988ac76461d0c0ae49f291  NoorAlFajr-v1.3.1.apk
 c428d8b80e10e6d99a70efa1b8093e4f7fed12fd298c56a7a2ffbdcbf8c0e135  NoorAlFajr-v1.3.2.apk
+c68a66dde6d85eaa50a26b24c3a5d09dbb7a7dbc0c109120ce46d534b8b307c0  NoorAlFajr-v1.3.3.apk
 76b9027967ef193db6c702a2f6f8e22533a71049db92dc7adf206a3f40617608  com.yahya.khayal-v0.7.2.apk
 79ebc539203bde244eceb96c26d99b906db7f28a24987d6b79f08b64da8059d9  com.yahya.royalkeyboard-v4.1.apk
 79f1cf369427c01be2dcbbafb9a2d95163e3a456ea2dd98c2587991ce231683b  com.ehyahmza.supercalc-v1.0.apk

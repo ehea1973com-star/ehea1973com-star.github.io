@@ -172,8 +172,8 @@
     },
     {
       "category": "islamic",
-      "description": "تطبيق إسلامي للقرآن والأذكار ومواقيت الصلاة، مع شاشة أذان مرئية متزامنة مع الصوت وحركات عرض متعددة.",
-      "filename": "NoorAlFajr-v1.3.2.apk",
+      "description": "تطبيق إسلامي للقرآن والأذكار ومواقيت الصلاة، مع شاشة أذان مرئية متزامنة مع الصوت والكلمات الصحيحة بترتيبها.",
+      "filename": "NoorAlFajr-v1.3.3.apk",
       "icon": "assets/icons/noor.svg",
       "name": "نور الفجر",
       "package": "com.yahya.app755963",
@@ -182,10 +182,10 @@
         "assets/uploads/screens/-1795071776331-2.jpg",
         "assets/uploads/screens/-1795071776331-3.jpg"
       ],
-      "sha256": "c428d8b80e10e6d99a70efa1b8093e4f7fed12fd298c56a7a2ffbdcbf8c0e135",
+      "sha256": "c68a66dde6d85eaa50a26b24c3a5d09dbb7a7dbc0c109120ce46d534b8b307c0",
       "size": 11159324,
-      "updatedAt": "2026-11-24T10:00:00.000Z",
-      "version": "1.3.2"
+      "updatedAt": "2026-11-24T12:30:00.000Z",
+      "version": "1.3.3"
     },
     {
       "category": "tools",
