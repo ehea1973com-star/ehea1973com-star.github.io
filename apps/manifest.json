@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "محرر APK بأيقونة أندرويد بمفك وكمامة و10 أيقونات صغيرة، وزر مخصص قابل للإضافة والإزالة، شاشات منفصلة لكل وضع، سحب حقيقي للملفات، ترجمة فعلية بعداد، إعادة بناء وتوقيع وتثبيت.",
-      "filename": "com.yahya.apkeditor.pro-v5.2.apk",
+      "description": "إصلاح شاشة التطبيقات المثبتة، ضغط أي ملف داخل APK يفتح المحرر مباشرة مع دعم HEX للملفات الثنائية، إزالة زر اللغة من الهيدر، أيقونة أندرويد بمفك وكمامة و10 أيقونات صغيرة.",
+      "filename": "com.yahya.apkeditor.pro-v5.3.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "717ce577f822825454176d6152f743e004bf41afaea68dfed7f9f3a6883cdeda",
+      "sha256": "6b1b99809058a04c310011214150d5eb11396fa8759c9f4b2494db53bdf072f4",
       "size": 230392,
-      "updatedAt": "2026-11-24T21:43:00.000Z",
-      "version": "5.2",
+      "updatedAt": "2026-11-24T22:06:00.000Z",
+      "version": "5.3",
       "type": "APK"
     },
     {
