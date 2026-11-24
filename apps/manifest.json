@@ -1,6 +1,25 @@
 {
   "apps": [
     {
+      "name": "محرر التطبيقات",
+      "package": "com.gmail.heagoo.apkeditor.pro",
+      "version": "4.2",
+      "description": "تحرير التطبيقات عربي إنكليزي   \nمحرر APK",
+      "category": "tools",
+      "filename": "com.gmail.heagoo.apkeditor.pro-v4.2.apk",
+      "size": 5956955,
+      "sha256": "1afeb065c2dcf66b00995ad572ac8ab45caeaae3f795f1595d2439524c71dfda",
+      "updatedAt": "2026-11-24T18:19:55.094Z",
+      "icon": "assets/uploads/com.gmail.heagoo.apkeditor.pro.jpg",
+      "screenshots": [
+        "assets/uploads/screens/com.gmail.heagoo.apkeditor.pro-1.jpg",
+        "assets/uploads/screens/com.gmail.heagoo.apkeditor.pro-2.jpg",
+        "assets/uploads/screens/com.gmail.heagoo.apkeditor.pro-3.jpg"
+      ],
+      "download": "apps/com.gmail.heagoo.apkeditor.pro-v4.2.apk",
+      "external": false
+    },
+    {
       "name": "ناسخ شامل",
       "package": "com.yahya.universalcopy",
       "version": "v1.9.1",
