@@ -367,7 +367,142 @@ html[data-theme="light"] .stats-table tbody tr:hover td {
   background: rgba(8, 145, 178, 0.06);
 }
 
+.notification-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 16px 0;
+}
+
+.notification-list,
+.ad-admin-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.notification-item,
+.ad-admin-item {
+  padding: 13px 15px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.notification-item.unread {
+  border-color: rgba(34, 211, 238, 0.42);
+  background: rgba(34, 211, 238, 0.07);
+}
+
+.notification-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.notification-badge {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(167, 139, 250, 0.16);
+  color: #c4b5fd;
+  font-weight: 800;
+}
+
+.notification-item p,
+.ad-admin-info span {
+  margin: 8px 0 4px;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.notification-item small,
+.ad-admin-info small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.notification-empty {
+  margin: 0;
+  padding: 18px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+}
+
+.ad-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ad-form-grid .field-wide {
+  grid-column: 1 / -1;
+}
+
+.ad-admin-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.ad-admin-item.inactive {
+  opacity: 0.62;
+}
+
+.ad-admin-info {
+  min-width: 0;
+  display: grid;
+}
+
+.ad-admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: none;
+}
+
+.ad-admin-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: none;
+}
+
+.ad-admin-controls select,
+.ad-admin-controls input {
+  max-width: 150px;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+}
+
 @media (max-width: 680px) {
+  .ad-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ad-admin-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ad-admin-actions .btn {
+    flex: 1;
+  }
+
   .stats-toolbar {
     align-items: stretch;
     flex-direction: column;

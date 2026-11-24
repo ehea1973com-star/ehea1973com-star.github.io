@@ -33,7 +33,7 @@
   <meta name="twitter:title" content="Yahya Tech | يحيى الحمزة">
   <meta name="twitter:description" content="تطبيقات أندرويد وأدوات تشخيص هواتف أوفلاين.">
   <meta name="twitter:image" content="https://ehea1973com-star.github.io/assets/icons/app-512.png">
-  <link rel="stylesheet" href="assets/style.css?v=20261124-03">
+  <link rel="stylesheet" href="assets/style.css?v=20261124-06">
   <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
   <script type="application/ld+json">
   {
@@ -75,6 +75,7 @@
             <a class="panel-card" href="#live" data-close-panels><strong data-i18n="nav.live">البث</strong><span data-i18n="section.live">آخر الفيديوهات والبث المباشر</span></a>
             <a class="panel-card" href="#about" data-close-panels><strong data-i18n="nav.about">عنّي</strong><span data-i18n="section.about">نبذة عنّي</span></a>
             <a class="panel-card" href="#contact" data-close-panels><strong data-i18n="nav.contact">تواصل</strong><span data-i18n="section.contact">تواصل معي</span></a>
+            <a class="panel-card" href="#reactions" data-close-panels><strong>التعليقات والإعجابات</strong><span>تفاعل مع الموقع بالقلوب والإيموجيات</span></a>
             <a class="panel-card" href="#library" data-close-panels><strong data-i18n="nav.library">المعرض والمكتبة</strong><span data-i18n="section.library">مناظر طبيعية وصور للتحميل (محلي + Google)</span></a>
           </div>
         </div>
@@ -100,6 +101,7 @@
     <nav class="nav" aria-label="التنقل" data-i18n-aria="nav.navigation">
       <a href="#web-search" data-i18n="nav.search">بحث</a>
       <a href="#apps" data-i18n="nav.apps">التطبيقات</a>
+      <a href="#reactions">التعليقات</a>
       <a href="#site-stats" data-i18n="nav.stats">الأرقام</a>
       <a href="#clock" data-i18n="nav.clock">الساعة</a>
       <a href="#services" data-i18n="nav.services">الخدمات</a>
@@ -583,6 +585,43 @@
         <p class="muted" style="margin-top:12px;font-size:.9rem">امسح الباركود (QR) من تطبيق شام كاش أو انسخ العنوان أعلاه لإرسال الدعم مباشرة.</p>
       </div>
     </section>
+
+    <section class="section" id="reactions">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">تفاعل الموقع</span>
+          <h2>إعجابات وقلوب وتعليقات</h2>
+          <p class="muted" style="margin-top:6px">القراءة متاحة للجميع. للتعليق أو التفاعل سجّل الدخول بالموقع، ثم اكتب تعليقًا وأرفق إيموجي الموقع إن أحببت.</p>
+        </div>
+        <button class="btn btn-ghost btn-small" type="button" id="reactionLoginBtn">تسجيل الدخول للتفاعل</button>
+      </div>
+      <div class="reactions-card reveal">
+        <div class="reaction-art">
+          <img src="assets/uploads/reaction-stickers.webp?v=20261124-04" alt="حركات وإيموجيات للتفاعل" loading="lazy" decoding="async">
+        </div>
+        <div class="reaction-body">
+          <div class="reaction-bar" id="reactionBar" role="group" aria-label="أزرار التفاعل">
+            <button class="reaction-btn" type="button" data-reaction="like" aria-pressed="false"><span>👍</span><strong data-reaction-count="like">0</strong><small>إعجاب</small></button>
+            <button class="reaction-btn" type="button" data-reaction="love" aria-pressed="false"><span>❤️</span><strong data-reaction-count="love">0</strong><small>حب</small></button>
+            <button class="reaction-btn" type="button" data-reaction="heart" aria-pressed="false"><span>💙</span><strong data-reaction-count="heart">0</strong><small>قلب</small></button>
+            <button class="reaction-btn" type="button" data-reaction="fire" aria-pressed="false"><span>🔥</span><strong data-reaction-count="fire">0</strong><small>رائع</small></button>
+            <button class="reaction-btn" type="button" data-reaction="clap" aria-pressed="false"><span>👏</span><strong data-reaction-count="clap">0</strong><small>تصفيق</small></button>
+            <button class="reaction-btn" type="button" data-reaction="wow" aria-pressed="false"><span>😮</span><strong data-reaction-count="wow">0</strong><small>مذهل</small></button>
+          </div>
+          <form class="comment-form" id="reactionCommentForm">
+            <label class="sr-only" for="reactionCommentInput">اكتب تعليقك</label>
+            <input id="reactionCommentInput" type="text" maxlength="500" autocomplete="off" placeholder="اكتب تعليقك...">
+            <button class="btn btn-small" type="submit">إرسال التعليق</button>
+          </form>
+          <div class="reaction-tools">
+            <button class="reaction-sticker-btn" type="button" id="reactionStickerBtn">إرفاق صورة الإيموجي</button>
+          </div>
+          <p class="reaction-status" id="reactionStatus" aria-live="polite">جارٍ تجهيز التفاعل...</p>
+          <div class="comment-list" id="reactionComments"></div>
+        </div>
+      </div>
+    </section>
+
     <section class="section rich-library" id="library">
       <div class="rich-section reveal" id="photo-categories-intro">
         <span class="eyebrow">مكتبة الوسائط</span>
@@ -1784,8 +1823,11 @@ git push origin main</code></pre></article>
   <script src="assets/analytics.js?v=20261118-47" defer></script>
   <script src="assets/firebase-config.js?v=20261118-47" defer></script>
   <script src="assets/auth.js?v=20261118-47" defer></script>
+  <script src="assets/reactions.js?v=20261124-06" defer></script>
+  <script src="assets/site-notifications.js?v=20261124-06" defer></script>
+  <script src="assets/ads.js?v=20261124-06" defer></script>
   <script src="assets/smart-download.js?v=20261124-03" defer></script>
-  <script src="assets/script.js?v=20261124-03" defer></script>
+  <script src="assets/script.js?v=20261124-06" defer></script>
   <script src="assets/clock.js?v=20261118-47" defer></script>
   <script src="assets/audio.js?v=20261118-47" defer></script>
   <script src="assets/pwa.js?v=20261118-47" defer></script>

@@ -16,8 +16,8 @@
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg?v=20261124-03">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/app-192.png?v=20261124-03">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png?v=20261124-03">
-  <link rel="stylesheet" href="assets/style.css?v=20261118-46">
-  <link rel="stylesheet" href="assets/admin.css?v=20261120-01">
+  <link rel="stylesheet" href="assets/style.css?v=20261124-06">
+  <link rel="stylesheet" href="assets/admin.css?v=20261124-06">
 </head>
 <body>
   <div class="page-glow" aria-hidden="true"></div>
@@ -161,6 +161,80 @@
         </div>
 
         <p class="stats-note">يبدأ العدّ من لحظة تفعيل النظام. الزائر الفريد يُحتسب مرة واحدة لكل متصفح/يوم، والمسجلون الجدد فقط. الأرقام تقريبية لأنها تعتمد على عدّاد خارجي بسيط.</p>
+      </div>
+
+      <div class="admin-card notification-card">
+        <span class="eyebrow">مركز الإشعارات</span>
+        <h1>إشعارات التفاعل</h1>
+        <p class="muted">تظهر هنا تعليقات الزوار المسجلين وتفاعلاتهم. عند فتح لوحة المالك مع السماح بإشعارات المتصفح ستصل إشعارات فورية أثناء فتح الصفحة.</p>
+        <div class="notification-toolbar">
+          <button class="btn btn-small" type="button" id="notificationEnableBtn">تفعيل إشعارات المتصفح</button>
+          <button class="btn btn-ghost btn-small" type="button" id="notificationRefreshBtn">تحديث الإشعارات</button>
+          <span class="muted" id="ownerNotificationsStatus">—</span>
+        </div>
+        <div class="notification-list" id="ownerNotifications"></div>
+      </div>
+
+      <div class="admin-card ad-card">
+        <span class="eyebrow">إعلانات الموقع</span>
+        <h1>أضف إعلانًا ويظهر لكل الزوار</h1>
+        <p class="muted">أضف إعلانًا برابط أو صورة أو فيديو. يمكنك تحديد الحجم، ووقت البداية والنهاية، ومدة ظهور الإعلان لكل زائر.</p>
+        <form id="adForm" class="admin-form" novalidate>
+          <div class="ad-form-grid">
+            <div class="field">
+              <label for="adTitle">عنوان الإعلان</label>
+              <input id="adTitle" type="text" maxlength="120" placeholder="مثال: متجر يحيى للإكسسوارات">
+            </div>
+            <div class="field">
+              <label for="adType">نوع الإعلان</label>
+              <select id="adType">
+                <option value="link">رابط فقط</option>
+                <option value="image">صورة</option>
+                <option value="video">فيديو</option>
+              </select>
+            </div>
+            <div class="field field-wide">
+              <label for="adDescription">وصف مختصر</label>
+              <input id="adDescription" type="text" maxlength="300" placeholder="نص قصير يظهر مع الإعلان">
+            </div>
+            <div class="field field-wide">
+              <label for="adMediaUrl">رابط الصورة أو الفيديو</label>
+              <input id="adMediaUrl" type="url" placeholder="https://...">
+            </div>
+            <div class="field field-wide">
+              <label for="adLinkUrl">رابط النقر عند الزائر</label>
+              <input id="adLinkUrl" type="url" placeholder="https://...">
+            </div>
+            <div class="field">
+              <label for="adSize">حجم الإعلان</label>
+              <select id="adSize">
+                <option value="small">صغير</option>
+                <option value="medium" selected>متوسط</option>
+                <option value="large">كبير</option>
+                <option value="wide">عريض</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="adDuration">مدة الظهور بالثوانٍ (0 = دائم)</label>
+              <input id="adDuration" type="number" min="0" value="0">
+            </div>
+            <div class="field">
+              <label for="adStart">وقت البداية</label>
+              <input id="adStart" type="datetime-local">
+            </div>
+            <div class="field">
+              <label for="adEnd">وقت النهاية</label>
+              <input id="adEnd" type="datetime-local">
+            </div>
+            <div class="field field-wide">
+              <label><input id="adActive" type="checkbox" checked> مفعّل</label>
+            </div>
+          </div>
+          <button class="btn btn-small" type="submit">إضافة الإعلان</button>
+          <button class="btn btn-ghost btn-small" type="button" id="adRefreshBtn">تحديث القائمة</button>
+          <p class="admin-status" id="adFormStatus" hidden></p>
+        </form>
+        <div class="ad-admin-list" id="adAdminList"></div>
       </div>
 
       <div class="admin-card upload-card">
@@ -341,6 +415,8 @@
   <script src="assets/catalog.js?v=20261118-46" defer></script>
   <script src="assets/admin.js?v=20261121-02" defer></script>
   <script src="assets/dashboard.js?v=20261118-46" defer></script>
+  <script src="assets/site-notifications.js?v=20261124-06" defer></script>
+  <script src="assets/ads.js?v=20261124-06" defer></script>
   <script src="assets/pwa.js?v=20261118-46" defer></script>
   <nav class="bottom-nav" aria-label="التنقل السفلي">
     <a href="index.html#top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.8V20h14V9.8"/></svg><span>الرئيسية</span></a>
