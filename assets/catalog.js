@@ -185,16 +185,16 @@ window.YAHYA_APP_CATALOG = [
     id: "yahya-apk-editor-pro",
     name: "محرر APK برو - يحيى",
     package: "com.yahya.apkeditor.pro",
-    version: "v5.4",
-    size: "229 KB",
+    version: "v5.5",
+    size: "1.6 MB",
     platform: "Android 5.0+",
     languages: "عربي/English",
     category: "tools",
     icon: "assets/uploads/com.yahya.apkeditor.pro.png",
     iconClass: "icon-cyan",
-    description: "شاشة ترحيب متحركة فيها تعريف بيحيى الحمزة ابومحمد وتصاميمه، مع تحرير أي ملف داخل APK وHEX ودعم التطبيقات المثبتة وإزالة زر اللغة من الهيدر.",
-    download: "apps/com.yahya.apkeditor.pro-v5.4.apk",
-    external: "https://ehea1973com-star.github.io/apps/com.yahya.apkeditor.pro-v5.4.apk",
+    description: "صفحات مستقلة لـ Smali وString وFiles وManifest مع فك وتجميع Smali وعرض عدّادات الملفات وتعديل وحذف واستبدال الصور والصوت داخل نفس الصفحة.",
+    download: "apps/com.yahya.apkeditor.pro-v5.5.apk",
+    external: "https://ehea1973com-star.github.io/apps/com.yahya.apkeditor.pro-v5.5.apk",
     type: "APK"
   }
 ];

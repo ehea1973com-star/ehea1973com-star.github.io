@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "شاشة ترحيب متحركة فيها تعريف بيحيى الحمزة ابومحمد وتصاميمه، مع تحرير أي ملف داخل APK وHEX ودعم التطبيقات المثبتة وإزالة زر اللغة من الهيدر.",
-      "filename": "com.yahya.apkeditor.pro-v5.4.apk",
+      "description": "صفحات مستقلة لـ Smali وString وFiles وManifest مع فك وتجميع Smali وعرض عدّادات الملفات وتعديل وحذف واستبدال الصور والصوت داخل نفس الصفحة.",
+      "filename": "com.yahya.apkeditor.pro-v5.5.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "1a5011ea10d92d6e9491eae828b9d09f02411f34db7001dfdc786c07044bf879",
-      "size": 234488,
-      "updatedAt": "2026-11-24T22:13:00.000Z",
-      "version": "5.4",
+      "sha256": "eadc703f2e8e27a06086a70653b1d7eb82bd372053cca12d6e522a1474fc0129",
+      "size": 1655800,
+      "updatedAt": "2026-11-24T22:58:00.000Z",
+      "version": "5.5",
       "type": "APK"
     },
     {
