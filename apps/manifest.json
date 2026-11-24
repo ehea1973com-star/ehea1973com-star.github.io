@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "محرر APK بأزرار أيقونية وروابط يحيى المحدثة: فتح APK أو تطبيق مثبت، تصفح الملفات، تعديل واستخراج وإعادة تسمية وحذف، إعادة بناء وتوقيع وتثبيت.",
-      "filename": "com.yahya.apkeditor.pro-v4.5.apk",
+      "description": "محرر APK كامل: كل التطبيقات أولًا ثم اختيار وضع التحرير لكل تطبيق، صفحات تابعة لكل وضع، ترجمة كاملة ويدوية، مفتاح Rebuild the APK، صفحة Files، فحص الجاهزية وإصلاح الأخطاء، توقيع وتثبيت.",
+      "filename": "com.yahya.apkeditor.pro-v4.6.apk",
       "icon": "assets/icons/system.svg",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "dd850b65494f7e514d28ab80f4095371119edc733ead761b0fd60c338af6b8b8",
-      "size": 168952,
-      "updatedAt": "2026-11-24T19:43:00.000Z",
-      "version": "4.5",
+      "sha256": "3bbbc488c4f35c892776ed1800ccddb6ecebfc247e279f6c23b9c4c5282114a0",
+      "size": 173048,
+      "updatedAt": "2026-11-24T20:17:00.000Z",
+      "version": "4.6",
       "type": "APK"
     },
     {
