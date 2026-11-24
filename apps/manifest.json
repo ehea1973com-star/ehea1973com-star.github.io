@@ -39,6 +39,19 @@
     },
     {
       "category": "tools",
+      "description": "محرر APK بأزرار أيقونية وروابط يحيى المحدثة: فتح APK أو تطبيق مثبت، تصفح الملفات، تعديل واستخراج وإعادة تسمية وحذف، إعادة بناء وتوقيع وتثبيت.",
+      "filename": "com.yahya.apkeditor.pro-v4.3.apk",
+      "icon": "assets/icons/system.svg",
+      "name": "محرر APK برو - يحيى",
+      "package": "com.yahya.apkeditor.pro",
+      "sha256": "72b9c8c568f462ef4e23ec1084c862d5095358ffc8c735c33bd41ee9f76908dd",
+      "size": 156664,
+      "updatedAt": "2026-11-24T18:48:00.000Z",
+      "version": "4.3",
+      "type": "APK"
+    },
+    {
+      "category": "tools",
       "description": "كاميرا بأزرار أيقونية، تصوير وتسجيل فيديو، دوران، شبكة، مؤقت، تعريض، تركيز باللمس، فلاتر ومحرر صور وفيديو.",
       "filename": "com.yahya.app912681-v1.1-fixed.apk",
       "icon": "assets/uploads/com.yahya.app912681.jpg",

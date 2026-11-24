@@ -180,5 +180,21 @@ window.YAHYA_APP_CATALOG = [
     description: "حاسبة شاملة بخمس واجهات: أساسية، علمية، مبرمج، مالية وحياة، ومحولات لكل الوحدات بتحكم مباشر مع بحث وسجل وثيمات ونغمات لمس وإعدادات وزر مشاركة.",
     download: "apps/com.ehyahmza.supercalc-v1.0.apk",
     type: "APK"
+  },
+  {
+    id: "yahya-apk-editor-pro",
+    name: "محرر APK برو - يحيى",
+    package: "com.yahya.apkeditor.pro",
+    version: "v4.3",
+    size: "153 KB",
+    platform: "Android 5.0+",
+    languages: "عربي",
+    category: "tools",
+    icon: "assets/icons/system.svg",
+    iconClass: "icon-cyan",
+    description: "محرر APK كامل: فتح APK أو تطبيق مثبت، تصفح الملفات، تعديل واستخراج وإعادة تسمية وحذف، إعادة بناء وتوقيع وتثبيت، مع أزرار أيقونية وروابط يحيى المحدثة.",
+    download: "apps/com.yahya.apkeditor.pro-v4.3.apk",
+    external: "https://ehea1973com-star.github.io/apps/com.yahya.apkeditor.pro-v4.3.apk",
+    type: "APK"
   }
 ];
