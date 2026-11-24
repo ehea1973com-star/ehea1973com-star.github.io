@@ -185,16 +185,16 @@ window.YAHYA_APP_CATALOG = [
     id: "yahya-apk-editor-pro",
     name: "محرر APK برو - يحيى",
     package: "com.yahya.apkeditor.pro",
-    version: "v5.0",
-    size: "177 KB",
+    version: "v5.2",
+    size: "225 KB",
     platform: "Android 5.0+",
     languages: "عربي/English",
     category: "tools",
-    icon: "assets/icons/system.svg",
+    icon: "assets/uploads/com.yahya.apkeditor.pro.png",
     iconClass: "icon-cyan",
-    description: "محرر APK بمظهر مصنع تطبيقات حي: شاشات منفصلة لكل وضع، انتقال فوري، سحب حقيقي للملفات، نبض وظهور واختفاء، قلب وطي وعمودي، ترجمة كاملة، إعادة بناء وتوقيع وتثبيت.",
-    download: "apps/com.yahya.apkeditor.pro-v5.0.apk",
-    external: "https://ehea1973com-star.github.io/apps/com.yahya.apkeditor.pro-v5.0.apk",
+    description: "محرر APK بأيقونة أندرويد بمفك وكمامة و10 أيقونات صغيرة، وزر مخصص قابل للإضافة والإزالة، شاشات منفصلة لكل وضع، سحب حقيقي للملفات، ترجمة فعلية بعداد، إعادة بناء وتوقيع وتثبيت.",
+    download: "apps/com.yahya.apkeditor.pro-v5.2.apk",
+    external: "https://ehea1973com-star.github.io/apps/com.yahya.apkeditor.pro-v5.2.apk",
     type: "APK"
   }
 ];
