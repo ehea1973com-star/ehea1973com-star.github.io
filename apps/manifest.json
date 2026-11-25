@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v7.6: ملف لغة كامل ثنائي اللغة إنجليزي/عربي بمصفوفة translation_pairs، وإصلاح تشويش UTF-8 لعرض النصوص العربية بشكل صحيح.",
-      "filename": "com.yahya.apkeditor.pro-v7.6.apk",
+      "description": "إصلاح v7.7: بالنقر على أي تطبيق مثبت يُفكّ تلقائيًا وتظهر لغته الحقيقية من resources.arsc/strings.xml بدل ملف صناعي، مع تحرير وحفظ النصوص الأصلية وإصلاح تشويش UTF-8.",
+      "filename": "com.yahya.apkeditor.pro-v7.7.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "05c5ead2ec168b348f5f4d8e0fae40a0179a1e6345d1fa1f1a1bf64e95c894ae",
-      "size": 1705085,
-      "updatedAt": "2026-11-25T20:20:00.000Z",
-      "version": "7.6",
+      "sha256": "9bcdfe3d20b7285e8730586ae358de8fceb951cf5abbe6870692a5615b218371",
+      "size": 1709181,
+      "updatedAt": "2026-11-25T20:51:00.000Z",
+      "version": "7.7",
       "type": "APK"
     },
     {
