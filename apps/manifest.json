@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v6.9: إظهار resources.arsc ضمن ملفات الترجمة والبحث العربي (لغة/ترجمة/تعريب)، وزر مباشر لفتحه، مع الحفظ والتوقيع والتثبيت لكل تطبيق يُفتح داخل المحرر.",
-      "filename": "com.yahya.apkeditor.pro-v6.9.apk",
+      "description": "إصلاح v7.0: منع التجميد عند فتح أو حفظ ملفات اللغة وresources.arsc بنقل القراءة والترميز والحفظ إلى خلفية، مع بقاء الحفظ والتوقيع والتثبيت.",
+      "filename": "com.yahya.apkeditor.pro-v7.0.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "596db1bf3186284b4d850eecf2d9f21e80104790c80e331fa729f260c55321df",
+      "sha256": "dfcc18861a7d8a3775865ce06b562772c8378ec8a5694211296e9c86ecb20e53",
       "size": 1700989,
-      "updatedAt": "2026-11-25T15:18:00.000Z",
-      "version": "6.9",
+      "updatedAt": "2026-11-25T17:21:00.000Z",
+      "version": "7.0",
       "type": "APK"
     },
     {
