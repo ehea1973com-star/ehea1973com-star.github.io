@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v6.8: نافذة مستقلة لتحرير ملف اللغة مع حفظ وتوقيع/تثبيت، عرض نتيجة التثبيت وإزالة التطبيق قبل التثبيت عند تعارض التوقيع، واستبدال داخلي للملفات الكبيرة دون خروج من التطبيق.",
-      "filename": "com.yahya.apkeditor.pro-v6.8.apk",
+      "description": "إصلاح v6.9: إظهار resources.arsc ضمن ملفات الترجمة والبحث العربي (لغة/ترجمة/تعريب)، وزر مباشر لفتحه، مع الحفظ والتوقيع والتثبيت لكل تطبيق يُفتح داخل المحرر.",
+      "filename": "com.yahya.apkeditor.pro-v6.9.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "7e837b38d87f57bb04844914839696ead778e87271309dfc1d517fba1986c638",
-      "size": 1696893,
-      "updatedAt": "2026-11-25T14:52:00.000Z",
-      "version": "6.8",
+      "sha256": "596db1bf3186284b4d850eecf2d9f21e80104790c80e331fa729f260c55321df",
+      "size": 1700989,
+      "updatedAt": "2026-11-25T15:18:00.000Z",
+      "version": "6.9",
       "type": "APK"
     },
     {
