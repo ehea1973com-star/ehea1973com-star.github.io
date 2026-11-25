@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v7.1: إبراز ملفات اللغة بلون ورمز 🌐 وتثبيتها أعلى القائمة، إنشاء ملف لغة يدوي صغير بدل فتح resources.arsc كنص ضخم، ونقل التعريب التلقائي إلى الخلفية لمنع التجميد.",
-      "filename": "com.yahya.apkeditor.pro-v7.1.apk",
+      "description": "إصلاح v7.4: فك ضغط التطبيق إلى مساحة عمل داخلية عند الفتح، تحرير الملفات من النسخة المفكوكة، ثم جمع التطبيق كامل وتوقيعه وتثبيته؛ تبسيط الشريط العلوي وتكبير الهوامش.",
+      "filename": "com.yahya.apkeditor.pro-v7.4.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "a41ab40a9621a731d838eee54f14be1b5c777d271dd92dcae4aab9fc57c29445",
-      "size": 1700989,
-      "updatedAt": "2026-11-25T18:29:00.000Z",
-      "version": "7.1",
+      "sha256": "90f0bfd2485074e4ae79bcd272c8d06e742358082a19988b57cdc5960d98efb0",
+      "size": 1705085,
+      "updatedAt": "2026-11-25T19:12:00.000Z",
+      "version": "7.4",
       "type": "APK"
     },
     {

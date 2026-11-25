@@ -185,15 +185,15 @@ window.YAHYA_APP_CATALOG = [
     id: "yahya-apk-editor-pro",
     name: "محرر APK برو - يحيى",
     package: "com.yahya.apkeditor.pro",
-    version: "v7.1",
+    version: "v7.4",
     size: "1.6 MB",
     platform: "Android 5.0+",
     languages: "عربي/English",
     category: "tools",
     icon: "assets/uploads/com.yahya.apkeditor.pro.png",
     iconClass: "icon-cyan",
-    description: "إصلاح v7.1: إبراز ملفات اللغة بلون ورمز 🌐 وتثبيتها أعلى القائمة، إنشاء ملف لغة يدوي صغير بدل فتحResources.arsc كنص ضخم، ونقل التعريب التلقائي إلى الخلفية لمنع التجميد.",
-    download: "apps/com.yahya.apkeditor.pro-v7.1.apk?v=20261125-19",
+    description: "إصلاح v7.4: فك ضغط التطبيق إلى مساحة عمل داخلية عند الفتح، تحرير الملفات من النسخة المفكوكة، ثم جمع التطبيق كامل وتوقيعه وتثبيته؛ تبسيط الشريط العلوي وتكبير الهوامش.",
+    download: "apps/com.yahya.apkeditor.pro-v7.4.apk?v=20261125-22",
     external: "https://ehea1973com-star.github.io/go/apkeditor/",
     type: "APK"
   }
