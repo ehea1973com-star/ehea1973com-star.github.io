@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v6.3: فتح التطبيقات متعددة ملفات APK مباشرة بدون نافذة اختيار، مع فتح المحرر المحدد فورًا وعرض الملفات والأزرار الواضحة والحفظ والتثبيت.",
-      "filename": "com.yahya.apkeditor.pro-v6.3.apk",
+      "description": "إصلاح v6.4: أزرار توقيع وتثبيت وإعادة بناء واضحة، رجوع خطوة بخطوة، اختيار ملف لغة للترجمة وإنشاء ملف نصوص عند غيابه، مع فتح التطبيقات متعددة APK مباشرة.",
+      "filename": "com.yahya.apkeditor.pro-v6.4.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "a0efe026d0cc700fa8dfe2f0d29bff3d3325c4c6e8f317227210b587787d1dde",
+      "sha256": "1b271bd3654a299860ad21004e97971a2065719b1eb4b3832d19f62007915255",
       "size": 1692797,
-      "updatedAt": "2026-11-25T12:26:00.000Z",
-      "version": "6.3",
+      "updatedAt": "2026-11-25T12:53:00.000Z",
+      "version": "6.4",
       "type": "APK"
     },
     {
