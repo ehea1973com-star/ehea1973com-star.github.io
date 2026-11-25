@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v7.8: قراءة جدول موارد التطبيق المستهدف فعليًا وعرض نصوصه الحقيقية للتعديل بدل أي ملف لغة صناعي، مع فلق تلقائي عند النقر على أي تطبيق.",
-      "filename": "com.yahya.apkeditor.pro-v7.8.apk",
+      "description": "إصلاح v7.9: صفحة لغة داخل التطبيق فيها بحث وتعريب سريع وحفظ بأزرار ظاهرة، مع إبقاء كل الخيارات السابقة XML وCommon وSimple وFull وإرشادات لكل زر.",
+      "filename": "com.yahya.apkeditor.pro-v7.9.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "42f74933fb12063fe7bf5b3ef8970fde6b404db3e003a7d81f886184f9e2e79c",
-      "size": 1709181,
-      "updatedAt": "2026-11-25T21:14:00.000Z",
-      "version": "7.8",
+      "sha256": "b26bd116457bcf3dc7dee692f6049d09b8992a0954ed925c8a362facde4f65e4",
+      "size": 1713277,
+      "updatedAt": "2026-11-25T21:47:00.000Z",
+      "version": "7.9",
       "type": "APK"
     },
     {
