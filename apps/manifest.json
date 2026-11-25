@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v7.5: نافذة فكّ تفصيلية مع نسخة احتياطية وعدّاد الموارد والكلاسات واللغة والسمالي، ثم زر الذهاب إلى التطبيق وصفحة تعريب الي/يدوي/ألوان، والرجوع يجمع ويوقّع ويثبّت تلقائيًا.",
-      "filename": "com.yahya.apkeditor.pro-v7.5.apk",
+      "description": "إصلاح v7.6: ملف لغة كامل ثنائي اللغة إنجليزي/عربي بمصفوفة translation_pairs، وإصلاح تشويش UTF-8 لعرض النصوص العربية بشكل صحيح.",
+      "filename": "com.yahya.apkeditor.pro-v7.6.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "e7560547e34f4134f9aa19c7d8295abe465efa118162c6d43f90573d1e9c9f89",
+      "sha256": "05c5ead2ec168b348f5f4d8e0fae40a0179a1e6345d1fa1f1a1bf64e95c894ae",
       "size": 1705085,
-      "updatedAt": "2026-11-25T19:52:00.000Z",
-      "version": "7.5",
+      "updatedAt": "2026-11-25T20:20:00.000Z",
+      "version": "7.6",
       "type": "APK"
     },
     {
