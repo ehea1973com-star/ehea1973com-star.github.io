@@ -7,4 +7,7 @@ WhatsApp: https://wa.me/963935150431
 APK signer certificate SHA-256: 53aff901647ab8766974932d723c7b0200e29adc4f0cac596cea885079aaf2a7
 Permanent APK link: https://ehea1973com-star.github.io/go/apkeditor/
 Smart links page: https://ehea1973com-star.github.io/links.html
+Short alias: https://ehea1973com-star.github.io/go
+Short alias: https://ehea1973com-star.github.io/links
+Short alias: https://ehea1973com-star.github.io/apk
 This file is versioned in the same public repository as the site and is intended to identify the official owner and stable links.
