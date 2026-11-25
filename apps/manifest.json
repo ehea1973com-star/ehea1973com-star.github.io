@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v6.0: عرض كل ملفات APK مباشرة، فتح الملف بالضغط، أزرار حفظ وتثبيت فعّالة لتغيير الحزمة والإصدار، ترجمة تعرض الملفات المعدّلة، توقيع تلقائي، ودعم Split APKs.",
-      "filename": "com.yahya.apkeditor.pro-v6.0.apk",
+      "description": "إصلاح v6.1: عرض كل ملفات APK داخل المحرر، أزرار واضحة للحفظ والتثبيت وفتح الملفات، حقول قابلة للتحرير، ترجمة مع فتح النصوص يدويًا، توقيع تلقائي، ودعم اختيار ملفات Split APK.",
+      "filename": "com.yahya.apkeditor.pro-v6.1.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "5c143444e717d5a75acbd0d9a744b46fa41dc1171c7eb31c09ce9066ef2f0f94",
+      "sha256": "49bf1d60a800ada194f070091cce9b9e130552b1e626157e8fc68749f4d0e1ae",
       "size": 1688701,
-      "updatedAt": "2026-11-25T11:12:00.000Z",
-      "version": "6.0",
+      "updatedAt": "2026-11-25T11:52:00.000Z",
+      "version": "6.1",
       "type": "APK"
     },
     {
