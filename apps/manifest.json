@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v7.0: منع التجميد عند فتح أو حفظ ملفات اللغة وresources.arsc بنقل القراءة والترميز والحفظ إلى خلفية، مع بقاء الحفظ والتوقيع والتثبيت.",
-      "filename": "com.yahya.apkeditor.pro-v7.0.apk",
+      "description": "إصلاح v7.1: إبراز ملفات اللغة بلون ورمز 🌐 وتثبيتها أعلى القائمة، إنشاء ملف لغة يدوي صغير بدل فتح resources.arsc كنص ضخم، ونقل التعريب التلقائي إلى الخلفية لمنع التجميد.",
+      "filename": "com.yahya.apkeditor.pro-v7.1.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "dfcc18861a7d8a3775865ce06b562772c8378ec8a5694211296e9c86ecb20e53",
+      "sha256": "a41ab40a9621a731d838eee54f14be1b5c777d271dd92dcae4aab9fc57c29445",
       "size": 1700989,
-      "updatedAt": "2026-11-25T17:21:00.000Z",
-      "version": "7.0",
+      "updatedAt": "2026-11-25T18:29:00.000Z",
+      "version": "7.1",
       "type": "APK"
     },
     {
