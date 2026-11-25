@@ -26,7 +26,8 @@ e7560547e34f4134f9aa19c7d8295abe465efa118162c6d43f90573d1e9c9f89  com.yahya.apke
 b26bd116457bcf3dc7dee692f6049d09b8992a0954ed925c8a362facde4f65e4  com.yahya.apkeditor.pro-v7.9.apk
 6c609b6d5aa84b5816eacbc2c88e9814d24c0f6d5f6d8af91aaa7a1aa36dc1dc  com.yahya.apkeditor.pro-v8.0.apk
 2227c844a65d0f690fb4f9b5ffa2c180585d0cfed4ccd9fa74c117e0f6e24260  com.yahya.apkeditor.pro-v8.1.apk
-2227c844a65d0f690fb4f9b5ffa2c180585d0cfed4ccd9fa74c117e0f6e24260  com.yahya.apkeditor.pro-latest.apk
+59249be9343569d34fc7b200c5b6d1783fee4f9849366a926a45e3f8f2350213  com.yahya.apkeditor.pro-v8.2.apk
+59249be9343569d34fc7b200c5b6d1783fee4f9849366a926a45e3f8f2350213  com.yahya.apkeditor.pro-latest.apk
 0e98190ac7be1166457197a3573819d75b2c93c84941646bae7577ed17957026  com.yahya.app243086-v1.0.apk
 18105300c352021937f5c3d2b1609658da6d632df8e2d7f30cb788f5095e6b99  com.ehyahmza.apkbridge-v1.0.apk
 1afeb065c2dcf66b00995ad572ac8ab45caeaae3f795f1595d2439524c71dfda  com.gmail.heagoo.apkeditor.pro-v4.2.apk

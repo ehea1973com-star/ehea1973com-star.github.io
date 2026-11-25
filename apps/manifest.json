@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v8.1: اختيار ملف APK الذي يحوي resources.arsc عند التطبيقات المقسّمة، وخلفية بيضاء واضحة لحقل البحث والنصوص، ومعالجة أي خطأ تحليل برسالة مفهومة.",
-      "filename": "com.yahya.apkeditor.pro-v8.1.apk",
+      "description": "إصلاح v8.2: شريط تمرير عمودي ظاهر يمين نصوص التطبيق، وأرقام سطور على اليسار، وتوسيع صفحة التحرير أفقيًا مع خلفية بيضاء للنصوص والبحث.",
+      "filename": "com.yahya.apkeditor.pro-v8.2.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "2227c844a65d0f690fb4f9b5ffa2c180585d0cfed4ccd9fa74c117e0f6e24260",
+      "sha256": "59249be9343569d34fc7b200c5b6d1783fee4f9849366a926a45e3f8f2350213",
       "size": 1713277,
-      "updatedAt": "2026-11-25T22:19:00.000Z",
-      "version": "8.1",
+      "updatedAt": "2026-11-25T22:29:00.000Z",
+      "version": "8.2",
       "type": "APK"
     },
     {
