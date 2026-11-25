@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v8.3: دمج ملفات التطبيق المقسّمة قبل الفك، عرض كل الملفات بعد الفك، تلوين ملفات اللغة برتقالي، وفتحها كاملة بالنقر عليها مع الحفظ والتوقيع والتثبيت.",
-      "filename": "com.yahya.apkeditor.pro-v8.3.apk",
+      "description": "إصلاح v8.4: بطاقة معلومات الحزمة مع COPY/LOCATE/EXTRACT/CONVERT/VIEW/INSTALL، ومحرر Arsc مع Search by ID وSearch resource value وString pool وحفظ الكل والرجوع والتوقيع.",
+      "filename": "com.yahya.apkeditor.pro-v8.4.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "dc99f40fab1881c77273ee66dc4d601f57739fa78c2b78248d56d466696db063",
-      "size": 1713277,
-      "updatedAt": "2026-11-25T23:05:00.000Z",
-      "version": "8.3",
+      "sha256": "e218b43f262ca0fd002f51011da5e1daea1182584f692d34705d259ae91c5477",
+      "size": 1717373,
+      "updatedAt": "2026-11-25T23:34:00.000Z",
+      "version": "8.4",
       "type": "APK"
     },
     {
