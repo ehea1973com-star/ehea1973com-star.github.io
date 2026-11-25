@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v8.2: شريط تمرير عمودي ظاهر يمين نصوص التطبيق، وأرقام سطور على اليسار، وتوسيع صفحة التحرير أفقيًا مع خلفية بيضاء للنصوص والبحث.",
-      "filename": "com.yahya.apkeditor.pro-v8.2.apk",
+      "description": "إصلاح v8.3: دمج ملفات التطبيق المقسّمة قبل الفك، عرض كل الملفات بعد الفك، تلوين ملفات اللغة برتقالي، وفتحها كاملة بالنقر عليها مع الحفظ والتوقيع والتثبيت.",
+      "filename": "com.yahya.apkeditor.pro-v8.3.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "59249be9343569d34fc7b200c5b6d1783fee4f9849366a926a45e3f8f2350213",
+      "sha256": "dc99f40fab1881c77273ee66dc4d601f57739fa78c2b78248d56d466696db063",
       "size": 1713277,
-      "updatedAt": "2026-11-25T22:29:00.000Z",
-      "version": "8.2",
+      "updatedAt": "2026-11-25T23:05:00.000Z",
+      "version": "8.3",
       "type": "APK"
     },
     {
