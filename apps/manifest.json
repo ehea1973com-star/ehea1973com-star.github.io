@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v7.4: فك ضغط التطبيق إلى مساحة عمل داخلية عند الفتح، تحرير الملفات من النسخة المفكوكة، ثم جمع التطبيق كامل وتوقيعه وتثبيته؛ تبسيط الشريط العلوي وتكبير الهوامش.",
-      "filename": "com.yahya.apkeditor.pro-v7.4.apk",
+      "description": "إصلاح v7.5: نافذة فكّ تفصيلية مع نسخة احتياطية وعدّاد الموارد والكلاسات واللغة والسمالي، ثم زر الذهاب إلى التطبيق وصفحة تعريب الي/يدوي/ألوان، والرجوع يجمع ويوقّع ويثبّت تلقائيًا.",
+      "filename": "com.yahya.apkeditor.pro-v7.5.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "90f0bfd2485074e4ae79bcd272c8d06e742358082a19988b57cdc5960d98efb0",
+      "sha256": "e7560547e34f4134f9aa19c7d8295abe465efa118162c6d43f90573d1e9c9f89",
       "size": 1705085,
-      "updatedAt": "2026-11-25T19:12:00.000Z",
-      "version": "7.4",
+      "updatedAt": "2026-11-25T19:52:00.000Z",
+      "version": "7.5",
       "type": "APK"
     },
     {
