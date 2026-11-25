@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v6.6: تشغيل لوحة المفاتيح فورًا داخل كل حقول المحرر والنوافذ، مع زر توقيع/تثبيت واحد وتجميع تلقائي لملفات التطبيق.",
-      "filename": "com.yahya.apkeditor.pro-v6.6.apk",
+      "description": "إصلاح v6.7: عرض ملفات التجميع أثناء التوقيع وفتح مثبت النظام للتأكيد، و قائمة ملفات التعريب داخل نافذة الترجمة.",
+      "filename": "com.yahya.apkeditor.pro-v6.7.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "c0f9c75bae337292cacc39de1dbbd098587b0a483953cfae6ec474eac0999198",
+      "sha256": "94d632958d3e3231074d18a37deb78698b09c553f3987d39eb42ebf040c837ee",
       "size": 1696893,
-      "updatedAt": "2026-11-25T13:54:00.000Z",
-      "version": "6.6",
+      "updatedAt": "2026-11-25T14:16:00.000Z",
+      "version": "6.7",
       "type": "APK"
     },
     {
