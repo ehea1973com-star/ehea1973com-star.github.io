@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v6.5: زر توقيع/تثبيت واحد يعمل من كل الصفحات، تجميع تلقائي لملفات التطبيق بما فيها Split APK، رسائل خطأ واضحة للتوقيع مع بديل v1.",
-      "filename": "com.yahya.apkeditor.pro-v6.5.apk",
+      "description": "إصلاح v6.6: تشغيل لوحة المفاتيح فورًا داخل كل حقول المحرر والنوافذ، مع زر توقيع/تثبيت واحد وتجميع تلقائي لملفات التطبيق.",
+      "filename": "com.yahya.apkeditor.pro-v6.6.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "4b723f1d4fdd3f866f5d303fc9d514ca53dbb479577d44bc3b3217c13c80f504",
+      "sha256": "c0f9c75bae337292cacc39de1dbbd098587b0a483953cfae6ec474eac0999198",
       "size": 1696893,
-      "updatedAt": "2026-11-25T13:31:00.000Z",
-      "version": "6.5",
+      "updatedAt": "2026-11-25T13:54:00.000Z",
+      "version": "6.6",
       "type": "APK"
     },
     {
