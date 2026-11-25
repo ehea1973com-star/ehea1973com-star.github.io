@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "صفحات مستقلة لـ Smali وString وFiles وManifest مع فك وتجميع Smali وعرض عدّادات الملفات وتعديل وحذف واستبدال الصور والصوت داخل نفس الصفحة.",
-      "filename": "com.yahya.apkeditor.pro-v5.5.apk",
+      "description": "قائمة تطبيقات مثبتة كاملة: Full edit وSimple edit وCommon edit وXML file edit وجهاز ترقيع، مع صفحات Smali وString وFiles وManifest وفك وتجميع Smali وروابط قصيرة دائمة.",
+      "filename": "com.yahya.apkeditor.pro-v5.6.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "eadc703f2e8e27a06086a70653b1d7eb82bd372053cca12d6e522a1474fc0129",
-      "size": 1655800,
-      "updatedAt": "2026-11-24T22:58:00.000Z",
-      "version": "5.5",
+      "sha256": "cd82725aa2c4ae81198fc6cc96960cd078ff183476788b597258a6c56dc2a1cd",
+      "size": 1668088,
+      "updatedAt": "2026-11-25T06:55:00.000Z",
+      "version": "5.6",
       "type": "APK"
     },
     {

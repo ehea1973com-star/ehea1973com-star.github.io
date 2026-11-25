@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>الروابط الذكية | Yahya Tech</title>
+<meta name="description" content="مركز روابط يحيى الحمزة الذكي: روابط قصيرة دائمة لا تتغير مع التحديثات، تحميل مباشر، وتواصل موثوق.">
+<meta name="theme-color" content="#FFF4E4">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="canonical" href="https://ehea1973com-star.github.io/links.html">
+<style>
+  :root{--bg:#FFF4E4;--card:#FFFCF6;--line:#E8D3B0;--text:#3E2C1C;--muted:#8D7259;--accent:#B8752B;--ok:#2E7D5B}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.6}
+  header{padding:34px 18px 20px;text-align:center;background:linear-gradient(180deg,#FFE9C7,var(--bg));border-bottom:1px solid var(--line)}
+  h1{margin:0 0 8px;font-size:clamp(1.7rem,5vw,2.7rem)}
+  .badge{display:inline-flex;gap:7px;align-items:center;padding:6px 12px;border-radius:999px;background:#E8F5EE;color:var(--ok);font-weight:700;font-size:.86rem;border:1px solid #BFE3D1}
+  .note{max-width:760px;margin:10px auto 0;color:var(--muted);font-size:.95rem}
+  main{max-width:1100px;margin:auto;padding:22px 16px 60px}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;margin-bottom:22px}
+  input[type=search]{flex:1 1 320px;max-width:520px;padding:13px 16px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--text);font-size:1rem;outline:none}
+  input[type=search]:focus{border-color:var(--accent);box-shadow:0 0 0 3px #B8752B22}
+  .chip{padding:9px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--text);cursor:pointer;font-weight:600}
+  .chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 5px 18px #5b3a1408}
+  .card h2{margin:0 0 6px;font-size:1.05rem}
+  .short{direction:ltr;text-align:left;display:block;background:#FFF0D6;border:1px dashed var(--line);border-radius:10px;padding:7px 9px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.86rem;color:#7A4B18;margin:8px 0;overflow-wrap:anywhere}
+  .target{color:var(--muted);font-size:.82rem;overflow-wrap:anywhere}
+  .actions{display:flex;gap:8px;margin-top:12px}
+  a.btn,button.btn{flex:1;text-align:center;padding:10px 12px;border-radius:12px;border:1px solid var(--accent);text-decoration:none;font-weight:700;cursor:pointer;font-size:.9rem}
+  a.btn{background:var(--accent);color:#fff}
+  button.btn{background:transparent;color:var(--accent)}
+  footer{text-align:center;padding:26px 16px 40px;color:var(--muted);font-size:.9rem}
+  footer a{color:var(--accent);font-weight:700}
+  .empty{grid-column:1/-1;text-align:center;padding:30px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔗 الروابط الذكية</h1>
+  <span class="badge">✓ موقع معتمد — يحيى الحمزة</span>
+  <p class="note">كل رابط له عنوان قصير دائم ثابت. عند تحديث التطبيقات لا يتغير الرابط القصير، فقط يتم تحديث الوجهة من مكان واحد.</p>
+</header>
+<main>
+  <div class="toolbar">
+    <input id="q" type="search" placeholder="ابحث عن رابط...">
+    <button class="chip active" data-cat="all">الكل</button>
+    <button class="chip" data-cat="apps">تطبيقات</button>
+    <button class="chip" data-cat="contact">تواصل</button>
+    <button class="chip" data-cat="cash">شام كاش</button>
+    <button class="chip" data-cat="source">مصادر</button>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+<footer>
+  التحقق من الهوية: <a href="verification.txt">verification.txt</a> •
+  الصفحة الرئيسية: <a href="index.html">Yahya Tech</a>
+</footer>
+<script>
+var BASE = location.origin + location.pathname.replace(/links\.html$/, "");
+var LINKS = [
+  {name:"الموقع الرسمي",cat:"source",icon:"🏠",short:"/go/site/",target:"index.html"},
+  {name:"كل التطبيقات",cat:"apps",icon:"📱",short:"/go/apps/",target:"index.html#apps"},
+  {name:"محرر APK برو — أحدث نسخة",cat:"apps",icon:"🛠️",short:"/go/apkeditor/",target:"apps/com.yahya.apkeditor.pro-latest.apk"},
+  {name:"صفحة تحميل ذكية",cat:"apps",icon:"⬇️",short:"/go/download/",target:"download.html"},
+  {name:"إصدارات يحيى على GitHub",cat:"source",icon:"🧰",short:"/go/github/",target:"https://github.com/ehea1973com-star/Yahya-Editor-Android-2/releases"},
+  {name:"فيسبوك",cat:"contact",icon:"📘",short:"/go/facebook/",target:"https://www.facebook.com/share/g/1H9eeKsnWL/"},
+  {name:"واتساب",cat:"contact",icon:"💬",short:"/go/whatsapp/",target:"https://wa.me/963935150431"},
+  {name:"تيليجرام",cat:"contact",icon:"✈️",short:"/go/telegram/",target:"https://t.me/ehea1973hmza"},
+  {name:"يوتيوب",cat:"contact",icon:"▶️",short:"/go/youtube/",target:"https://youtube.com/channel/UCmChpVHGV74adiyqncSyocg"},
+  {name:"البريد الإلكتروني",cat:"contact",icon:"✉️",short:"/go/email/",target:"mailto:ehea1973.com@gmail.com"},
+  {name:"دعم شام كاش",cat:"cash",icon:"💳",short:"/go/support/",target:"https://wa.me/963935150431?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%AF%D8%B9%D9%85%20%D8%B5%D8%A7%D8%AD%D8%A8%20%D8%A7%D9%84%D9%85%D9%88%D9%82%D8%B9%20%D8%B9%D8%A8%D8%B1%20%D8%B4%D8%A7%D9%85%20%D9%83%D8%A7%D8%B4"},
+  {name:"نور الفجر",cat:"apps",icon:"🌙",short:"/go/noor/",target:"apps/NoorAlFajr-v1.3.3.apk"},
+  {name:"محرر يحيى للأندرويد",cat:"apps",icon:"📝",short:"/go/yahya-editor/",target:"https://github.com/ehea1973com-star/Yahya-Editor-Android-2/releases/download/v1.6.1/Yahya-1.6.1.apk"}
+];
+var grid = document.getElementById("grid");
+var query = "";
+var active = "all";
+function absolute(item){return BASE + item.short.replace(/^\//,"")}
+function render(){
+  grid.innerHTML = "";
+  var count = 0;
+  LINKS.forEach(function(item){
+    if(active !== "all" && item.cat !== active) return;
+    if(query && item.name.toLowerCase().indexOf(query) < 0 && item.short.indexOf(query) < 0) return;
+    count++;
+    var card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = "<h2>" + item.icon + " " + item.name + "</h2>" +
+      "<span class='short'>" + absolute(item) + "</span>" +
+      "<div class='target'>الوجهة: " + item.target + "</div>" +
+      "<div class='actions'><a class='btn' href='" + absolute(item) + "' target='_blank' rel='noopener noreferrer'>فتح</a>" +
+      "<button class='btn' type='button'>نسخ</button></div>";
+    card.querySelector("button").addEventListener("click", function(){
+      var value = absolute(item);
+      if(navigator.clipboard && navigator.clipboard.writeText){navigator.clipboard.writeText(value)}
+      else{var t=document.createElement("textarea");t.value=value;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove()}
+      this.textContent = "تم النسخ";
+      var self = this;
+      setTimeout(function(){self.textContent = "نسخ"}, 1200);
+    });
+    grid.appendChild(card);
+  });
+  if(count === 0){grid.innerHTML = "<div class='empty'>لا توجد روابط مطابقة</div>"}
+}
+document.getElementById("q").addEventListener("input", function(e){query = e.target.value.trim().toLowerCase();render()});
+Array.prototype.forEach.call(document.querySelectorAll(".chip"), function(chip){
+  chip.addEventListener("click", function(){
+    Array.prototype.forEach.call(document.querySelectorAll(".chip"), function(c){c.classList.remove("active")});
+    chip.classList.add("active");
+    active = chip.getAttribute("data-cat");
+    render();
+  });
+});
+render();
+</script>
+</body>
+</html>
