@@ -1,4 +1,4 @@
-var SW_VERSION = "uc-20261125-070500";
+var SW_VERSION = "uc-20261125-081200";
 
 self.addEventListener("install", function (event) {
   event.waitUntil(self.skipWaiting());

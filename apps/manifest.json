@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v5.9: فتح التطبيقات دون تجمد، فك كل ملفات XML في الخلفية بسرعة، حفظ وتثبيت تغييرات الحزمة/الإصدار، توقيع تلقائي، ودعم Split APKs.",
-      "filename": "com.yahya.apkeditor.pro-v5.9.apk",
+      "description": "إصلاح v6.0: عرض كل ملفات APK مباشرة، فتح الملف بالضغط، أزرار حفظ وتثبيت فعّالة لتغيير الحزمة والإصدار، ترجمة تعرض الملفات المعدّلة، توقيع تلقائي، ودعم Split APKs.",
+      "filename": "com.yahya.apkeditor.pro-v6.0.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "8886e8796ef9144bf82d2e43087661586139934b4a0ab2578f6955f6c3b2c170",
+      "sha256": "5c143444e717d5a75acbd0d9a744b46fa41dc1171c7eb31c09ce9066ef2f0f94",
       "size": 1688701,
-      "updatedAt": "2026-11-25T10:37:00.000Z",
-      "version": "5.9",
+      "updatedAt": "2026-11-25T11:12:00.000Z",
+      "version": "6.0",
       "type": "APK"
     },
     {
