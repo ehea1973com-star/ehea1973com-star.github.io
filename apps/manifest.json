@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v8.0: جعل خلفية أزرار قائمة الأدوات بيضاء ونصها داكنًا واضحًا، وإزالة زر التوقيع العائم المتداخل مع القائمة.",
-      "filename": "com.yahya.apkeditor.pro-v8.0.apk",
+      "description": "إصلاح v8.1: اختيار ملف APK الذي يحوي resources.arsc عند التطبيقات المقسّمة، وخلفية بيضاء واضحة لحقل البحث والنصوص، ومعالجة أي خطأ تحليل برسالة مفهومة.",
+      "filename": "com.yahya.apkeditor.pro-v8.1.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "6c609b6d5aa84b5816eacbc2c88e9814d24c0f6d5f6d8af91aaa7a1aa36dc1dc",
+      "sha256": "2227c844a65d0f690fb4f9b5ffa2c180585d0cfed4ccd9fa74c117e0f6e24260",
       "size": 1713277,
-      "updatedAt": "2026-11-25T22:04:00.000Z",
-      "version": "8.0",
+      "updatedAt": "2026-11-25T22:19:00.000Z",
+      "version": "8.1",
       "type": "APK"
     },
     {

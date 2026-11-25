@@ -185,15 +185,15 @@ window.YAHYA_APP_CATALOG = [
     id: "yahya-apk-editor-pro",
     name: "محرر APK برو - يحيى",
     package: "com.yahya.apkeditor.pro",
-    version: "v8.0",
+    version: "v8.1",
     size: "1.7 MB",
     platform: "Android 5.0+",
     languages: "عربي/English",
     category: "tools",
     icon: "assets/uploads/com.yahya.apkeditor.pro.png",
     iconClass: "icon-cyan",
-    description: "إصلاح v8.0: جعل خلفية أزرار قائمة الأدوات بيضاء ونصها داكنًا واضحًا، وإزالة زر التوقيع العائم المتداخل مع القائمة.",
-    download: "apps/com.yahya.apkeditor.pro-v8.0.apk?v=20261125-28",
+    description: "إصلاح v8.1: اختيار ملف APK الذي يحوي resources.arsc عند التطبيقات المقسّمة، وخلفية بيضاء واضحة لحقل البحث والنصوص، ومعالجة أي خطأ تحليل برسالة مفهومة.",
+    download: "apps/com.yahya.apkeditor.pro-v8.1.apk?v=20261125-29",
     external: "https://ehea1973com-star.github.io/go/apkeditor/",
     type: "APK"
   }
