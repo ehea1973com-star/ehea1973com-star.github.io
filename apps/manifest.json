@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v7.9: صفحة لغة داخل التطبيق فيها بحث وتعريب سريع وحفظ بأزرار ظاهرة، مع إبقاء كل الخيارات السابقة XML وCommon وSimple وFull وإرشادات لكل زر.",
-      "filename": "com.yahya.apkeditor.pro-v7.9.apk",
+      "description": "إصلاح v8.0: جعل خلفية أزرار قائمة الأدوات بيضاء ونصها داكنًا واضحًا، وإزالة زر التوقيع العائم المتداخل مع القائمة.",
+      "filename": "com.yahya.apkeditor.pro-v8.0.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "b26bd116457bcf3dc7dee692f6049d09b8992a0954ed925c8a362facde4f65e4",
+      "sha256": "6c609b6d5aa84b5816eacbc2c88e9814d24c0f6d5f6d8af91aaa7a1aa36dc1dc",
       "size": 1713277,
-      "updatedAt": "2026-11-25T21:47:00.000Z",
-      "version": "7.9",
+      "updatedAt": "2026-11-25T22:04:00.000Z",
+      "version": "8.0",
       "type": "APK"
     },
     {
