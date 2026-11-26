@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v8.8: واجهة MT Manager بمستكشف لوحتين ودرج جانبي، شاشة Extract APK بتبويبات، قوائم منبثقة بأيقونات، Search XML مخصص، Filter، Open with، ونوافذ Info وWarning.",
-      "filename": "com.yahya.apkeditor.pro-v8.8.apk",
+      "description": "إصلاح v8.9 نهائي: مستكشف MT Manager بنصفين لكل ملفات الهاتف، نسخ ونقل، أيقونات ملفات ملونة، محرر بأرقام وتكبير وألوان أكواد، تعريب يدوي/آلي، توقيع وتحويل APKS، لغات متعددة، ثيمات خشبي/أزرق/أبيض، هيدر باسم يحيى الحمزة و٥ أيقونات روبوت/اندرويد.",
+      "filename": "com.yahya.apkeditor.pro-v8.9.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "eb33776ce59d8c7f2ab670d7af9e532ae5f97ede1597d32d77dc68e617142ddf",
-      "size": 1737853,
-      "updatedAt": "2026-11-26T07:31:03.000Z",
-      "version": "8.8",
+      "sha256": "28df63257445e00e5ee347734ccbedeb65263c69ad7f79839a9807d4750aa421",
+      "size": 1791511,
+      "updatedAt": "2026-11-26T09:14:37.000Z",
+      "version": "8.9",
       "type": "APK"
     },
     {
