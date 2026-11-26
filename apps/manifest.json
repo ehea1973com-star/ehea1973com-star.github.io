@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v8.7: قوالب Arsc Editor السبعة وString pool، Search XML، Dex Editor plus بأربع تبويبات، نوافذ SAVE/AUTO SIGN، ومثبت APK بأيقونة التطبيق.",
-      "filename": "com.yahya.apkeditor.pro-v8.7.apk",
+      "description": "إصلاح v8.8: واجهة MT Manager بمستكشف لوحتين ودرج جانبي، شاشة Extract APK بتبويبات، قوائم منبثقة بأيقونات، Search XML مخصص، Filter، Open with، ونوافذ Info وWarning.",
+      "filename": "com.yahya.apkeditor.pro-v8.8.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "630c2f2458b1b4d930fd7af5f56a859b09c25c21af6a88b43c9e7e117f14009f",
-      "size": 1725565,
-      "updatedAt": "2026-11-26T06:48:00.000Z",
-      "version": "8.7",
+      "sha256": "eb33776ce59d8c7f2ab670d7af9e532ae5f97ede1597d32d77dc68e617142ddf",
+      "size": 1737853,
+      "updatedAt": "2026-11-26T07:31:03.000Z",
+      "version": "8.8",
       "type": "APK"
     },
     {
