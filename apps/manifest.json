@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v8.5: سحب التطبيق داخل المحرر فورًا، عرض المعلومات داخل الواجهة، فتح كل string pools في resources.arsc، وأسماء Arsc Editor واضحة بلا تقلوب.",
-      "filename": "com.yahya.apkeditor.pro-v8.5.apk",
+      "description": "إصلاح v8.6: زر OPEN LANGUAGE مباشر داخل المحرر وبطاقة التطبيق، ومحرر خام لـ resources.arsc إذا لم تُقرأ النصوص الجاهزة، مع حفظ وتوقيع.",
+      "filename": "com.yahya.apkeditor.pro-v8.6.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "66eeb0d91d82b33d82bcfd31d7a560f6e302bc76765dab0fdf35b7b1351b908d",
-      "size": 1717373,
-      "updatedAt": "2026-11-26T05:43:00.000Z",
-      "version": "8.5",
+      "sha256": "717635f60c07c1a972aba7330124652b30cb2eaf377ba3288f48520647b88673",
+      "size": 1721469,
+      "updatedAt": "2026-11-26T06:07:00.000Z",
+      "version": "8.6",
       "type": "APK"
     },
     {

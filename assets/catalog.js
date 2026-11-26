@@ -185,15 +185,15 @@ window.YAHYA_APP_CATALOG = [
     id: "yahya-apk-editor-pro",
     name: "محرر APK برو - يحيى",
     package: "com.yahya.apkeditor.pro",
-    version: "v8.5",
+    version: "v8.6",
     size: "1.7 MB",
     platform: "Android 5.0+",
     languages: "عربي/English",
     category: "tools",
     icon: "assets/uploads/com.yahya.apkeditor.pro.png",
     iconClass: "icon-cyan",
-    description: "إصلاح v8.5: سحب التطبيق داخل المحرر فورًا، عرض المعلومات داخل الواجهة، فتح كل string pools في resources.arsc، وأسماء Arsc Editor واضحة بلا تقلوب.",
-    download: "apps/com.yahya.apkeditor.pro-v8.5.apk?v=20261126-33",
+    description: "إصلاح v8.6: زر OPEN LANGUAGE مباشر داخل المحرر وبطاقة التطبيق، ومحرر خام لـ resources.arsc إذا لم تُقرأ النصوص الجاهزة، مع حفظ وتوقيع.",
+    download: "apps/com.yahya.apkeditor.pro-v8.6.apk?v=20261126-34",
     external: "https://ehea1973com-star.github.io/go/apkeditor/",
     type: "APK"
   }
