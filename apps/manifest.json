@@ -39,15 +39,15 @@
     },
     {
       "category": "tools",
-      "description": "إصلاح v8.4: بطاقة معلومات الحزمة مع COPY/LOCATE/EXTRACT/CONVERT/VIEW/INSTALL، ومحرر Arsc مع Search by ID وSearch resource value وString pool وحفظ الكل والرجوع والتوقيع.",
-      "filename": "com.yahya.apkeditor.pro-v8.4.apk",
+      "description": "إصلاح v8.5: سحب التطبيق داخل المحرر فورًا، عرض المعلومات داخل الواجهة، فتح كل string pools في resources.arsc، وأسماء Arsc Editor واضحة بلا تقلوب.",
+      "filename": "com.yahya.apkeditor.pro-v8.5.apk",
       "icon": "assets/uploads/com.yahya.apkeditor.pro.png",
       "name": "محرر APK برو - يحيى",
       "package": "com.yahya.apkeditor.pro",
-      "sha256": "e218b43f262ca0fd002f51011da5e1daea1182584f692d34705d259ae91c5477",
+      "sha256": "66eeb0d91d82b33d82bcfd31d7a560f6e302bc76765dab0fdf35b7b1351b908d",
       "size": 1717373,
-      "updatedAt": "2026-11-25T23:34:00.000Z",
-      "version": "8.4",
+      "updatedAt": "2026-11-26T05:43:00.000Z",
+      "version": "8.5",
       "type": "APK"
     },
     {
